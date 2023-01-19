@@ -2,3 +2,4 @@ morozlie KolbyML
 snaiyer snaiyer-learn
 ashreeku Hashedbrowns
 dsorken Dsorken
+usmanov Patchoulis
