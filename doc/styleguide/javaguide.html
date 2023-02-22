@@ -290,29 +290,29 @@
         <p>Examples:</p>
 
         <pre class="prettyprint lang-java">return () -&gt; {
-  while (condition()) {
-    method();
-  }
+    while (condition()) {
+        method();
+    }
 };
 
 return new MyClass() {
-  @Override public void method() {
-    if (condition()) {
-      try {
-        something();
-      } catch (ProblemException e) {
-        recover();
-      }
-    } else if (otherCondition()) {
-      somethingElse();
-    } else {
-      lastThing();
+    @Override public void method() {
+        if (condition()) {
+            try {
+                something();
+            } catch (ProblemException e) {
+                recover();
+            }
+        } else if (otherCondition()) {
+            somethingElse();
+        } else {
+            lastThing();
+        }
+        {
+            int x = foo();
+            frob(x);
+        }
     }
-    {
-      int x = foo();
-      frob(x);
-    }
-  }
 };
 </pre>
 
@@ -1082,10 +1082,10 @@ static final String[] nonEmptyArray = {"these", "can", "change"};
             justified is explained in a comment.</p>
 
         <pre class="prettyprint lang-java">try {
-  int i = Integer.parseInt(response);
-  return handleNumericResponse(i);
+    int i = Integer.parseInt(response);
+    return handleNumericResponse(i);
 } catch (NumberFormatException ok) {
-  // it's not numeric; that's fine, just continue
+    // it's not numeric; that's fine, just continue
 }
 return handleTextResponse(response);
 </pre>
@@ -1096,8 +1096,8 @@ return handleTextResponse(response);
             exception of the expected type, so a comment is unnecessary here.</p>
 
         <pre class="prettyprint lang-java">try {
-  emptyStack.pop();
-  fail();
+    emptyStack.pop();
+    fail();
 } catch (NoSuchElementException expected) {
 }
 </pre>
