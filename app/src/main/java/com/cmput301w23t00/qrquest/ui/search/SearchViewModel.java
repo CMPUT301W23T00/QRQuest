@@ -1,16 +1,16 @@
-package com.cmput301w23t00.qrquest.ui.notifications;
+package com.cmput301w23t00.qrquest.ui.search;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class NotificationsViewModel extends ViewModel {
+public class SearchViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public NotificationsViewModel() {
+    public SearchViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fragment");
+        mText.setValue("This is search fragment");
     }
 
     public LiveData<String> getText() {
