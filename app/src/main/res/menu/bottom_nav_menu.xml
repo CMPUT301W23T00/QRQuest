@@ -7,14 +7,9 @@
         android:title="@string/title_map" />
 
     <item
-        android:id="@+id/navigation_qrcode_information"
+        android:id="@+id/navigation_qrcode_library"
         android:icon="@drawable/baseline_menu_book_24"
-        android:title="@string/title_qrcode_information" />
-
-<!--    <item-->
-<!--        android:id="@+id/navigation_qrcode_library"-->
-<!--        android:icon="@drawable/baseline_menu_book_24"-->
-<!--        android:title="@string/title_qrcode_library" />-->
+        android:title="@string/title_qrcode_library" />
 
     <item
         android:id="@+id/navigation_add_qrcode"

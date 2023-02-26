@@ -40,6 +40,7 @@ public class QRCodeInformationFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // adds buttons to the top navigation bar for navigation and to delete the QR Code
         inflater.inflate(R.menu.qr_code_information_top_nav_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
