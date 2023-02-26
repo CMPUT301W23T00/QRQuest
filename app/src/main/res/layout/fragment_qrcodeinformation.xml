@@ -2,71 +2,24 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <data>
-        <import type="android.view.View" />
-        <variable
-            name="viewModel"
-            type="com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.QRCodeInformationViewModel" />
-    </data>
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        tools:context=".ui.library.qrcodeinformation.QRCodeInformationFragment">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/textQRCodeInformation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
-            android:orientation="vertical" >
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="345dp"
-                tools:context=".ui.library.qrcodeinformation.QRCodeInformationFragment">
-
-                <!-- generated monster PNG will be replaced later -->
-                <ImageView
-                    android:id="@+id/qr_code_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/temp_generated_monster"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintDimensionRatio="H,1:1"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0"
-                    android:contentDescription="@string/temp_generated_image" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <TextView
-                android:id="@+id/qr_code_description_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="10dp"
-                android:paddingRight="10dp"
-                android:paddingBottom="5dp"
-                android:text="@{viewModel.name}"
-                android:textColor="?attr/colorOnPrimary"
-                android:textSize="26sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/qr_code_description"
-                android:layout_width="match_parent"
-                android:layout_height="336dp"
-                android:paddingStart="10dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="5dp"
-                android:paddingBottom="10dp"
-                android:textColor="?attr/colorOnPrimary"
-                android:text="@{viewModel.description}"
-                android:textSize="20sp" />
-
-        </LinearLayout>
-    </ScrollView>
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
