@@ -27,7 +27,7 @@ public class QRCodeInformationFragment extends Fragment {
         binding = FragmentQrcodeinformationBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textQRCodeInformation;
+        final TextView textView = binding.qrCodeDescription;
         qrCodeInformationViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         return root;
@@ -40,10 +40,9 @@ public class QRCodeInformationFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.top_nav_menu, menu);
+        inflater.inflate(R.menu.qr_code_information_top_nav_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
-
 
     @Override
     public void onDestroyView() {
