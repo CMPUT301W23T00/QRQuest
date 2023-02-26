@@ -12,10 +12,16 @@
         tools:layout="@layout/fragment_map" />
 
     <fragment
-        android:id="@+id/navigation_qrcode_library"
-        android:name="com.cmput301w23t00.qrquest.ui.library.LibraryFragment"
-        android:label="@string/title_qrcode_library"
-        tools:layout="@layout/fragment_library" />
+        android:id="@+id/navigation_qrcode_information"
+        android:name="com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.QRCodeInformationFragment"
+        android:label="@string/title_qrcode_information"
+        tools:layout="@layout/fragment_qrcodeinformation" />
+
+<!--    <fragment-->
+<!--        android:id="@+id/navigation_qrcode_library"-->
+<!--        android:name="com.cmput301w23t00.qrquest.ui.library.LibraryFragment"-->
+<!--        android:label="@string/title_qrcode_library"-->
+<!--        tools:layout="@layout/fragment_library" />-->
 
     <fragment
         android:id="@+id/navigation_add_qrcode"
