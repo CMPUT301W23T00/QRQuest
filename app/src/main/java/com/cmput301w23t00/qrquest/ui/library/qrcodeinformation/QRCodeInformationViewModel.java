@@ -10,7 +10,7 @@ public class QRCodeInformationViewModel extends ViewModel {
 
     public QRCodeInformationViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is QR Code Information fragment");
+        mText.setValue("This is QR Code Information Description");
     }
 
     public LiveData<String> getText() {
