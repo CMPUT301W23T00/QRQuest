@@ -6,4 +6,6 @@
     <string name="title_search">Search</string>
     <string name="title_profile">Profile</string>
     <string name="title_qrcode_information">QR Code</string>
+    <string name="qr_code_title">QR Code Title</string>
+    <string name="qr_code_description">QR Code Description</string>
 </resources>
