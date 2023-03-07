@@ -30,6 +30,15 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    lintOptions {
+        baseline file("lint-baseline.xml")
+        checkDependencies true
+        ignoreTestSources true
+        warningsAsErrors true
+        warning 'LintBaseline'
+        lintConfig file("lint.xml")
+    }
 }
 
 dependencies {
