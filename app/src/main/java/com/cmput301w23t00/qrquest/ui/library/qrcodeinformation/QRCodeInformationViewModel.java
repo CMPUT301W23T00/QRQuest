@@ -6,7 +6,8 @@ import androidx.lifecycle.ViewModel;
 
 
 /**
- * The class  QR code information view model extends view model
+ * The QRCodeInformationViewModel class is a ViewModel that holds data for the QR code information fragment.
+ * It extends the ViewModel class from the Android Jetpack library.
  */
 public class QRCodeInformationViewModel extends ViewModel {
 
@@ -15,8 +16,7 @@ public class QRCodeInformationViewModel extends ViewModel {
 
     /**
      *
-     *  QR code information view model
-     *
+     *  The constructor for the QRCodeInformationViewModel class.
      */
     public QRCodeInformationViewModel() {
 
@@ -27,9 +27,8 @@ public class QRCodeInformationViewModel extends ViewModel {
 
     /**
      *
-     * Gets the text
-     *
-     * @return the text
+     * This method returns a LiveData object that contains the text to be displayed in the QR code information fragment.
+     * @return the text to be displayed
      */
     public LiveData<String> getText() {
 

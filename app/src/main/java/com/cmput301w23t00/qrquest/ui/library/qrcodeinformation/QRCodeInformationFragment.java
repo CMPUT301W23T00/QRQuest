@@ -18,6 +18,8 @@ import com.cmput301w23t00.qrquest.databinding.FragmentQrcodeinformationBinding;
 
 /**
  * The class  QR code information fragment extends fragment
+ *
+ * The QRCodeInformationFragment class extends the Fragment class and provides a fragment that displays information about a QR code.
  */
 public class QRCodeInformationFragment extends Fragment {
 
@@ -25,22 +27,27 @@ public class QRCodeInformationFragment extends Fragment {
 
     /**
      *
-     * On create view
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
-     * @return
+     * onCreateView is called when the view is first created.
+     * It inflates the view and sets up the QRCodeInformationViewModel to display the QR code information.
+     *
+     * @param inflater the LayoutInflater object that can be used to inflate any views in the fragment
+     * @param container the parent view that the fragment's UI should be attached to
+     * @param savedInstanceState the previously saved instance state
+     * @return the view for the fragment's UI
      */
-
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
+        // Create a QRCodeInformationViewModel to display the information about the QR code.
         QRCodeInformationViewModel qrCodeInformationViewModel =
                 new ViewModelProvider(this).get(QRCodeInformationViewModel.class);
 
+        // Inflate the fragment_qrcodeinformation.xml layout for this fragment.
         binding = FragmentQrcodeinformationBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        // Set the text view to display the QR code description.
         final TextView textView = binding.qrCodeDescription;
         qrCodeInformationViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
@@ -50,25 +57,25 @@ public class QRCodeInformationFragment extends Fragment {
 
     /**
      *
-     * On create
+     * onCreate is called to do initial creation of the fragment.
      *
-     * @param savedInstanceState  the saved instance state
+     * @param savedInstanceState the previously saved instance state
      */
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        // Creates this fragment's menu.
         setHasOptionsMenu(true);
     }
 
-    @Override
 
     /**
      *
-     * On create options menu
-     *
-     * @param menu  the menu
-     * @param inflater  the inflater
+     * onCreateOptionsMenu initializes the contents of the Activity's standard options menu.
+     * @param menu the options menu in which you place your items
+     * @param inflater the MenuInflater object that can be used to inflate any views in the menu
      */
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
         // adds buttons to the top navigation bar for navigation and to delete the QR Code
@@ -76,13 +83,15 @@ public class QRCodeInformationFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    @Override
+
 
     /**
      *
-     * On destroy view
+     * onDestroyView is called when the view is destroyed.
+     * It cleans up any references to the binding to prevent memory leaks.
      *
      */
+    @Override
     public void onDestroyView() {
 
         super.onDestroyView();
