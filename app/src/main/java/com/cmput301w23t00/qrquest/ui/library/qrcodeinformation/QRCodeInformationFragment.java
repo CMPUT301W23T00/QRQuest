@@ -84,7 +84,6 @@ public class QRCodeInformationFragment extends Fragment {
      *
      * onDestroyView is called when the view is destroyed.
      * It cleans up any references to the binding to prevent memory leaks.
-     *
      */
     @Override
     public void onDestroyView() {
