@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-
 /**
  * The QRCodeInformationViewModel class is a ViewModel that holds data for the QR code information fragment.
  * It extends the ViewModel class from the Android Jetpack library.
@@ -12,7 +11,6 @@ import androidx.lifecycle.ViewModel;
 public class QRCodeInformationViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
-
 
     /**
      *
@@ -23,7 +21,6 @@ public class QRCodeInformationViewModel extends ViewModel {
         mText = new MutableLiveData<>();
         mText.setValue("This is QR Code Information Description");
     }
-
 
     /**
      *
