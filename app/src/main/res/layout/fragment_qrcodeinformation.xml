@@ -38,23 +38,23 @@
                 android:id="@+id/qr_code_description_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingTop="5dp"
-                android:paddingRight="5dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
                 android:paddingBottom="5dp"
                 android:text="@string/qr_code_title"
                 android:textColor="@color/black"
-                android:textSize="30dp"
+                android:textSize="26dp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/qr_code_description"
                 android:layout_width="match_parent"
                 android:layout_height="336dp"
-                android:paddingLeft="5dp"
-                android:paddingTop="5dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
                 android:paddingRight="5dp"
-                android:paddingBottom="5dp"
+                android:paddingBottom="10dp"
                 android:text="@string/qr_code_description"
                 android:textSize="20dp" />
 
