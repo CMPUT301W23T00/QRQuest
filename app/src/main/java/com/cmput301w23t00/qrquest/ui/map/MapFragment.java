@@ -19,6 +19,9 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
+/**
+ * This is a class which defines the map page.
+ */
 public class MapFragment extends Fragment {
     MapView map;
     MyLocationNewOverlay myLocationNewOverlay;
@@ -49,6 +52,9 @@ public class MapFragment extends Fragment {
         return v;
     }
 
+    /**
+     * This function when called centers the map on the users geolocation
+     */
     private void renderLocation() {
         GeoPoint myLocation = this.myLocationNewOverlay.getMyLocation();
         map.getController().setCenter(myLocation);
