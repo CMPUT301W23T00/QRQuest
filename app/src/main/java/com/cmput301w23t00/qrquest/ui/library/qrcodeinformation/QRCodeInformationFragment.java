@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentQrcodeinformationBinding;
 
-
 /**
  * The class  QR code information fragment extends fragment
  *
@@ -54,7 +53,6 @@ public class QRCodeInformationFragment extends Fragment {
         return root;
     }
 
-
     /**
      *
      * onCreate is called to do initial creation of the fragment.
@@ -68,7 +66,6 @@ public class QRCodeInformationFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-
     /**
      *
      * onCreateOptionsMenu initializes the contents of the Activity's standard options menu.
@@ -76,14 +73,12 @@ public class QRCodeInformationFragment extends Fragment {
      * @param inflater the MenuInflater object that can be used to inflate any views in the menu
      */
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
 
         // adds buttons to the top navigation bar for navigation and to delete the QR Code
         inflater.inflate(R.menu.qr_code_information_top_nav_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
-
-
 
     /**
      *
