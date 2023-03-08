@@ -9,12 +9,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
 
+import java.util.Objects;
+
 public class LoadingScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading_screen);
-        getSupportActionBar().hide();
+
+        // Instead of getSupportActionBar().hide(); pre-req is that Support Action Bar must be set.
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         String uid = null;
 
