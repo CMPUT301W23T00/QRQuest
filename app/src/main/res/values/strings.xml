@@ -5,4 +5,14 @@
     <string name="title_add_qrcode">Add</string>
     <string name="title_search">Search</string>
     <string name="title_profile">Profile</string>
+    <string name="name">Name</string>
+    <string name="exampleName">Grug</string>
+    <string name="phone">Phone</string>
+    <string name="examplePhone">780-694-2000</string>
+    <string name="email">Email</string>
+    <string name="exampleEmail">grug@gmail.com</string>
+    <string name="create">Create</string>
+    <string name="about_me">About Me</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
 </resources>
