@@ -16,12 +16,19 @@ public class LoadingScreen extends AppCompatActivity {
         setContentView(R.layout.loading_screen);
         getSupportActionBar().hide();
 
+        String uid = null;
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                //if (){
-
-                //}
+                if (uid.equals(null)){
+                    Intent intentNoUID = new Intent(LoadingScreen.this, CreateAccount.class);
+                    startActivity(intentNoUID);
+                }
+                else {
+                    Intent intentWithUID = new Intent(LoadingScreen.this, MainActivity.class);
+                    startActivity(intentWithUID);
+                }
                 finish();
             }
         }, 3000);
