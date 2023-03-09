@@ -7,6 +7,24 @@
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="76dp">
 
+    <ImageButton
+        android:id="@+id/editProfileImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="30dp"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/editNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/name"
+        app:layout_constraintBottom_toTopOf="@+id/editName"
+        app:layout_constraintStart_toStartOf="@+id/editName" />
+
     <EditText
         android:id="@+id/editName"
         android:layout_width="wrap_content"
@@ -18,54 +36,6 @@
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="228dp" />
-
-    <EditText
-        android:id="@+id/editPhone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/examplePhone"
-        android:inputType="phone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="391dp" />
-
-    <TextView
-        android:id="@+id/editPhoneText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/phone"
-        app:layout_constraintBottom_toTopOf="@+id/editPhone"
-        app:layout_constraintStart_toStartOf="@+id/editPhone" />
-
-    <TextView
-        android:id="@+id/editNameText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/name"
-        app:layout_constraintBottom_toTopOf="@+id/editName"
-        app:layout_constraintStart_toStartOf="@+id/editName" />
-
-    <EditText
-        android:id="@+id/editEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/exampleEmail"
-        android:inputType="textEmailAddress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="476dp" />
-
-    <TextView
-        android:id="@+id/editEmailText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/email"
-        app:layout_constraintBottom_toTopOf="@+id/editEmail"
-        app:layout_constraintStart_toStartOf="@+id/editEmail" />
 
     <TextView
         android:id="@+id/editAboutMeText"
@@ -88,26 +58,46 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="314dp" />
 
-    <ImageButton
-        android:id="@+id/editProfileImage"
+    <TextView
+        android:id="@+id/editPhoneText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/phone"
+        app:layout_constraintBottom_toTopOf="@+id/editPhone"
+        app:layout_constraintStart_toStartOf="@+id/editPhone" />
+
+    <EditText
+        android:id="@+id/editPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/examplePhone"
+        android:inputType="phone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="30dp"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:layout_editor_absoluteY="391dp" />
 
-    <Button
-        android:id="@+id/editConfirmButton"
+    <TextView
+        android:id="@+id/editEmailText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="92dp"
-        android:text="@string/confirm"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editEmail" />
+        android:text="@string/email"
+        app:layout_constraintBottom_toTopOf="@+id/editEmail"
+        app:layout_constraintStart_toStartOf="@+id/editEmail" />
 
+    <EditText
+        android:id="@+id/editEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/exampleEmail"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="476dp" />
+    
     <Button
         android:id="@+id/editCancelButton"
         android:layout_width="wrap_content"
@@ -120,4 +110,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/editConfirmButton"
         app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/editConfirmButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="92dp"
+        android:text="@string/confirm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editEmail" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
