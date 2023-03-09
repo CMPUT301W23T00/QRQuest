@@ -24,8 +24,8 @@ public class LibraryFragment extends Fragment {
         binding = FragmentLibraryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textLibrary;
-        libraryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        //final TextView textView = binding.textLibrary;
+        //libraryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
