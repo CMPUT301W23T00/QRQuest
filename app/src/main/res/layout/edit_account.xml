@@ -22,6 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/name"
+        android:textColor="#0f0f0f"
         app:layout_constraintBottom_toTopOf="@+id/editName"
         app:layout_constraintStart_toStartOf="@+id/editName" />
 
@@ -42,6 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/about_me"
+        android:textColor="#0f0f0f"
         app:layout_constraintBottom_toTopOf="@+id/editAboutMe"
         app:layout_constraintStart_toStartOf="@+id/editAboutMe" />
 
@@ -63,6 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/phone"
+        android:textColor="#0f0f0f"
         app:layout_constraintBottom_toTopOf="@+id/editPhone"
         app:layout_constraintStart_toStartOf="@+id/editPhone" />
 
@@ -83,6 +86,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/email"
+        android:textColor="#0f0f0f"
         app:layout_constraintBottom_toTopOf="@+id/editEmail"
         app:layout_constraintStart_toStartOf="@+id/editEmail" />
 
@@ -97,7 +101,7 @@
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="476dp" />
-    
+
     <Button
         android:id="@+id/editCancelButton"
         android:layout_width="wrap_content"
