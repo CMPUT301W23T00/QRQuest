@@ -30,15 +30,6 @@
         app:layout_constraintTop_toTopOf="@+id/addProfileImage"
         app:layout_constraintVertical_bias="1.0" />
 
-    <TextView
-        android:id="@+id/addNameText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/name"
-        android:textColor="#0f0f0f"
-        app:layout_constraintBottom_toTopOf="@+id/addName"
-        app:layout_constraintStart_toStartOf="@+id/addName" />
-
     <EditText
         android:id="@+id/addName"
         android:layout_width="370dp"
@@ -50,18 +41,19 @@
         android:paddingHorizontal="15dp"
         android:textColorHint="#b3b3b3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="252dp" />
+        tools:layout_editor_absoluteY="232dp" />
 
     <TextView
-        android:id="@+id/addPhoneText"
+        android:id="@+id/addNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/phone"
+        android:layout_marginBottom="4dp"
+        android:text="@string/name"
         android:textColor="#0f0f0f"
-        app:layout_constraintBottom_toTopOf="@+id/addPhone"
-        app:layout_constraintStart_toStartOf="@+id/addPhone" />
+        app:layout_constraintBottom_toTopOf="@+id/addName"
+        app:layout_constraintStart_toStartOf="@+id/addName" />
 
     <EditText
         android:id="@+id/addPhone"
@@ -74,14 +66,15 @@
         android:paddingHorizontal="15dp"
         android:textColorHint="#b3b3b3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="343dp" />
+        tools:layout_editor_absoluteY="323dp" />
 
     <TextView
         android:id="@+id/addEmailText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:text="@string/email"
         android:textColor="#0f0f0f"
         app:layout_constraintBottom_toTopOf="@+id/addEmail"
@@ -98,9 +91,19 @@
         android:paddingHorizontal="15dp"
         android:textColorHint="#b3b3b3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="438dp" />
+        tools:layout_editor_absoluteY="418dp" />
+
+    <TextView
+        android:id="@+id/addPhoneText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:text="@string/phone"
+        android:textColor="#0f0f0f"
+        app:layout_constraintBottom_toTopOf="@+id/addPhone"
+        app:layout_constraintStart_toStartOf="@+id/addPhone" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/addCreateButton"
@@ -108,10 +111,10 @@
         android:layout_height="49dp"
         android:layout_marginBottom="72dp"
         android:background="@drawable/button_shape"
-        android:backgroundTintMode="src_over"
         android:text="@string/create"
         android:textAllCaps="false"
         android:textColor="#ffffff"
+        android:backgroundTint="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

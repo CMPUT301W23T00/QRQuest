@@ -38,16 +38,20 @@
         android:layout_height="wrap_content"
         android:text="@string/name"
         android:textColor="#0f0f0f"
+        android:layout_marginBottom="4dp"
         app:layout_constraintBottom_toTopOf="@+id/editName"
         app:layout_constraintStart_toStartOf="@+id/editName" />
 
     <EditText
         android:id="@+id/editName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="370dp"
+        android:layout_height="48dp"
+        android:background="@drawable/text_input"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="@string/exampleName"
+        android:hint="@string/exampleName"
+        android:paddingHorizontal="15dp"
+        android:textColorHint="#b3b3b3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,6 +61,7 @@
         android:id="@+id/editAboutMeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:text="@string/about_me"
         android:textColor="#0f0f0f"
         app:layout_constraintBottom_toTopOf="@+id/editAboutMe"
@@ -64,12 +69,14 @@
 
     <EditText
         android:id="@+id/editAboutMe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="370dp"
+        android:layout_height="48dp"
+        android:background="@drawable/text_input"
         android:ems="10"
-        android:gravity="start|top"
         android:hint="@string/exampleName"
         android:inputType="textMultiLine"
+        android:paddingHorizontal="15dp"
+        android:textColorHint="#b3b3b3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
@@ -79,6 +86,7 @@
         android:id="@+id/editPhoneText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:text="@string/phone"
         android:textColor="#0f0f0f"
         app:layout_constraintBottom_toTopOf="@+id/editPhone"
@@ -86,11 +94,14 @@
 
     <EditText
         android:id="@+id/editPhone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="370dp"
+        android:layout_height="48dp"
+        android:background="@drawable/text_input"
         android:ems="10"
         android:hint="@string/examplePhone"
         android:inputType="phone"
+        android:paddingHorizontal="15dp"
+        android:textColorHint="#b3b3b3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
@@ -100,6 +111,7 @@
         android:id="@+id/editEmailText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:text="@string/email"
         android:textColor="#0f0f0f"
         app:layout_constraintBottom_toTopOf="@+id/editEmail"
@@ -107,38 +119,49 @@
 
     <EditText
         android:id="@+id/editEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="370dp"
+        android:layout_height="48dp"
+        android:background="@drawable/text_input"
         android:ems="10"
         android:hint="@string/exampleEmail"
         android:inputType="textEmailAddress"
+        android:paddingHorizontal="15dp"
+        android:textColorHint="#b3b3b3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="476dp" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/editCancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
         android:text="@string/cancel"
+        android:background="@drawable/button_shape"
+        android:textAllCaps="false"
+        android:textColor="#000000"
+
         app:layout_constraintBottom_toBottomOf="@+id/editConfirmButton"
         app:layout_constraintEnd_toStartOf="@+id/editConfirmButton"
-        app:layout_constraintHorizontal_bias="0.901"
+        app:layout_constraintHorizontal_bias="0.602"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/editConfirmButton"
         app:layout_constraintVertical_bias="0.0" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/editConfirmButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="92dp"
+        android:layout_marginEnd="68dp"
         android:text="@string/confirm"
+        android:background="@drawable/button_shape"
+        android:textAllCaps="false"
+        android:textColor="#ffffff"
+        android:backgroundTint="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editEmail" />
-
+        app:layout_constraintTop_toBottomOf="@+id/editEmail"
+        app:layout_constraintVertical_bias="0.503" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
