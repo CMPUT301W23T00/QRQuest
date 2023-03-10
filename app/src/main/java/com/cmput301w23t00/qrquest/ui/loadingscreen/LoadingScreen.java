@@ -3,11 +3,17 @@ package com.cmput301w23t00.qrquest.ui.loadingscreen;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
+import com.cmput301w23t00.qrquest.ui.createaccount.CreateAccount;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.installations.FirebaseInstallations;
 
 import java.util.Objects;
 
@@ -20,15 +26,28 @@ public class LoadingScreen extends AppCompatActivity {
         // Instead of getSupportActionBar().hide(); pre-req is that Support Action Bar must be set.
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        // uid: takes uid from firebase
-        String uid = null;
+        // check https://firebase.google.com/docs/projects/manage-installations#java_5
+        // FID is the Firebase Installation ID: should act as identifierId.
+        FirebaseInstallations.getInstance().getId()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (task.isSuccessful()) {
+                            String fid = task.getResult();
+                            Log.d("Installations", "Installation ID: " + fid);
+                        } else {
+                            Log.e("Installations", "Unable to get Installation ID");
+                        }
+                    }
+                });
+
 
         // Method to invoke loading time; second variable is time in milliseconds.
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 // if uid is not present, goes to CreateAccount.
-                if (uid.equals(null)){
+                if (fid.equals(null)){
                     Intent intentNoUID = new Intent(LoadingScreen.this, CreateAccount.class);
                     startActivity(intentNoUID);
                 }
