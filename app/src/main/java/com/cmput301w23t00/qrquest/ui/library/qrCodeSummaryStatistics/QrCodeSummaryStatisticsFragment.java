@@ -1,5 +1,7 @@
 package com.cmput301w23t00.qrquest.ui.library.qrCodeSummaryStatistics;
 
+import static androidx.navigation.fragment.FragmentKt.findNavController;
+
 import androidx.activity.OnBackPressedCallback;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -15,13 +17,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cmput301w23t00.qrquest.MainActivity;
-import com.cmput301w23t00.qrquest.R;
+
+import com.cmput301w23t00.qrquest.databinding.FragmentQrCodeSummaryStatisticsBinding;
 
 public class QrCodeSummaryStatisticsFragment extends Fragment {
 
     private QrCodeSummaryStatisticsViewModel mViewModel;
-
+    private FragmentQrCodeSummaryStatisticsBinding binding;
     public static QrCodeSummaryStatisticsFragment newInstance() {
         return new QrCodeSummaryStatisticsFragment();
     }
@@ -29,7 +31,10 @@ public class QrCodeSummaryStatisticsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_qr_code_summary_statistics, container, false);
+        binding = FragmentQrCodeSummaryStatisticsBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
+
+        return root;
     }
 
     @Override
