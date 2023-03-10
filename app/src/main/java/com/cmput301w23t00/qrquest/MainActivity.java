@@ -13,7 +13,6 @@ import androidx.navigation.ui.NavigationUI;
 import com.cmput301w23t00.qrquest.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
-
     private ActivityMainBinding binding;
 
     @Override
