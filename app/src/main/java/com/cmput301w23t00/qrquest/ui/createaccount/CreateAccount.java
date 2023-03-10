@@ -8,14 +8,27 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.ImageViewCompat;
 
 import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CreateAccount extends AppCompatActivity {
+
+    private DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference users_dbRef = dbRef.child("users");
+    String userId = users_dbRef.push().getKey();
 
     EditText addNameField, addEmailField, addPhoneField;
     Button addCreateButton;
@@ -44,9 +57,18 @@ public class CreateAccount extends AppCompatActivity {
         addCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 // manipulate name, email, phone, profile image in db
+                String name = addNameField.getText().toString();
+                String email = addEmailField.getText().toString();
+                String phoneNum = addPhoneField.getText().toString();
 
+                Map<String, Object> userValue = new HashMap<>();
+                userValue.put("name", name);
+                userValue.put("email", email);
+                userValue.put("phoneNumber", phoneNum);
+                userValue.put("aboutMe", "");
+
+                users_dbRef.child(userId).setValue(userValue);
 
                 // Goes back to home screen.
                 Intent intentAccountCreated = new Intent(CreateAccount.this, MainActivity.class);
@@ -55,7 +77,5 @@ public class CreateAccount extends AppCompatActivity {
                 finish();
             }
         });
-
-
     }
 }
