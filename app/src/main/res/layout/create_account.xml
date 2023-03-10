@@ -31,7 +31,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <EditText
-        android:id="@+id/addName"
+        android:id="@+id/addNameField"
         android:layout_width="370dp"
         android:layout_height="48dp"
         android:background="@drawable/text_input"
@@ -52,11 +52,11 @@
         android:layout_marginBottom="4dp"
         android:text="@string/name"
         android:textColor="#0f0f0f"
-        app:layout_constraintBottom_toTopOf="@+id/addName"
-        app:layout_constraintStart_toStartOf="@+id/addName" />
+        app:layout_constraintBottom_toTopOf="@+id/addNameField"
+        app:layout_constraintStart_toStartOf="@+id/addNameField" />
 
     <EditText
-        android:id="@+id/addPhone"
+        android:id="@+id/addPhoneField"
         android:layout_width="370dp"
         android:layout_height="48dp"
         android:background="@drawable/text_input"
@@ -77,11 +77,11 @@
         android:layout_marginBottom="4dp"
         android:text="@string/email"
         android:textColor="#0f0f0f"
-        app:layout_constraintBottom_toTopOf="@+id/addEmail"
-        app:layout_constraintStart_toStartOf="@+id/addEmail" />
+        app:layout_constraintBottom_toTopOf="@+id/addEmailField"
+        app:layout_constraintStart_toStartOf="@+id/addEmailField" />
 
     <EditText
-        android:id="@+id/addEmail"
+        android:id="@+id/addEmailField"
         android:layout_width="370dp"
         android:layout_height="48dp"
         android:background="@drawable/text_input"
@@ -102,8 +102,8 @@
         android:layout_marginBottom="4dp"
         android:text="@string/phone"
         android:textColor="#0f0f0f"
-        app:layout_constraintBottom_toTopOf="@+id/addPhone"
-        app:layout_constraintStart_toStartOf="@+id/addPhone" />
+        app:layout_constraintBottom_toTopOf="@+id/addPhoneField"
+        app:layout_constraintStart_toStartOf="@+id/addPhoneField" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/addCreateButton"
@@ -118,7 +118,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addEmail"
+        app:layout_constraintTop_toBottomOf="@+id/addEmailField"
         app:layout_constraintVertical_bias="1.0" />
 
 
