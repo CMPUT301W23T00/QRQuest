@@ -32,6 +32,7 @@ public class EditAccount extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_account);
+        getSupportActionBar().setTitle("Edit Profile");
 
         editNameField = findViewById(R.id.editNameField);
         editAboutMeField = findViewById(R.id.editAboutMeField);
@@ -86,6 +87,10 @@ public class EditAccount extends AppCompatActivity {
                 userValue.put("email", email);
                 userValue.put("phoneNumber", phoneNum);
                 userValue.put("aboutMe", aboutMe);
+
+
+                // replace userid with a system that queries
+                users_dbRef.child(userId).setValue(userValue);
 
                 // Go back to settings.
                 // IMPORTANT: add settings class.

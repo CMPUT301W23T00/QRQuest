@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.ImageViewCompat;
 
@@ -38,6 +39,7 @@ public class CreateAccount extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_account);
+        getSupportActionBar().setTitle("Create Account");
 
         addNameField = findViewById(R.id.addNameField);
         addEmailField = findViewById(R.id.addEmailField);
