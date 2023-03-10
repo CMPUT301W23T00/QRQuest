@@ -15,7 +15,11 @@
         android:id="@+id/navigation_qrcode_library"
         android:name="com.cmput301w23t00.qrquest.ui.library.LibraryFragment"
         android:label="@string/title_qrcode_library"
-        tools:layout="@layout/fragment_library" />
+        tools:layout="@layout/fragment_library" >
+        <action
+            android:id="@+id/action_navigation_qrcode_library_to_qrCodeSummaryStatisticsFragment2"
+            app:destination="@id/qrCodeSummaryStatisticsFragment2" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_add_qrcode"
@@ -34,4 +38,9 @@
         android:name="com.cmput301w23t00.qrquest.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/qrCodeSummaryStatisticsFragment2"
+        android:name="com.cmput301w23t00.qrquest.ui.library.qrCodeSummaryStatistics.QrCodeSummaryStatisticsFragment"
+        android:label="QR Code Stats"
+        tools:layout="@layout/fragment_qr_code_summary_statistics" />
 </navigation>
