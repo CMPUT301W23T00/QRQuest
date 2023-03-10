@@ -1,9 +1,11 @@
 package com.cmput301w23t00.qrquest.ui.library.qrcodeinformation;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -78,6 +80,54 @@ public class QRCodeInformationFragment extends Fragment {
         // adds buttons to the top navigation bar for navigation and to delete the QR Code
         inflater.inflate(R.menu.qr_code_information_top_nav_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+//        if (id == R.id.qr_comments) {
+//            // Start a new activity to see comments on this QR code
+//            Intent intent1 = new Intent(this,MyActivity.class);
+//            this.startActivity(intent1);
+//            return true;
+//        }
+//
+//        if (id == R.id.qr_visual_representation) {
+//            // Start a new activity to see a text visual representation of the QR code
+//            Intent intent1 = new Intent(this,MyActivity.class);
+//            this.startActivity(intent1);
+//            return true;
+//        }
+//
+//        if (id == R.id.qr_same_code) {
+//            // Start a new activity to see other players with the same QR code
+//            Intent intent1 = new Intent(this,MyActivity.class);
+//            this.startActivity(intent1);
+//            return true;
+//        }
+
+        if (id == R.id.qr_delete) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setCancelable(true);
+            builder.setTitle("Delete QR Code");
+            builder.setMessage("Are you sure you want to delete this QR Code?");
+            builder.setPositiveButton("Confirm",
+                    (dialog, which) -> {
+                        // Add code to delete the QR code here
+                    });
+            builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
+                // Add code to handle the cancel button here
+                dialog.dismiss();
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     /**
