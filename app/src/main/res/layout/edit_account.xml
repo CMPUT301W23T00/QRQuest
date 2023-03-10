@@ -39,23 +39,23 @@
         android:text="@string/name"
         android:textColor="#0f0f0f"
         android:layout_marginBottom="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/editName"
-        app:layout_constraintStart_toStartOf="@+id/editName" />
+        app:layout_constraintBottom_toTopOf="@+id/editNameField"
+        app:layout_constraintStart_toStartOf="@+id/editNameField" />
 
     <EditText
-        android:id="@+id/editName"
+        android:id="@+id/editNameField"
         android:layout_width="370dp"
         android:layout_height="48dp"
         android:background="@drawable/text_input"
         android:ems="10"
-        android:inputType="textPersonName"
         android:hint="@string/exampleName"
+        android:inputType="textPersonName"
         android:paddingHorizontal="15dp"
         android:textColorHint="#b3b3b3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.609"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="228dp" />
+        tools:layout_editor_absoluteY="223dp" />
 
     <TextView
         android:id="@+id/editAboutMeText"
@@ -64,11 +64,11 @@
         android:layout_marginBottom="4dp"
         android:text="@string/about_me"
         android:textColor="#0f0f0f"
-        app:layout_constraintBottom_toTopOf="@+id/editAboutMe"
-        app:layout_constraintStart_toStartOf="@+id/editAboutMe" />
+        app:layout_constraintBottom_toTopOf="@+id/editAboutMeField"
+        app:layout_constraintStart_toStartOf="@+id/editAboutMeField" />
 
     <EditText
-        android:id="@+id/editAboutMe"
+        android:id="@+id/editAboutMeField"
         android:layout_width="370dp"
         android:layout_height="48dp"
         android:background="@drawable/text_input"
@@ -89,11 +89,11 @@
         android:layout_marginBottom="4dp"
         android:text="@string/phone"
         android:textColor="#0f0f0f"
-        app:layout_constraintBottom_toTopOf="@+id/editPhone"
-        app:layout_constraintStart_toStartOf="@+id/editPhone" />
+        app:layout_constraintBottom_toTopOf="@+id/editPhoneField"
+        app:layout_constraintStart_toStartOf="@+id/editPhoneField" />
 
     <EditText
-        android:id="@+id/editPhone"
+        android:id="@+id/editPhoneField"
         android:layout_width="370dp"
         android:layout_height="48dp"
         android:background="@drawable/text_input"
@@ -114,11 +114,11 @@
         android:layout_marginBottom="4dp"
         android:text="@string/email"
         android:textColor="#0f0f0f"
-        app:layout_constraintBottom_toTopOf="@+id/editEmail"
-        app:layout_constraintStart_toStartOf="@+id/editEmail" />
+        app:layout_constraintBottom_toTopOf="@+id/editEmailField"
+        app:layout_constraintStart_toStartOf="@+id/editEmailField" />
 
     <EditText
-        android:id="@+id/editEmail"
+        android:id="@+id/editEmailField"
         android:layout_width="370dp"
         android:layout_height="48dp"
         android:background="@drawable/text_input"
@@ -137,14 +137,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
-        android:text="@string/cancel"
         android:background="@drawable/button_shape"
+        android:text="@string/cancel"
         android:textAllCaps="false"
         android:textColor="#000000"
 
         app:layout_constraintBottom_toBottomOf="@+id/editConfirmButton"
         app:layout_constraintEnd_toStartOf="@+id/editConfirmButton"
-        app:layout_constraintHorizontal_bias="0.602"
+        app:layout_constraintHorizontal_bias="0.529"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/editConfirmButton"
         app:layout_constraintVertical_bias="0.0" />
@@ -161,7 +161,7 @@
         android:backgroundTint="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editEmail"
+        app:layout_constraintTop_toBottomOf="@+id/editEmailField"
         app:layout_constraintVertical_bias="0.503" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
