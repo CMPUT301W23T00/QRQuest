@@ -7,15 +7,30 @@
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="76dp">
 
-    <ImageButton
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/editProfileImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="30dp"
+        app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <View
+        android:id="@+id/editProfileImageMask"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignStart="@+id/editProfileImage"
+        android:layout_alignTop="@+id/editProfileImage"
+        android:layout_margin="00dp"
+        android:background="@drawable/mask_profileImage"
+        app:layout_constraintBottom_toBottomOf="@+id/editProfileImage"
+        app:layout_constraintEnd_toEndOf="@+id/editProfileImage"
+        app:layout_constraintStart_toStartOf="@+id/editProfileImage"
+        app:layout_constraintTop_toTopOf="@+id/editProfileImage"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/editNameText"
