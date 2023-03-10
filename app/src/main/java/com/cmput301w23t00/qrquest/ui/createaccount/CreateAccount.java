@@ -49,8 +49,10 @@ public class CreateAccount extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // pop up upload option
-                // send photo to db
+                // store photo to send to db
+
                 // update profile image view
+                addProfileImage.setImageResource();
             }
         });
 
