@@ -16,17 +16,17 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentProfileBinding;
 
-public class UserSettingsFragment extends Fragment {
+public class UserSettingsFragment extends Fragment{
 
     private FragmentProfileBinding binding;
     public ActionBar actionBar;
 
-    public UserSettingsFragment(androidx.appcompat.app.ActionBar supportActionBar) {
+    public UserSettingsFragment() {
         super(R.layout.fragment_settings);
-        this.actionBar = supportActionBar;
     }
 
     @Nullable
@@ -40,7 +40,7 @@ public class UserSettingsFragment extends Fragment {
 
         final TextView textView = binding.textProfile;
         setHasOptionsMenu(true);
-
+        ((MainActivity)getActivity()).getSupportActionBar().setTitle("Settings");
 
         UserSettingsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
@@ -49,10 +49,8 @@ public class UserSettingsFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setTitle("Settings");
+        //adds back button to action bar in settings fragment
+        ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -60,11 +58,10 @@ public class UserSettingsFragment extends Fragment {
         if (item.getItemId() == android.R.id.home) {
             FragmentManager fragmentManager = getParentFragmentManager();
             fragmentManager.popBackStack();
-            actionBar.setTitle("Profile");
-            actionBar.setDisplayHomeAsUpEnabled(false);
-            actionBar.setHomeButtonEnabled(false);
+            //reverts action bar to profile fragment setup
+            ((MainActivity)getActivity()).getSupportActionBar().setTitle("Profile");
+            ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
-
         return super.onOptionsItemSelected(item);
     }
     

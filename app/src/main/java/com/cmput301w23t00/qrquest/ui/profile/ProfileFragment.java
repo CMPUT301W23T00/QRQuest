@@ -51,7 +51,7 @@ public class ProfileFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.settings_button) {
             FragmentManager fragmentManager = getParentFragmentManager();
-            UserSettingsFragment settingsScreen = new UserSettingsFragment(((AppCompatActivity)getActivity()).getSupportActionBar());
+            UserSettingsFragment settingsScreen = new UserSettingsFragment();
             fragmentManager.beginTransaction()
                     .replace(R.id.nav_host_fragment_activity_main, settingsScreen, null)
                     .setReorderingAllowed(true)
