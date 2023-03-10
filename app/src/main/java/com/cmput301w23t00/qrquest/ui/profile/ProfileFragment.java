@@ -46,7 +46,6 @@ public class ProfileFragment extends Fragment {
         inflater.inflate(R.menu.profile_settings_menu, menu);
     }
 
-    @SuppressLint("ResourceType")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.settings_button) {

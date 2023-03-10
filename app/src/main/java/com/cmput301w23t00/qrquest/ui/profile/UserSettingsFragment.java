@@ -22,9 +22,6 @@ import com.cmput301w23t00.qrquest.databinding.FragmentProfileBinding;
 
 public class UserSettingsFragment extends Fragment{
 
-    private FragmentProfileBinding binding;
-    public ActionBar actionBar;
-
     public UserSettingsFragment() {
         super(R.layout.fragment_settings);
     }
@@ -35,14 +32,11 @@ public class UserSettingsFragment extends Fragment{
         UserSettingsViewModel viewModel =
                 new ViewModelProvider(this).get(UserSettingsViewModel.class);
 
-        binding = FragmentProfileBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        View root = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        final TextView textView = binding.textProfile;
         setHasOptionsMenu(true);
         ((MainActivity)getActivity()).getSupportActionBar().setTitle("Settings");
 
-        UserSettingsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
