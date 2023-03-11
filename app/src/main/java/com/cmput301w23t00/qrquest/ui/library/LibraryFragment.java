@@ -1,10 +1,13 @@
 package com.cmput301w23t00.qrquest.ui.library;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,10 +21,17 @@ import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentLibraryBinding;
 import com.cmput301w23t00.qrquest.ui.library.qrCodeSummaryStatistics.QrCodeSummaryStatisticsFragment;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+
 public class LibraryFragment extends Fragment {
 
     private FragmentLibraryBinding binding;
-
+    private ListView QRList;
+    private ArrayAdapter<LibraryQRCode> QRAdapter;
+    private ArrayList<LibraryQRCode> dataList;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         LibraryViewModel libraryViewModel =
@@ -29,6 +39,8 @@ public class LibraryFragment extends Fragment {
 
         binding = FragmentLibraryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        // QR Stats button
         Button viewQrStats = binding.viewPersonalQrStatsButton;
         viewQrStats.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,6 +49,18 @@ public class LibraryFragment extends Fragment {
                 navController.navigate(R.id.action_navigation_qrcode_library_to_qrCodeSummaryStatisticsFragment2);
             }
         });
+
+        // QR Code List
+        QRList = binding.libraryQrCodesList;
+        dataList = new ArrayList<>();
+        String[] QRDatas = {"t1", "t2", "t3"};
+        Integer[] QRScores = {1,2,3};
+        Date[] QRDates = {new Date(), new Date(), new Date()};
+        for (int i = 0; i < QRDatas.length; i++) {
+            dataList.add(new LibraryQRCode(QRDatas[i], QRScores[i], QRDates[i]));
+        }
+        QRAdapter = new LibraryQRCodeAdapter((Context) getActivity(), dataList);
+        QRList.setAdapter(QRAdapter);
         //final TextView textView = binding.textLibrary;
         //libraryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
