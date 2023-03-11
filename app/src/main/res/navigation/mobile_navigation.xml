@@ -82,7 +82,10 @@
 
         <action
             android:id="@+id/action_navigation_profile_to_navigation_settings"
-            app:destination="@id/navigation_settings" />
+            app:destination="@id/navigation_settings"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/mobile_navigation"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -92,6 +95,9 @@
         tools:layout="@layout/fragment_settings">
         <action
             android:id="@+id/action_navigation_settings_to_navigation_profile"
-            app:destination="@id/navigation_profile" />
+            app:destination="@id/navigation_profile"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/mobile_navigation"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>
