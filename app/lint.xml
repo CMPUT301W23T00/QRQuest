@@ -3,6 +3,7 @@
     <issue id="all">
         <ignore path="build"/>
         <ignore path="**/localizables.xml" />
+        <ignore path="src/main/res/drawable" />
         <ignore regexp=".*\.gradle.*" />
     </issue>
     <issue id="UnusedResources">

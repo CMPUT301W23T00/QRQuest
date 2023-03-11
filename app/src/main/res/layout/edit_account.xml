@@ -59,7 +59,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints="" />
 
     <TextView
         android:id="@+id/editAboutMeText"
@@ -86,7 +87,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editNameField" />
+        app:layout_constraintTop_toBottomOf="@+id/editNameField"
+        android:autofillHints="" />
 
     <TextView
         android:id="@+id/editPhoneText"
@@ -113,7 +115,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editAboutMeField" />
+        app:layout_constraintTop_toBottomOf="@+id/editAboutMeField"
+        android:autofillHints="" />
 
     <TextView
         android:id="@+id/editEmailText"
@@ -140,7 +143,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editPhoneField" />
+        app:layout_constraintTop_toBottomOf="@+id/editPhoneField"
+        android:autofillHints="" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/editCancelButton"
