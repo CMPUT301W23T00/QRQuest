@@ -10,20 +10,12 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cmput301w23t00.qrquest.R;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class EditAccount extends AppCompatActivity {
-
-    private DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
-    DatabaseReference users_dbRef = dbRef.child("users");
-
-    // QUERY FOR USERID
-    //String userId = users_dbRef.push().getKey();
-
     EditText editNameField, editAboutMeField, editEmailField, editPhoneField;
     Button editCancelButton, editConfirmButton;
     ImageView editProfileImage;
@@ -32,7 +24,8 @@ public class EditAccount extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_account);
-        getSupportActionBar().setTitle("Edit Profile");
+
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Edit Profile");
 
         editNameField = findViewById(R.id.editNameField);
         editAboutMeField = findViewById(R.id.editAboutMeField);
@@ -44,10 +37,10 @@ public class EditAccount extends AppCompatActivity {
 
         // ADD USER VALUES
         // FIRST GET USER VALUES
-        editNameField.setText();
-        editAboutMeField.setText();
-        editEmailField.setText();
-        editPhoneField.setText();
+        //editNameField.setText();
+        //editAboutMeField.setText();
+        //editEmailField.setText();
+        //editPhoneField.setText();
 
         editProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +49,7 @@ public class EditAccount extends AppCompatActivity {
                 // store photo to send to db
 
                 // update profile image view
-                editProfileImage.setImageResource();
+                //editProfileImage.setImageResource();
             }
         });
 
@@ -67,8 +60,8 @@ public class EditAccount extends AppCompatActivity {
 
                 // Go back to settings.
                 // IMPORTANT: add settings class.
-                Intent intentEditCancelled = new Intent(EditAccount.this, .class);
-                startActivity(intentEditCancelled);
+                //Intent intentEditCancelled = new Intent(EditAccount.this, .class);
+                //startActivity(intentEditCancelled);
                 finish();
             }
         });
@@ -90,7 +83,6 @@ public class EditAccount extends AppCompatActivity {
 
 
                 // replace userid with a system that queries
-                users_dbRef.child(userId).setValue(userValue);
 
                 // Go back to settings.
                 // IMPORTANT: add settings class.
