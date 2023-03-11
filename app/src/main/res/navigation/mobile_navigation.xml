@@ -80,5 +80,18 @@
             android:id="@+id/qrCodeInformationFragment_to_action_libraryFragment"
             app:destination="@id/navigation_qrcode_library" />
 
+        <action
+            android:id="@+id/action_navigation_profile_to_navigation_settings"
+            app:destination="@id/navigation_settings" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.cmput301w23t00.qrquest.ui.profile.UserSettingsFragment"
+        android:label="@string/settings_menu"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_navigation_settings_to_navigation_profile"
+            app:destination="@id/navigation_profile" />
     </fragment>
 </navigation>

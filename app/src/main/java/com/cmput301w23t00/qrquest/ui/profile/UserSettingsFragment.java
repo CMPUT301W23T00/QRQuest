@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.cmput301w23t00.qrquest.MainActivity;
@@ -69,8 +70,7 @@ public class UserSettingsFragment extends Fragment{
     }
 
     private void restoreActionBar() {
-        FragmentManager fragmentManager = getParentFragmentManager();
-        fragmentManager.popBackStack();
+        NavHostFragment.findNavController(this).navigate(R.id.action_navigation_settings_to_navigation_profile);
         //reverts action bar to profile fragment setup
         ((MainActivity)getActivity()).getSupportActionBar().setTitle("Profile");
         ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);

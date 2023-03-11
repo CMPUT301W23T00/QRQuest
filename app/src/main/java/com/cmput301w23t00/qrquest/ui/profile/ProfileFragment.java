@@ -1,5 +1,7 @@
 package com.cmput301w23t00.qrquest.ui.profile;
 
+import androidx.navigation.fragment.NavHostFragment;
+
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.os.Bundle;
@@ -17,7 +19,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.cmput301w23t00.qrquest.MainActivity;
@@ -51,35 +52,17 @@ public class ProfileFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.settings_button) {
-            FragmentManager fragmentManager = getParentFragmentManager();
-            UserSettingsFragment settingsScreen = new UserSettingsFragment();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.nav_host_fragment_activity_main, settingsScreen, null)
-                    .setReorderingAllowed(true)
-                    .addToBackStack("settings") // name can be null
-                    .commit();
+            NavHostFragment.findNavController(this).navigate(R.id.action_navigation_profile_to_navigation_settings);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
-    /*
+
     @Override
     public void onPause() {
         super.onPause();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        FragmentManager fragmentManager = getParentFragmentManager();
-        if (fragmentManager.getFragments().size() > 1) {
-            fragmentManager.popBackStack();
-            //reverts action bar to profile fragment setup
-            ((MainActivity)getActivity()).getSupportActionBar().setTitle("Profile");
-            ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        }
-    }
-    */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
