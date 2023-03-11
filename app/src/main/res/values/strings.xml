@@ -23,4 +23,11 @@
     <string name="intro_logo">Intro Logo</string>
     <string name="qr_code_name">QR Code Name</string>
     <string name="temp_generated_image">Temp generated image</string>
+    <string name="qr_name">QR Name</string>
+    <string name="comment">Comment</string>
+    <string name="leave_location">Leave Location</string>
+    <string name="comment_content">Cool Location</string>
+    <string name="points_gen">"Points Generated: "</string>
+    <string name="submit">Submit Code</string>
+    <string name="qr_code_img">qr_code_img</string>
 </resources>
