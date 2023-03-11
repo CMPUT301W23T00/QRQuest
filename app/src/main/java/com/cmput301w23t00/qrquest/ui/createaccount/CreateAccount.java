@@ -2,7 +2,7 @@ package com.cmput301w23t00.qrquest.ui.createaccount;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.telephony.PhoneNumberUtils;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -24,6 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 public class CreateAccount extends AppCompatActivity {
 
@@ -67,22 +68,39 @@ public class CreateAccount extends AppCompatActivity {
         addCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // manipulate name, email, phone, profile image in db
                 String name = addNameField.getText().toString();
                 String email = addEmailField.getText().toString();
                 String phoneNum = addPhoneField.getText().toString();
 
+                // VALIDATION CHECKS
+                if (TextUtils.isEmpty(name)){
+                    addNameField.setError("Please enter your name.");
+                    return;
+                }
+
+                if (TextUtils.isEmpty(phoneNum)){
+                    addPhoneField.setError("Please enter your phone number.");
+                    return;
+                }
+
+                if (TextUtils.isEmpty(email)){
+                    addEmailField.setError("Please enter your email address.");
+                    return;
+                }
+
                 if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    addEmailField.setError("Please enter a valid email address");
+                    addEmailField.setError("Please enter a valid email address.");
                     return;
                 }
 
-                // Needs extensive formatting.
-                if (!PhoneNumberUtils.isGlobalPhoneNumber(phoneNum)) {
-                    addPhoneField.setError("Please enter a valid phone number");
+                String patternString = "^\\d{3}-\\d{3}-\\d{4}$";
+                Pattern pattern = Pattern.compile(patternString);
+                if(!pattern.matcher(phoneNum).matches()){
+                    addPhoneField.setError("Please enter a valid phone number, i.e: 123-456-7890.");
                     return;
                 }
 
+                // transfer to db.
                 Map<String, Object> userValue = new HashMap<>();
                 userValue.put("name", name);
                 userValue.put("email", email);
