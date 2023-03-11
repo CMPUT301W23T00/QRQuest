@@ -2,7 +2,9 @@ package com.cmput301w23t00.qrquest.ui.createaccount;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.PhoneNumberUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,6 +42,7 @@ public class CreateAccount extends AppCompatActivity {
 
         Objects.requireNonNull(getSupportActionBar()).setTitle("Create Account");
 
+        // gets fid from LoadingScreen
         Intent intentFromLoadingScreen = getIntent();
         String fid = Objects.requireNonNull(intentFromLoadingScreen).getStringExtra("fid");
 
@@ -49,6 +52,7 @@ public class CreateAccount extends AppCompatActivity {
         addCreateButton = findViewById(R.id.addCreateButton);
         addProfileImage = findViewById(R.id.addProfileImage);
 
+        // TODO
         addProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,6 +71,17 @@ public class CreateAccount extends AppCompatActivity {
                 String name = addNameField.getText().toString();
                 String email = addEmailField.getText().toString();
                 String phoneNum = addPhoneField.getText().toString();
+
+                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    addEmailField.setError("Please enter a valid email address");
+                    return;
+                }
+
+                // Needs extensive formatting.
+                if (!PhoneNumberUtils.isGlobalPhoneNumber(phoneNum)) {
+                    addPhoneField.setError("Please enter a valid phone number");
+                    return;
+                }
 
                 Map<String, Object> userValue = new HashMap<>();
                 userValue.put("name", name);

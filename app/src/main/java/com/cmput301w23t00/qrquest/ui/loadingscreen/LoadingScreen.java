@@ -37,7 +37,9 @@ public class LoadingScreen extends AppCompatActivity {
 
         // check https://firebase.google.com/docs/projects/manage-installations#java_5
         // FID is the Firebase Installation ID: should act as identifierId.
-/*        FirebaseInstallations.getInstance().getId()
+        // TODO: fix code below.
+        // Recommended way to get fid[0] as on line 33:
+        /*FirebaseInstallations.getInstance().getId()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
@@ -94,6 +96,6 @@ public class LoadingScreen extends AppCompatActivity {
                 // finish() ends this activity (user won't be able to go back to loading screen).
                 finish();
             }
-        }, 3000);
+        }, 4000);
     }
 }
