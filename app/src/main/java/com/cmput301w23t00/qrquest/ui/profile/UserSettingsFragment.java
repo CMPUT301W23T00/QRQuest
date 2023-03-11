@@ -15,10 +15,12 @@ import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.ui.NavigationUI;
 
 import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentProfileBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class UserSettingsFragment extends Fragment{
 
@@ -58,7 +60,17 @@ public class UserSettingsFragment extends Fragment{
         }
         return super.onOptionsItemSelected(item);
     }
-    
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

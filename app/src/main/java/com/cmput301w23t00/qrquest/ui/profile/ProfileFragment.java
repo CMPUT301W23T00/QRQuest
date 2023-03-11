@@ -13,12 +13,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentProfileBinding;
 
@@ -54,11 +56,28 @@ public class ProfileFragment extends Fragment {
             fragmentManager.beginTransaction()
                     .replace(R.id.nav_host_fragment_activity_main, settingsScreen, null)
                     .setReorderingAllowed(true)
-                    .addToBackStack("name") // name can be null
+                    .addToBackStack("settings") // name can be null
                     .commit();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        FragmentManager fragmentManager = getParentFragmentManager();
+        if (fragmentManager.getFragments().size() > 1) {
+            fragmentManager.popBackStack();
+            //reverts action bar to profile fragment setup
+            ((MainActivity)getActivity()).getSupportActionBar().setTitle("Profile");
+            ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
     }
 
     @Override

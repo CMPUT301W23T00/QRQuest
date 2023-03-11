@@ -36,8 +36,6 @@ public class MainActivity extends AppCompatActivity {
         navController = navHostFragment.getNavController();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-    }
 
-    public void showUpButton() { getSupportActionBar().setDisplayHomeAsUpEnabled(true); }
-    public void hideUpButton() { getSupportActionBar().setDisplayHomeAsUpEnabled(false); }
+    }
 }
