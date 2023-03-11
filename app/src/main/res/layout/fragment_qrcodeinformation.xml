@@ -19,11 +19,12 @@
                 android:layout_height="345dp"
                 tools:context=".ui.library.qrcodeinformation.QRCodeInformationFragment">
 
+                <!-- generated monster PNG will be replaced later -->
                 <ImageView
                     android:id="@+id/qr_code_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/baseline_qr_code_2_24"
+                    android:src="@drawable/temp_generated_monster"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="H,1:1"
                     app:layout_constraintHorizontal_bias="0.0"
