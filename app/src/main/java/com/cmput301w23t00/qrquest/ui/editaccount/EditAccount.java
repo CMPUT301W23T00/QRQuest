@@ -9,7 +9,10 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.installations.FirebaseInstallations;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +37,9 @@ public class EditAccount extends AppCompatActivity {
         editCancelButton = findViewById(R.id.editCancelButton);
         editConfirmButton = findViewById(R.id.editConfirmButton);
         editProfileImage = findViewById(R.id.editProfileImage);
+
+        final String[] fid = new String[1];
+        fid[0] = FirebaseInstallations.getInstance().getId().toString();
 
         // ADD USER VALUES
         // FIRST GET USER VALUES
@@ -60,8 +66,8 @@ public class EditAccount extends AppCompatActivity {
 
                 // Go back to settings.
                 // IMPORTANT: add settings class.
-                //Intent intentEditCancelled = new Intent(EditAccount.this, .class);
-                //startActivity(intentEditCancelled);
+                Intent intentEditCancelled = new Intent(EditAccount.this, MainActivity.class);
+                startActivity(intentEditCancelled);
                 finish();
             }
         });
