@@ -9,12 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.cmput301w23t00.qrquest.MainActivity;
@@ -39,6 +41,15 @@ public class UserSettingsFragment extends Fragment{
         setHasOptionsMenu(true);
         ((MainActivity)getActivity()).getSupportActionBar().setTitle("Settings");
 
+        //allows for exit by system back button
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                restoreActionBar();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+
         return root;
     }
 
@@ -52,13 +63,17 @@ public class UserSettingsFragment extends Fragment{
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            FragmentManager fragmentManager = getParentFragmentManager();
-            fragmentManager.popBackStack();
-            //reverts action bar to profile fragment setup
-            ((MainActivity)getActivity()).getSupportActionBar().setTitle("Profile");
-            ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            restoreActionBar();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void restoreActionBar() {
+        FragmentManager fragmentManager = getParentFragmentManager();
+        fragmentManager.popBackStack();
+        //reverts action bar to profile fragment setup
+        ((MainActivity)getActivity()).getSupportActionBar().setTitle("Profile");
+        ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
     @Override

@@ -62,7 +62,7 @@ public class ProfileFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
-
+    /*
     @Override
     public void onPause() {
         super.onPause();
@@ -79,7 +79,7 @@ public class ProfileFragment extends Fragment {
             ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
     }
-
+    */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
