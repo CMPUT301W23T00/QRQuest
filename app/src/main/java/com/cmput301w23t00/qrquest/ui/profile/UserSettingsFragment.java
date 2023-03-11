@@ -7,12 +7,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
@@ -26,6 +28,10 @@ import com.cmput301w23t00.qrquest.databinding.FragmentProfileBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class UserSettingsFragment extends Fragment{
+
+    public SwitchCompat pushNotifications;
+    public SwitchCompat geoLocation;
+    private UserSettings userSettings = new UserSettings();
 
     public UserSettingsFragment() {
         super(R.layout.fragment_settings);
@@ -41,6 +47,26 @@ public class UserSettingsFragment extends Fragment{
 
         setHasOptionsMenu(true);
         ((MainActivity)getActivity()).getSupportActionBar().setTitle("Settings");
+
+        pushNotifications = (SwitchCompat) root.findViewById(R.id.push_notification_switch);
+        geoLocation = (SwitchCompat) root.findViewById(R.id.geo_location_switch_settings);
+
+        pushNotifications.setChecked(UserSettings.getPushNotifications());
+        geoLocation.setChecked(userSettings.getGeoLocation());
+
+        pushNotifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                UserSettings.setPushNotifications(b);
+            }
+        });
+
+        geoLocation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                userSettings.setGeoLocation(b);
+            }
+        });
 
         //allows for exit by system back button
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {

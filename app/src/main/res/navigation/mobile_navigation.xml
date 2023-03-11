@@ -85,6 +85,7 @@
             app:destination="@id/navigation_settings"
             app:launchSingleTop="true"
             app:popUpTo="@+id/mobile_navigation"
+            app:popUpToSaveState="true"
             app:popUpToInclusive="true" />
     </fragment>
 
