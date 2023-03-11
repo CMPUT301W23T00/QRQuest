@@ -108,16 +108,15 @@ public class QRCodeInformationFragment extends Fragment {
 //        }
 
         if (id == R.id.qr_delete) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogTheme);
             builder.setCancelable(true);
-            builder.setTitle("Delete QR Code");
-            builder.setMessage("Are you sure you want to delete this QR Code?");
+            builder.setTitle("Are you sure you want to delete this QR Code?");
             builder.setPositiveButton("Confirm",
                     (dialog, which) -> {
                         // Add code to delete the QR code here
                     });
             builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
-                // Add code to handle the cancel button here
+                // Code to handle the cancel button here
                 dialog.dismiss();
             });
 
