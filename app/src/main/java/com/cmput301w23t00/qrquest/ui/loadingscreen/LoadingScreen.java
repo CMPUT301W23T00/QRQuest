@@ -13,6 +13,9 @@ import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.createaccount.CreateAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.installations.FirebaseInstallations;
 
 import java.util.Objects;
@@ -22,6 +25,11 @@ public class LoadingScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading_screen);
+
+        final boolean[] accountExists = new boolean[1];
+        final String[] fid = new String[1];
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final String TAG = "LoadingScreen";
 
         // Instead of getSupportActionBar().hide(); pre-req is that Support Action Bar must be set.
         Objects.requireNonNull(getSupportActionBar()).hide();
@@ -33,10 +41,32 @@ public class LoadingScreen extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
                         if (task.isSuccessful()) {
-                            String fid = task.getResult();
-                            Log.d("Installations", "Installation ID: " + fid);
+                            // gets fid.
+                            fid[0] = task.getResult();
+                            Log.d("Installations", "Installation ID: " + fid[0]);
                         } else {
                             Log.e("Installations", "Unable to get Installation ID");
+                        }
+                    }
+                });
+
+        // queries for identifierId in db that matches fid.
+        db.collection("users")
+                .whereEqualTo("identifierId", fid[0])
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            // sets query results into querySnapshot.
+                            QuerySnapshot querySnapshot = task.getResult();
+
+                            // if query results in no result, account does not exist.
+                            accountExists[0] = querySnapshot.size() != 0;
+
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
@@ -46,12 +76,14 @@ public class LoadingScreen extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                // if uid is not present, goes to CreateAccount.
-                if (fid.equals(null)){
+                // if fid is not present, goes to CreateAccount.
+                if (!accountExists[0]){
                     Intent intentNoUID = new Intent(LoadingScreen.this, CreateAccount.class);
+                    // sends fid to CreateAccount
+                    intentNoUID.putExtra("fid", fid[0]);
                     startActivity(intentNoUID);
                 }
-                // if uid is present, goes to MainActivity.
+                // if fid is present, goes to MainActivity.
                 else {
                     Intent intentWithUID = new Intent(LoadingScreen.this, MainActivity.class);
                     startActivity(intentWithUID);
