@@ -30,25 +30,26 @@ public class LoadingScreen extends AppCompatActivity {
         final String[] fid = new String[1];
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final String TAG = "LoadingScreen";
+        fid[0] = FirebaseInstallations.getInstance().getId().toString();
 
         // Instead of getSupportActionBar().hide(); pre-req is that Support Action Bar must be set.
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         // check https://firebase.google.com/docs/projects/manage-installations#java_5
         // FID is the Firebase Installation ID: should act as identifierId.
-        FirebaseInstallations.getInstance().getId()
+/*        FirebaseInstallations.getInstance().getId()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
                         if (task.isSuccessful()) {
                             // gets fid.
-                            fid[0] = task.getResult();
+                            fid[0] = task.getResult().toString();
                             Log.d("Installations", "Installation ID: " + fid[0]);
                         } else {
                             Log.e("Installations", "Unable to get Installation ID");
                         }
                     }
-                });
+                });*/
 
         // queries for identifierId in db that matches fid.
         db.collection("users")
@@ -59,11 +60,13 @@ public class LoadingScreen extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
 
+                            Log.d(TAG, "Task successful: " + task.isSuccessful());
                             // sets query results into querySnapshot.
                             QuerySnapshot querySnapshot = task.getResult();
 
                             // if query results in no result, account does not exist.
                             accountExists[0] = querySnapshot.size() != 0;
+                            Log.d(TAG, "AccountExists: " + accountExists[0]);
 
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -91,6 +94,6 @@ public class LoadingScreen extends AppCompatActivity {
                 // finish() ends this activity (user won't be able to go back to loading screen).
                 finish();
             }
-        }, 5000);
+        }, 3000);
     }
 }

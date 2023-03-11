@@ -31,9 +31,6 @@ public class CreateAccount extends AppCompatActivity {
     Button addCreateButton;
     ImageView addProfileImage;
 
-    Intent intentFromLoadingScreen = getIntent();
-    String fid = intentFromLoadingScreen.getStringExtra("fid");
-
     private static final String TAG = "CreateAccount";
 
     @Override
@@ -42,6 +39,9 @@ public class CreateAccount extends AppCompatActivity {
         setContentView(R.layout.create_account);
 
         Objects.requireNonNull(getSupportActionBar()).setTitle("Create Account");
+
+        Intent intentFromLoadingScreen = getIntent();
+        String fid = Objects.requireNonNull(intentFromLoadingScreen).getStringExtra("fid");
 
         addNameField = findViewById(R.id.addNameField);
         addEmailField = findViewById(R.id.addEmailField);

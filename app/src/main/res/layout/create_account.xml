@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:animationCache="false">
 
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/addProfileImage"
         android:layout_width="140dp"
@@ -15,9 +16,10 @@
         android:src="@drawable/grug"
         app:layout_constraintBottom_toTopOf="@+id/addNameField"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <View
         android:id="@+id/addProfileImageMask"
@@ -26,19 +28,19 @@
         android:layout_alignStart="@+id/addProfileImage"
         android:layout_alignTop="@+id/addProfileImage"
         android:layout_margin="00dp"
-        android:background="@drawable/mask_profileImage"
+        android:background="@drawable/mask_profile_image"
         app:layout_constraintBottom_toBottomOf="@+id/addProfileImage"
         app:layout_constraintEnd_toEndOf="@+id/addProfileImage"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/addProfileImage"
         app:layout_constraintTop_toTopOf="@+id/addProfileImage"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/addNameField"
         android:layout_width="370dp"
         android:layout_height="48dp"
-        android:layout_marginTop="264dp"
+        android:layout_marginTop="244dp"
         android:background="@drawable/text_input"
         android:ems="10"
         android:hint="@string/exampleName"

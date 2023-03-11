@@ -27,7 +27,7 @@
         android:layout_alignStart="@+id/editProfileImage"
         android:layout_alignTop="@+id/editProfileImage"
         android:layout_margin="00dp"
-        android:background="@drawable/mask_profileImage"
+        android:background="@drawable/mask_profile_image"
         app:layout_constraintBottom_toBottomOf="@+id/editProfileImage"
         app:layout_constraintEnd_toEndOf="@+id/editProfileImage"
         app:layout_constraintStart_toStartOf="@+id/editProfileImage"

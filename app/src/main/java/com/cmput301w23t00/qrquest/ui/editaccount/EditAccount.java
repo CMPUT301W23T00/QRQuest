@@ -86,8 +86,8 @@ public class EditAccount extends AppCompatActivity {
 
                 // Go back to settings.
                 // IMPORTANT: add settings class.
-                Intent intentEditConfirmed = new Intent(EditAccount.this, .class);
-                startActivity(intentEditConfirmed);
+                //Intent intentEditConfirmed = new Intent(EditAccount.this, .class);
+                //startActivity(intentEditConfirmed);
                 finish();
             }
         });
