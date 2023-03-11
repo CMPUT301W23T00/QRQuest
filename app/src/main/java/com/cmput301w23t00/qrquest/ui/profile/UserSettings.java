@@ -3,10 +3,12 @@ package com.cmput301w23t00.qrquest.ui.profile;
 import static androidx.fragment.app.FragmentManager.TAG;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.cmput301w23t00.qrquest.MainActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -19,7 +21,7 @@ import com.google.firestore.v1.WriteResult;
 public class UserSettings {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static Boolean geoLocation = true;
-    private static Boolean pushNotifications = false;
+    private static Boolean pushNotifications = true;
     private String userId = "ivqEiEof56L80Z2gkhfI";
 
     public UserSettings() {
@@ -39,7 +41,7 @@ public class UserSettings {
         });
     }
 
-    public static Boolean getPushNotifications() {
+    public Boolean getPushNotifications() {
         return pushNotifications;
     }
 
@@ -47,8 +49,8 @@ public class UserSettings {
         return geoLocation;
     }
 
-    public static void setPushNotifications(Boolean pushNotifications) {
-        UserSettings.pushNotifications = pushNotifications;
+    public void setPushNotifications(Boolean pushNotifications) {
+        this.pushNotifications = pushNotifications;
     }
 
     public void setGeoLocation(Boolean geoLocation) {

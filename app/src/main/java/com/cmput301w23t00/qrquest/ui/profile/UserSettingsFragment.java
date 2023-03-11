@@ -51,13 +51,13 @@ public class UserSettingsFragment extends Fragment{
         pushNotifications = (SwitchCompat) root.findViewById(R.id.push_notification_switch);
         geoLocation = (SwitchCompat) root.findViewById(R.id.geo_location_switch_settings);
 
-        pushNotifications.setChecked(UserSettings.getPushNotifications());
+        pushNotifications.setChecked(userSettings.getPushNotifications());
         geoLocation.setChecked(userSettings.getGeoLocation());
 
         pushNotifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                UserSettings.setPushNotifications(b);
+                userSettings.setPushNotifications(b);
             }
         });
 
