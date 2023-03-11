@@ -31,6 +31,9 @@ public class CreateAccount extends AppCompatActivity {
     Button addCreateButton;
     ImageView addProfileImage;
 
+    Intent intentFromLoadingScreen = getIntent();
+    String fid = intentFromLoadingScreen.getStringExtra("fid");
+
     private static final String TAG = "CreateAccount";
 
     @Override
@@ -71,8 +74,7 @@ public class CreateAccount extends AppCompatActivity {
                 userValue.put("phoneNumber", phoneNum);
                 userValue.put("aboutMe", "");
                 userValue.put("recordGeoLocationByDefault", true);
-                // Send fid from loading page; use intent.
-                //userValue.put("identifierId", fid);
+                userValue.put("identifierId", fid);
 
                 db.collection("users")
                         .add(userValue)
@@ -89,7 +91,7 @@ public class CreateAccount extends AppCompatActivity {
                             }
                         });
 
-                // Goes back to home screen.
+                // Goes to home screen.
                 Intent intentAccountCreated = new Intent(CreateAccount.this, MainActivity.class);
                 startActivity(intentAccountCreated);
 
