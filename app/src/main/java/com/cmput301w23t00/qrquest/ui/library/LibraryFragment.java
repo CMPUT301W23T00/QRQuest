@@ -1,5 +1,8 @@
 package com.cmput301w23t00.qrquest.ui.library;
 
+import static androidx.navigation.Navigation.findNavController;
+
+import android.content.Context;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
@@ -23,6 +26,9 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 import java.util.ArrayList;
 import java.util.Date;

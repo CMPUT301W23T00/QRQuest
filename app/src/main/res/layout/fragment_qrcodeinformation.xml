@@ -2,6 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.QRCodeInformationViewModel" />
+    </data>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -44,7 +50,7 @@
                 android:paddingTop="10dp"
                 android:paddingRight="10dp"
                 android:paddingBottom="5dp"
-                android:text="@string/qr_code_title"
+                android:text="@{viewModel.name}"
                 android:textColor="?attr/colorOnPrimary"
                 android:textSize="26sp"
                 android:textStyle="bold" />
@@ -58,7 +64,7 @@
                 android:paddingEnd="5dp"
                 android:paddingBottom="10dp"
                 android:textColor="?attr/colorOnPrimary"
-                android:text="@string/qr_code_description"
+                android:text="@{viewModel.description}"
                 android:textSize="20sp" />
 
         </LinearLayout>

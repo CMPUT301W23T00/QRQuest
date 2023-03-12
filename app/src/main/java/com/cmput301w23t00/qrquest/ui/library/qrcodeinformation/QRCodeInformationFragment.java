@@ -1,5 +1,6 @@
 package com.cmput301w23t00.qrquest.ui.library.qrcodeinformation;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,14 +9,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentQrcodeinformationBinding;
+import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
 
 /**
  * The class  QR code information fragment extends fragment
@@ -36,6 +38,7 @@ public class QRCodeInformationFragment extends Fragment {
      * @param savedInstanceState the previously saved instance state
      * @return the view for the fragment's UI
      */
+    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -48,9 +51,15 @@ public class QRCodeInformationFragment extends Fragment {
         binding = FragmentQrcodeinformationBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // Set the text view to display the QR code description.
-        final TextView textView = binding.qrCodeDescription;
-        qrCodeInformationViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            LibraryQRCode qrCode = bundle.getParcelable("selectedQRCode");
+            if (qrCode != null) {
+                qrCodeInformationViewModel.setQRCodeInfo(qrCode.getData(), "test description");
+            }
+        }
+
+        binding.setViewModel(qrCodeInformationViewModel);
 
         return root;
     }
@@ -106,6 +115,14 @@ public class QRCodeInformationFragment extends Fragment {
 //            this.startActivity(intent1);
 //            return true;
 //        }
+
+        // Back arrow
+        if (item.getItemId() == android.R.id.home) {
+            // Handle the back arrow click here
+            // Navigate back to the previous fragment
+            NavHostFragment.findNavController(this).popBackStack();
+            return true;
+        }
 
         if (id == R.id.qr_delete) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogTheme);

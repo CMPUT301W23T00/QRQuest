@@ -41,6 +41,7 @@
         android:name="com.cmput301w23t00.qrquest.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
+
     <fragment
         android:id="@+id/qrCodeSummaryStatisticsFragment2"
         android:name="com.cmput301w23t00.qrquest.ui.library.qrCodeSummaryStatistics.QrCodeSummaryStatisticsFragment"
@@ -64,5 +65,17 @@
         <action
             android:id="@+id/action_qrCodeSummaryStatisticsFragment2_to_navigation_qrcode_library2"
             app:destination="@id/navigation_qrcode_library" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/qrCodeInformationFragment"
+        android:name="com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.QRCodeInformationFragment"
+        android:label="QR Code Information"
+        tools:layout="@layout/fragment_qrcodeinformation">
+
+        <action
+            android:id="@+id/qrCodeInformationFragment_to_action_libraryFragment"
+            app:destination="@id/navigation_qrcode_library" />
+
     </fragment>
 </navigation>
