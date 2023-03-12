@@ -19,6 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QRQuest"
         tools:targetApi="31">
+        <activity android:name=".ui.addqrcode.qrnameactivity.QrNameActivity" />
         <activity
             android:name=".ui.loadingscreen.LoadingScreen"
             android:exported="true"

@@ -42,11 +42,15 @@ public class AddQRCodeFragment extends Fragment {
             mCodeScanner.setDecodeCallback(new DecodeCallback() {
                 @Override
                 public void onDecoded(@NonNull final Result result) {
-                    // call new fragment to take picture
-                    Intent intentNoUID = new Intent(getActivity().getApplicationContext(), QrNameActivity.class);
-                    // sends fid to CreateAccount
-                    intentNoUID.putExtra("qrCodeData", result.getText());
-                    startActivity(intentNoUID);
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // call new fragment to take picture
+                            Intent intentNoUID = new Intent(getActivity().getApplicationContext(), QrNameActivity.class);
+                            // sends fid to CreateAccount
+                            intentNoUID.putExtra("qrCodeData", result.getText());
+                            startActivity(intentNoUID);                        }
+                    });
                 }
             });
             scannerView.setOnClickListener(new View.OnClickListener() {
