@@ -31,6 +31,11 @@
     <string name="submit">Submit Code</string>
     <string name="qr_code_img">qr_code_img</string>
     <string name="take_picture">take picture</string>
+    <string name="contact_information">Contact Information</string>
+    <string name="profile_total_points">Total Points</string>
+    <string name="profile_highest_score">Highest Score</string>
+    <string name="profile_lowest_score">Lowest Score</string>
+    <string name="profile_recent_codes">Recent QR Codes</string>
     <string name="settings_menu">Settings</string>
     <string name="push_notifications">Push Notifications</string>
     <string name="record_geo_location">Record Geo-Location</string>
