@@ -25,21 +25,41 @@ import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentProfileBinding;
 
+import org.w3c.dom.Text;
+
 public class ProfileFragment extends Fragment {
 
-    private FragmentProfileBinding binding;
+    private TextView name;
+    private TextView aboutMe;
+    private TextView phoneNumber;
+    private TextView email;
+    private TextView totalPoints;
+    private TextView highestScore;
+    private TextView lowestScore;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         ProfileViewModel profileViewModel =
                 new ViewModelProvider(this).get(ProfileViewModel.class);
 
-        binding = FragmentProfileBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        View root = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        final TextView textView = binding.textProfile;
+        name = (TextView) root.findViewById(R.id.profile_username);
+        aboutMe = (TextView) root.findViewById(R.id.profile_bio);
+        phoneNumber = (TextView) root.findViewById(R.id.profile_phone_number);
+        email = (TextView) root.findViewById(R.id.profile_email);
+        totalPoints = (TextView) root.findViewById(R.id.profile_total_points_count);
+        highestScore = (TextView) root.findViewById(R.id.profile_highest_score_count);
+        lowestScore = (TextView) root.findViewById(R.id.profile_lowest_score_count);
+
+        UserProfile userProfile = new UserProfile();
+
+        name.setText(UserProfile.getName());
+        aboutMe.setText(UserProfile.getAboutMe());
+        phoneNumber.setText(String.format("Phone: %s", UserProfile.getPhoneNumber()));
+        email.setText(String.format("Email: %s", UserProfile.getEmail()));
+
         setHasOptionsMenu(true);
 
-        profileViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
@@ -66,6 +86,5 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
     }
 }
