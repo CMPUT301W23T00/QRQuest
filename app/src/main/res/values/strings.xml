@@ -30,4 +30,6 @@
     <string name="points_gen">"Points Generated: "</string>
     <string name="submit">Submit Code</string>
     <string name="qr_code_img">qr_code_img</string>
+    <string name="preview_area">Camerea Preview</string>
+    <string name="take_picture">take picture</string>
 </resources>
