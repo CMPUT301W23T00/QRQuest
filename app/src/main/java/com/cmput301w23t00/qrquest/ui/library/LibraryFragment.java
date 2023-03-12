@@ -41,10 +41,10 @@ import java.util.Locale;
 
 public class LibraryFragment extends Fragment {
     private String userID;
-    private long highestScore = 0;
-    private long lowestScore = -1;
-    private long sumOfScores = 0;
-    private long totalScanned = 0;
+    private long highestScore;
+    private long lowestScore;
+    private long sumOfScores;
+    private long totalScanned;
     private FragmentLibraryBinding binding;
     private ListView QRList;
     private ArrayAdapter<LibraryQRCode> QRAdapter;
@@ -54,24 +54,9 @@ public class LibraryFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         LibraryViewModel libraryViewModel =
                 new ViewModelProvider(this).get(LibraryViewModel.class);
-
+        Log.d("Loaded1", "222");
         binding = FragmentLibraryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        // QR Stats button
-        Button viewQrStats = binding.viewPersonalQrStatsButton;
-        viewQrStats.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putLong("highestScore", highestScore);
-                bundle.putLong("lowestScore", lowestScore);
-                bundle.putLong("sumOfScores", sumOfScores);
-                bundle.putLong("totalScanned", totalScanned);
-                NavController navController = Navigation.findNavController(view);
-                navController.navigate(R.id.action_navigation_qrcode_library_to_qrCodeSummaryStatisticsFragment2, bundle);
-            }
-        });
 
         // QR Code List
         db = FirebaseFirestore.getInstance();
@@ -79,7 +64,10 @@ public class LibraryFragment extends Fragment {
         final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
         final CollectionReference qrcodesCollectionReference = db.collection("qrcodes");
 
-
+        highestScore = 0;
+        sumOfScores = 0;
+        totalScanned = 0;
+        lowestScore = -1;
 
         QRList = binding.libraryQrCodesList;
         dataList = new ArrayList<>();
@@ -87,6 +75,8 @@ public class LibraryFragment extends Fragment {
         //userID = FirebaseInstallations.getInstance().getId().toString();
         userID = "com.google.android.gms.tasks.zzw@b2bf36a";
         Log.d("userID", userID);
+        QRAdapter = new LibraryQRCodeAdapter(getActivity(), dataList);
+        QRList.setAdapter(QRAdapter);
         usersQRCodesCollectionReference.whereEqualTo("identifierID", userID)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -121,10 +111,22 @@ public class LibraryFragment extends Fragment {
                         }
                     }
                 });
-        QRAdapter = new LibraryQRCodeAdapter((Context) getActivity(), dataList);
-        QRList.setAdapter(QRAdapter);
         //final TextView textView = binding.textLibrary;
         //libraryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        // QR Stats button
+        Button viewQrStats = binding.viewPersonalQrStatsButton;
+        viewQrStats.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putLong("highestScore", highestScore);
+                bundle.putLong("lowestScore", lowestScore);
+                bundle.putLong("sumOfScores", sumOfScores);
+                bundle.putLong("totalScanned", totalScanned);
+                NavController navController = Navigation.findNavController(view);
+                navController.navigate(R.id.action_navigation_qrcode_library_to_qrCodeSummaryStatisticsFragment2, bundle);
+            }
+        });
         return root;
     }
 

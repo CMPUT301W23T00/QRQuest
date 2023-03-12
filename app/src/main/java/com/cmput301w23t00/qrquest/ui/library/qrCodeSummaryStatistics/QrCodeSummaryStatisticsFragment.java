@@ -13,12 +13,15 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 
+import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentQrCodeSummaryStatisticsBinding;
 
 import org.w3c.dom.Text;
@@ -36,6 +39,7 @@ public class QrCodeSummaryStatisticsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        Log.d("loaded2", "111");
         binding = FragmentQrCodeSummaryStatisticsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
@@ -58,4 +62,12 @@ public class QrCodeSummaryStatisticsFragment extends Fragment {
         // TODO: Use the ViewModel
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            findNavController(this).navigate(R.id.action_qrCodeSummaryStatisticsFragment2_to_navigation_qrcode_library2);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

@@ -6,4 +6,8 @@
     <string name="title_search">Search</string>
     <string name="title_profile">Profile</string>
     <string name="view_qr_code_stats">View QR Code Stats</string>
+    <string name="summary_total_number_of_qr_codes_scanned">Total Number of QR Codes Scanned</string>
+    <string name="summary_sum_of_scores_of_qr_codes_scanned">Sum of Scores of QR Codes Scanned</string>
+    <string name="summary_lowest_scoring">Lowest Scoring</string>
+    <string name="summary_highest_scoring">Highest Scoring</string>
 </resources>
