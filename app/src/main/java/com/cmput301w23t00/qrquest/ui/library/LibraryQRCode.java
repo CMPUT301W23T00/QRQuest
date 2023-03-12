@@ -2,7 +2,6 @@ package com.cmput301w23t00.qrquest.ui.library;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 
