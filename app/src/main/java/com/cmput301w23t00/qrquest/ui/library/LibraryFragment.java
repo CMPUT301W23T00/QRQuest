@@ -12,7 +12,6 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.cmput301w23t00.qrquest.R;
@@ -103,8 +102,7 @@ public class LibraryFragment extends Fragment {
                 bundle.putLong("lowestScore", lowestScore);
                 bundle.putLong("sumOfScores", sumOfScores);
                 bundle.putLong("totalScanned", totalScanned);
-                NavController navController = Navigation.findNavController(view);
-                navController.navigate(R.id.action_navigation_qrcode_library_to_qrCodeSummaryStatisticsFragment2, bundle);
+                Navigation.findNavController(view).navigate(R.id.action_navigation_qrcode_library_to_qrCodeSummaryStatisticsFragment2, bundle);
             }
         });
 

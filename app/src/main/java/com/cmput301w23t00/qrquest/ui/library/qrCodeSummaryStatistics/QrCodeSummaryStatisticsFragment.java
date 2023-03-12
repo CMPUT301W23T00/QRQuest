@@ -1,14 +1,11 @@
 package com.cmput301w23t00.qrquest.ui.library.qrCodeSummaryStatistics;
 
-import static androidx.navigation.fragment.FragmentKt.findNavController;
-
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,7 +23,6 @@ import java.util.Locale;
 
 public class QrCodeSummaryStatisticsFragment extends Fragment {
 
-    private QrCodeSummaryStatisticsViewModel mViewModel;
     private FragmentQrCodeSummaryStatisticsBinding binding;
     public static QrCodeSummaryStatisticsFragment newInstance() {
         return new QrCodeSummaryStatisticsFragment();
@@ -51,19 +47,28 @@ public class QrCodeSummaryStatisticsFragment extends Fragment {
         return root;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(QrCodeSummaryStatisticsViewModel.class);
-        // TODO: Use the ViewModel
+    /**
+     *
+     * onCreate is called to do initial creation of the fragment.
+     *
+     * @param savedInstanceState the previously saved instance state
+     */
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        // Creates this fragment's menu.
+        setHasOptionsMenu(true);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Log.d("loaded2", "444");
         if (item.getItemId() == android.R.id.home) {
-            findNavController(this).navigate(R.id.action_qrCodeSummaryStatisticsFragment2_to_navigation_qrcode_library2);
+            Log.d("loaded2", "222");
+            NavHostFragment.findNavController(this).navigate(R.id.action_qrCodeSummaryStatisticsFragment2_to_navigation_qrcode_library2);
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 }

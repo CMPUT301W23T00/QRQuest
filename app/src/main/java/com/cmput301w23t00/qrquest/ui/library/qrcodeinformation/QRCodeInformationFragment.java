@@ -120,7 +120,7 @@ public class QRCodeInformationFragment extends Fragment {
         if (item.getItemId() == android.R.id.home) {
             // Handle the back arrow click here
             // Navigate back to the previous fragment
-            NavHostFragment.findNavController(this).popBackStack();
+            NavHostFragment.findNavController(this).navigate(R.id.qrCodeInformationFragment_to_action_libraryFragment);
             return true;
         }
 
