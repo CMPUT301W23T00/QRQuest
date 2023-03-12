@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.cmput301w23t00.qrquest.ui.profile.UserSettings;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private NavController navController;
     public static final String SETTINGS_PREFS_NAME = "userPreferences";
+    public static final String USER_PROFILE_INFORMATION = "userProfile";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,13 @@ public class MainActivity extends AppCompatActivity {
         UserSettings userSettings = new UserSettings();
         userSettings.setPushNotifications(settings.getBoolean("PushNotifications", false));
         userSettings.setGeoLocation(settings.getBoolean("GeoLocation", false));
+
+        SharedPreferences profile = getSharedPreferences(USER_PROFILE_INFORMATION, MODE_PRIVATE);
+        UserProfile userProfile = new UserProfile();
+        userProfile.setAboutMe(profile.getString("aboutMe", ""));
+        userProfile.setPhoneNumber(profile.getString("phoneNumber", ""));
+        userProfile.setEmail(profile.getString("email", ""));
+        userProfile.setName(profile.getString("name", ""));
     }
 
     @SuppressLint("ApplySharedPref")
@@ -54,9 +63,18 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         UserSettings userSettings = new UserSettings();
         SharedPreferences settings = getSharedPreferences(SETTINGS_PREFS_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putBoolean("PushNotifications", userSettings.getPushNotifications());
-        editor.putBoolean("GeoLocation", userSettings.getGeoLocation());
-        editor.commit();
+        SharedPreferences.Editor editorSettings = settings.edit();
+        editorSettings.putBoolean("PushNotifications", userSettings.getPushNotifications());
+        editorSettings.putBoolean("GeoLocation", userSettings.getGeoLocation());
+        editorSettings.commit();
+
+        UserProfile userProfile = new UserProfile();
+        SharedPreferences profile = getSharedPreferences(USER_PROFILE_INFORMATION, MODE_PRIVATE);
+        SharedPreferences.Editor editorProfile = profile.edit();
+        editorProfile.putString("aboutMe", UserProfile.getAboutMe());
+        editorProfile.putString("phoneNumber", UserProfile.getPhoneNumber());
+        editorProfile.putString("email", UserProfile.getEmail());
+        editorProfile.putString("name", UserProfile.getName());
+        editorProfile.commit();
     }
 }
