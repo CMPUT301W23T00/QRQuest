@@ -1,20 +1,17 @@
 package com.cmput301w23t00.qrquest.ui.library;
 
-import static androidx.navigation.Navigation.findNavController;
-
-import android.content.Context;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -30,9 +27,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Date;
 
-import java.util.ArrayList;
-import java.util.Date;
-
 public class LibraryFragment extends Fragment {
     private long highestScore;
     private long lowestScore;
@@ -41,11 +35,10 @@ public class LibraryFragment extends Fragment {
     private FragmentLibraryBinding binding;
     private ArrayAdapter<LibraryQRCode> QRAdapter;
     private ArrayList<LibraryQRCode> dataList;
+    private int mSelectedItemIndex;
     FirebaseFirestore db;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-//        LibraryViewModel libraryViewModel =
-//                new ViewModelProvider(this).get(LibraryViewModel.class);
 
         binding = FragmentLibraryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -100,8 +93,6 @@ public class LibraryFragment extends Fragment {
                         }
                     }
                 });
-        //final TextView textView = binding.textLibrary;
-        //libraryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         // QR Stats button
         Button viewQrStats = binding.viewPersonalQrStatsButton;
         viewQrStats.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +107,20 @@ public class LibraryFragment extends Fragment {
                 navController.navigate(R.id.action_navigation_qrcode_library_to_qrCodeSummaryStatisticsFragment2, bundle);
             }
         });
+
+        QRList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
+                mSelectedItemIndex = index;
+                LibraryQRCode qrCode = dataList.get(index);
+
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("selectedQRCode", qrCode);
+
+                Navigation.findNavController(view).navigate(R.id.action_libraryFragment_to_qrCodeInformationFragment, bundle);
+            }
+        });
+
         return root;
     }
 

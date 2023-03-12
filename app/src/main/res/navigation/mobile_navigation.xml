@@ -22,6 +22,9 @@
             app:destination="@id/qrCodeSummaryStatisticsFragment2"
             app:popUpTo="@+id/mobile_navigation"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_libraryFragment_to_qrCodeInformationFragment"
+            app:destination="@id/qrCodeInformationFragment" />
     </fragment>
 
     <fragment
