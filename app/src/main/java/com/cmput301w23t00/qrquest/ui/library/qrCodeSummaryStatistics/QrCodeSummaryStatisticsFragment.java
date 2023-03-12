@@ -62,9 +62,7 @@ public class QrCodeSummaryStatisticsFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Log.d("loaded2", "444");
         if (item.getItemId() == android.R.id.home) {
-            Log.d("loaded2", "222");
             NavHostFragment.findNavController(this).navigate(R.id.action_qrCodeSummaryStatisticsFragment2_to_navigation_qrcode_library2);
             return true;
         }

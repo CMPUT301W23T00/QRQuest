@@ -1,6 +1,7 @@
 package com.cmput301w23t00.qrquest.ui.library;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,14 @@ import androidx.navigation.Navigation;
 
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentLibraryBinding;
+import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.installations.FirebaseInstallations;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,7 +55,7 @@ public class LibraryFragment extends Fragment {
 
         ListView QRList = binding.libraryQrCodesList;
         dataList = new ArrayList<>();
-        //userID = FirebaseInstallations.getInstance().getId().toString();
+        //String userID = FirebaseInstallations.getInstance().getId().toString();
         String userID = "com.google.android.gms.tasks.zzw@b2bf36a";
         QRAdapter = new LibraryQRCodeAdapter(getActivity(), dataList);
         QRList.setAdapter(QRAdapter);
@@ -65,27 +68,17 @@ public class LibraryFragment extends Fragment {
                                 String qrCodeData = (String) document.getData().get("qrCodeData");
                                 com.google.firebase.Timestamp timestamp = (com.google.firebase.Timestamp) document.getData().get("dateScanned");
                                 Date dateScanned = timestamp.toDate();
-                                qrcodesCollectionReference.whereEqualTo("qrCodeData", qrCodeData)
-                                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                if (task.isSuccessful()) {
-                                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                                        long score = (long) document.getData().get("score");
-                                                        highestScore = Math.max(score, highestScore);
-                                                        if (lowestScore == -1) {
-                                                            lowestScore = score;
-                                                        } else {
-                                                            lowestScore = Math.min(lowestScore, score);
-                                                        }
-                                                        sumOfScores += score;
-                                                        totalScanned += 1;
-                                                        dataList.add(new LibraryQRCode(qrCodeData, score, dateScanned));
-                                                    }
-                                                    QRAdapter.notifyDataSetChanged();
-                                                }
-                                            }
-                                        });
+                                long score = new QRCodeProcessor(qrCodeData).getScore();
+                                highestScore = Math.max(score, highestScore);
+                                if (lowestScore == -1) {
+                                    lowestScore = score;
+                                } else {
+                                    lowestScore = Math.min(lowestScore, score);
+                                }
+                                sumOfScores += score;
+                                totalScanned += 1;
+                                dataList.add(new LibraryQRCode(qrCodeData, score, dateScanned));
+                                QRAdapter.notifyDataSetChanged();
                             }
                         }
                     }

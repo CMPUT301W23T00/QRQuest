@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
@@ -36,6 +37,7 @@ import androidx.core.content.ContextCompat;
 
 import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
+import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.addqrcode.qrnameactivity.takephotoactivity.TakePhotoActivity;
 import com.cmput301w23t00.qrquest.ui.createaccount.CreateAccount;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -85,6 +87,7 @@ public class QrNameActivity extends AppCompatActivity {
      *
      * @param savedInstanceState the saved state of the activity
      */
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +104,11 @@ public class QrNameActivity extends AppCompatActivity {
         FusedLocationProviderClient client;
         client = LocationServices.getFusedLocationProviderClient(this);
         String locationCord = "";
+
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
+        TextView pointsGeneratedTextView = findViewById(R.id.pointsGeneratedTextView);
+        int pointsGenerated = new QRCodeProcessor(this.qrCodeData).getScore();
+        pointsGeneratedTextView.setText("Points Generated: " + String.valueOf(pointsGenerated));
 
         // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
         ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
@@ -165,16 +173,20 @@ public class QrNameActivity extends AppCompatActivity {
                 String comment = editComment.getText().toString();
                 Boolean leaveLocation = leaveLocationSwitch.isChecked();
 
-                Criteria criteria = new Criteria();
-                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                String bestProvider = locationManager.getBestProvider(criteria, true);
-                if (ActivityCompat.checkSelfPermission(QrNameActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(QrNameActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    if (ContextCompat.checkSelfPermission(QrNameActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        requestPermissions(new String[] {ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION }, 100);
+                GeoPoint point = new GeoPoint(0, 0);
+                if (leaveLocation) {
+                    Criteria criteria = new Criteria();
+                    LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                    String bestProvider = locationManager.getBestProvider(criteria, true);
+                    if (ActivityCompat.checkSelfPermission(QrNameActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(QrNameActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        if (ContextCompat.checkSelfPermission(QrNameActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            requestPermissions(new String[] {ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION }, 100);
+                        }
                     }
+                    Location location = locationManager.getLastKnownLocation(bestProvider);
+                    point = new GeoPoint(location.getLatitude(), location.getLongitude());
                 }
-                Location location = locationManager.getLastKnownLocation(bestProvider);
-                GeoPoint point = new GeoPoint(location.getLatitude(), location.getLongitude());
+
 
                 String fid = FirebaseInstallations.getInstance().getId().toString();
 

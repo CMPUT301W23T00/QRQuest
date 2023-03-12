@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.cmput301w23t00.qrquest.R;
+import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,9 +38,10 @@ public class LibraryQRCodeAdapter extends ArrayAdapter<LibraryQRCode> {
         TextView QRScore = view.findViewById(R.id.library_qr_code_score);
 
         SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
-        QRData.setText(QRObject.getData());
+        QRCodeProcessor qrCodeProcessor = new QRCodeProcessor(QRObject.getData());
+        QRData.setText(qrCodeProcessor.getName());
         QRDate.setText(formatter.format(QRObject.getDate()));
-        QRScore.setText(String.format(Locale.CANADA, "%d", QRObject.getScore()));
+        QRScore.setText(String.format(Locale.CANADA, "%d", qrCodeProcessor.getScore()));
         return view;
     }
 }

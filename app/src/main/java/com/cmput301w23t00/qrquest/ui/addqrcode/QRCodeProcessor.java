@@ -1,5 +1,7 @@
 package com.cmput301w23t00.qrquest.ui.addqrcode;
 
+import android.util.Log;
+
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -47,6 +49,9 @@ public class QRCodeProcessor {
         int IntString = Integer.parseInt(FirstTwo, 16);
         // Convert the integer to a binary string and take the first six characters
         String bin = Integer.toBinaryString(IntString);
+        if (bin.length() < 8) {
+            bin = String.format("%s%0" + (8 - bin.length()) + "d", bin, 0);
+        }
         bin = bin.substring(0,6);
 
         // Create a string by combining the strings from the ZeroBit and OneBit lists
