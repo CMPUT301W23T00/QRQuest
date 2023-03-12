@@ -42,7 +42,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/editComment"
         android:layout_width="355dp"
         android:layout_height="48dp"
         android:layout_marginStart="24dp"
@@ -67,10 +67,10 @@
         android:layout_marginTop="16dp"
         android:text="@string/points_gen"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch1" />
+        app:layout_constraintTop_toBottomOf="@+id/leaveLocationSwitch" />
 
     <Switch
-        android:id="@+id/switch1"
+        android:id="@+id/leaveLocationSwitch"
         android:layout_width="357dp"
         android:layout_height="48dp"
         android:layout_marginStart="24dp"
@@ -80,7 +80,7 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
+        app:layout_constraintTop_toBottomOf="@+id/editComment"
         tools:ignore="UseSwitchCompatOrMaterialXml,VisualLintButtonSize" />
 
     <Button

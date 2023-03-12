@@ -24,6 +24,11 @@ import com.google.zxing.Result;
 public class AddQRCodeFragment extends Fragment {
     private CodeScanner mCodeScanner;
 
+    /**
+     * Called when the activity is starting.
+     *
+     * @param savedInstanceState the saved state of the activity
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -40,9 +45,18 @@ public class AddQRCodeFragment extends Fragment {
             mCodeScanner = new CodeScanner(activity, scannerView);
             mCodeScanner.setDecodeCallback(new DecodeCallback() {
                 @Override
+                /**
+                 * Creates Intent On run
+                 *
+                 * param: Result a result object
+                 */
                 public void onDecoded(@NonNull final Result result) {
                     activity.runOnUiThread(new Runnable() {
                         @Override
+                        /**
+                         * Creates Intent On run
+                         *
+                         */
                         public void run() {
                             // call new fragment to take picture
                             Intent intentNoUID = new Intent(getActivity().getApplicationContext(), QrNameActivity.class);
@@ -53,6 +67,11 @@ public class AddQRCodeFragment extends Fragment {
                 }
             });
             scannerView.setOnClickListener(new View.OnClickListener() {
+                /**
+                 * On click for a view
+                 *
+                 * @param view a view
+                 */
                 @Override
                 public void onClick(View view) {
                     mCodeScanner.startPreview();
@@ -64,11 +83,17 @@ public class AddQRCodeFragment extends Fragment {
     }
 
     @Override
+    /**
+     * On resuming the preview
+     */
     public void onResume() {
         super.onResume();
         mCodeScanner.startPreview();
     }
 
+    /**
+     * On resuming the preview
+     */
     @Override
     public void onPause() {
         mCodeScanner.releaseResources();

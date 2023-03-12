@@ -35,6 +35,13 @@ import com.google.common.util.concurrent.ListenableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 
+/**
+ The TakePhotoActivity class allows the user to capture a photo using the device camera.
+
+ It utilizes the CameraX API to set up the camera preview and capture an image when the capture button is clicked.
+
+ The captured image is saved to the device's MediaStore and the URI of the saved image is returned to the calling activity.
+ */
 public class TakePhotoActivity extends AppCompatActivity implements ImageAnalysis.Analyzer, View.OnClickListener {
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
 
@@ -42,6 +49,11 @@ public class TakePhotoActivity extends AppCompatActivity implements ImageAnalysi
     private ImageCapture imageCapture;
     private Button bCapture;
 
+    /**
+     * Initializes the activity
+     *
+     * @param savedInstanceState The saved state of the activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,10 +76,20 @@ public class TakePhotoActivity extends AppCompatActivity implements ImageAnalysi
 
     }
 
+    /**
+     * Returns an executor that runs on the main thread.
+     *
+     * @return An Executor instance.
+     */
     Executor getExecutor() {
         return ContextCompat.getMainExecutor(this);
     }
 
+    /**
+     * Configures the camera preview and capture use cases using the CameraX API.
+     *
+     * @param cameraProvider The ProcessCameraProvider
+     */
     @SuppressLint("RestrictedApi")
     private void startCameraX(ProcessCameraProvider cameraProvider) {
         cameraProvider.unbindAll();
@@ -94,6 +116,12 @@ public class TakePhotoActivity extends AppCompatActivity implements ImageAnalysi
         cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, preview, imageCapture);
     }
 
+
+    /**
+     * Processes the frame and logs the timestamp.
+     *
+     * @param image The ImageProxy object
+     */
     @Override
     public void analyze(@NonNull ImageProxy image) {
         // image processing here for the current frame
@@ -101,6 +129,11 @@ public class TakePhotoActivity extends AppCompatActivity implements ImageAnalysi
         image.close();
     }
 
+    /**
+     * On click for a view
+     *
+     * @param view a view
+     */
     @SuppressLint("RestrictedApi")
     @Override
     public void onClick(View view) {
@@ -109,6 +142,9 @@ public class TakePhotoActivity extends AppCompatActivity implements ImageAnalysi
         }
     }
 
+    /**
+     * Captures a photo and saves it
+     */
     private void capturePhoto() {
         long timestamp = System.currentTimeMillis();
 
@@ -127,6 +163,9 @@ public class TakePhotoActivity extends AppCompatActivity implements ImageAnalysi
                 getExecutor(),
                 new ImageCapture.OnImageSavedCallback() {
                     @Override
+                    /**
+                     * On Image save creates an intent to return the image
+                     */
                     public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
                         Intent returnIntent = new Intent();
                         returnIntent.putExtra("ImageDataUri", outputFileResults.getSavedUri().toString());
@@ -135,8 +174,12 @@ public class TakePhotoActivity extends AppCompatActivity implements ImageAnalysi
                     }
 
                     @Override
+                    /**
+                     * Shows an error message
+                     */
                     public void onError(@NonNull ImageCaptureException exception) {
                         Toast.makeText(TakePhotoActivity.this, "Error saving photo: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("TAG", "Error saving photo: " + exception.getMessage());
                     }
                 }
         );
