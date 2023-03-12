@@ -2,6 +2,7 @@ package com.cmput301w23t00.qrquest.ui.addqrcode;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.cmput301w23t00.qrquest.R;
+import com.cmput301w23t00.qrquest.ui.addqrcode.qrnameactivity.QrNameActivity;
 import com.google.zxing.Result;
 
 public class AddQRCodeFragment extends Fragment {
@@ -41,12 +43,10 @@ public class AddQRCodeFragment extends Fragment {
                 @Override
                 public void onDecoded(@NonNull final Result result) {
                     // call new fragment to take picture
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(activity, result.getText(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    Intent intentNoUID = new Intent(getActivity().getApplicationContext(), QrNameActivity.class);
+                    // sends fid to CreateAccount
+                    intentNoUID.putExtra("qrCodeData", result.getText());
+                    startActivity(intentNoUID);
                 }
             });
             scannerView.setOnClickListener(new View.OnClickListener() {
