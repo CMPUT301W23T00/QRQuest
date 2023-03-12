@@ -43,18 +43,25 @@ public class MainActivity extends AppCompatActivity {
         navController = navHostFragment.getNavController();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-        
-        SharedPreferences settings = getSharedPreferences(SETTINGS_PREFS_NAME, MODE_PRIVATE);
-        UserSettings userSettings = new UserSettings();
-        userSettings.setPushNotifications(settings.getBoolean("PushNotifications", false));
-        userSettings.setGeoLocation(settings.getBoolean("GeoLocation", false));
 
-        SharedPreferences profile = getSharedPreferences(USER_PROFILE_INFORMATION, MODE_PRIVATE);
+
+        UserSettings userSettings = new UserSettings();
+        SharedPreferences settings = getSharedPreferences(SETTINGS_PREFS_NAME, MODE_PRIVATE);
+        UserSettings.setCreated(settings.getBoolean("existingAccount", false));
+        if (UserSettings.getCreated()) {
+            userSettings.setPushNotifications(settings.getBoolean("PushNotifications", false));
+            userSettings.setGeoLocation(settings.getBoolean("GeoLocation", false));
+        }
+
         UserProfile userProfile = new UserProfile();
-        userProfile.setAboutMe(profile.getString("aboutMe", ""));
-        userProfile.setPhoneNumber(profile.getString("phoneNumber", ""));
-        userProfile.setEmail(profile.getString("email", ""));
-        userProfile.setName(profile.getString("name", ""));
+        SharedPreferences profile = getSharedPreferences(USER_PROFILE_INFORMATION, MODE_PRIVATE);
+        UserProfile.setCreated(profile.getBoolean("existingAccount", false));
+        if (UserProfile.getCreated()) {
+            userProfile.setAboutMe(profile.getString("aboutMe", ""));
+            userProfile.setPhoneNumber(profile.getString("phoneNumber", ""));
+            userProfile.setEmail(profile.getString("email", ""));
+            userProfile.setName(profile.getString("name", ""));
+        }
     }
 
     @SuppressLint("ApplySharedPref")
@@ -66,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editorSettings = settings.edit();
         editorSettings.putBoolean("PushNotifications", userSettings.getPushNotifications());
         editorSettings.putBoolean("GeoLocation", userSettings.getGeoLocation());
+        editorSettings.putBoolean("existingAccount", UserSettings.getCreated());
         editorSettings.commit();
 
         UserProfile userProfile = new UserProfile();
@@ -75,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
         editorProfile.putString("phoneNumber", UserProfile.getPhoneNumber());
         editorProfile.putString("email", UserProfile.getEmail());
         editorProfile.putString("name", UserProfile.getName());
+        editorProfile.putString("identifierId", UserProfile.getUserId());
+        editorProfile.putBoolean("existingAccount", UserSettings.getCreated());
         editorProfile.commit();
     }
 }

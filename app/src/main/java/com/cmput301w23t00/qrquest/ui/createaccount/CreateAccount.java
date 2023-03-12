@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
+import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
+import com.cmput301w23t00.qrquest.ui.profile.UserSettings;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -109,12 +111,16 @@ public class CreateAccount extends AppCompatActivity {
                 userValue.put("recordGeoLocationByDefault", true);
                 userValue.put("identifierId", fid);
 
+                UserProfile.setUserId(fid);
+
                 db.collection("users")
                         .add(userValue)
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
                                 Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                                UserSettings.setCreated(true);
+                                UserProfile.setCreated(true);
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {

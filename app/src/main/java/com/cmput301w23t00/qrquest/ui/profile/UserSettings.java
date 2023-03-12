@@ -14,29 +14,32 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Source;
 import com.google.firebase.firestore.model.Document;
+import com.google.firebase.installations.FirebaseInstallations;
 import com.google.firestore.v1.WriteResult;
 
 public class UserSettings {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static Boolean geoLocation = true;
     private static Boolean pushNotifications = true;
-    private static String userId = "ivqEiEof56L80Z2gkhfI";
+    private static String userId = FirebaseInstallations.getInstance().getId().toString();
+    private static Boolean created = false;
 
     public UserSettings() {
-        this.db.collection("users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        this.db.collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @SuppressLint("RestrictedApi")
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Log.d(TAG, "onSuccess: document obtained");
-                geoLocation = documentSnapshot.getBoolean("recordGeoLocationByDefault");
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                Log.d(TAG, "onSuccess: Document obtained");
+                geoLocation = queryDocumentSnapshots.getDocuments().get(0).getBoolean("recordGeoLocationByDefault");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @SuppressLint("RestrictedApi")
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.e(TAG, "onFailure: ", e);
+                Log.e(TAG, "onFailure: Document not obtained", e);
             }
         });
     }
@@ -49,6 +52,10 @@ public class UserSettings {
         return geoLocation;
     }
 
+    public static Boolean getCreated() {
+        return created;
+    }
+
     public void setPushNotifications(Boolean pushNotifications) {
         this.pushNotifications = pushNotifications;
     }
@@ -56,8 +63,17 @@ public class UserSettings {
     public void setGeoLocation(Boolean geoLocation) {
         this.geoLocation = geoLocation;
         // Update an existing document
-        DocumentReference docRef = db.collection("users").document(userId);
-        docRef.update("recordGeoLocationByDefault", geoLocation);
+        db.collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                DocumentReference documentReference = documentSnapshot.getDocumentReference("recordGeoLocationByDefault");
+                documentReference.update("recordGeoLocationByDefault", geoLocation);
+            }
+        });
+    }
 
+    public static void setCreated(Boolean created) {
+        UserSettings.created = created;
     }
 }

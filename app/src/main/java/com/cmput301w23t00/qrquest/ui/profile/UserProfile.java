@@ -21,8 +21,9 @@ public class UserProfile {
     private static String phoneNumber;
     private static String email;
     private static String name;
-    private static String userId = "ivqEiEof56L80Z2gkhfI";
+    private static String userId;
     private static Boolean firstInstantiation = true;
+    private static Boolean created = false;
 
     public UserProfile() {
         //only occurs when app is initially opened
@@ -37,6 +38,7 @@ public class UserProfile {
                     email = documentSnapshot.getString("email");
                     name = documentSnapshot.getString("name");
                     firstInstantiation = false;
+                    created = true;
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @SuppressLint("RestrictedApi")
@@ -62,6 +64,14 @@ public class UserProfile {
 
     public static String getName() {
         return name;
+    }
+
+    public static String getUserId() {
+        return userId;
+    }
+
+    public static Boolean getCreated() {
+        return created;
     }
 
     public static Boolean getFirstInstantiation() {
@@ -94,5 +104,13 @@ public class UserProfile {
 
         DocumentReference docRef = this.db.collection("users").document(this.userId);
         docRef.update("name", name);
+    }
+
+    public static void setUserId(String userId) {
+        UserProfile.userId = userId;
+    }
+
+    public static void setCreated(Boolean created) {
+        UserProfile.created = created;
     }
 }
