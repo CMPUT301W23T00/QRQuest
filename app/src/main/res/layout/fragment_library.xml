@@ -30,13 +30,5 @@
             android:headerDividersEnabled="true" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textLibrary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/title_qrcode_library"
-        tools:layout_editor_absoluteX="172dp"
-        tools:layout_editor_absoluteY="355dp"
-        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
