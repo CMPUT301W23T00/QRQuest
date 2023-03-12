@@ -1,7 +1,6 @@
 package com.cmput301w23t00.qrquest.ui.library;
 
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +33,6 @@ public class LibraryFragment extends Fragment {
     private FragmentLibraryBinding binding;
     private ArrayAdapter<LibraryQRCode> QRAdapter;
     private ArrayList<LibraryQRCode> dataList;
-    private int mSelectedItemIndex;
     FirebaseFirestore db;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -109,12 +107,16 @@ public class LibraryFragment extends Fragment {
         QRList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
-                mSelectedItemIndex = index;
                 LibraryQRCode qrCode = dataList.get(index);
 
+                // Create a bundle to store data that will be passed to the QR code information fragment
                 Bundle bundle = new Bundle();
+                // Add the selected QR code object and the user ID to the bundle
                 bundle.putParcelable("selectedQRCode", qrCode);
+                bundle.putString("userID", userID);
 
+                // Use the Navigation component to navigate to the QR code information fragment,
+                // and pass the bundle as an argument to the destination fragment
                 Navigation.findNavController(view).navigate(R.id.action_libraryFragment_to_qrCodeInformationFragment, bundle);
             }
         });
