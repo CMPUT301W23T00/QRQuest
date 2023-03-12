@@ -14,8 +14,15 @@
     <fragment
         android:id="@+id/navigation_qrcode_library"
         android:name="com.cmput301w23t00.qrquest.ui.library.LibraryFragment"
+        android:clearTaskOnLaunch="true"
         android:label="@string/title_qrcode_library"
-        tools:layout="@layout/fragment_library" />
+        tools:layout="@layout/fragment_library" >
+        <action
+            android:id="@+id/action_navigation_qrcode_library_to_qrCodeSummaryStatisticsFragment2"
+            app:destination="@id/qrCodeSummaryStatisticsFragment2"
+            app:popUpTo="@+id/mobile_navigation"
+            app:popUpToInclusive="true"/>
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_add_qrcode"
@@ -34,4 +41,28 @@
         android:name="com.cmput301w23t00.qrquest.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/qrCodeSummaryStatisticsFragment2"
+        android:name="com.cmput301w23t00.qrquest.ui.library.qrCodeSummaryStatistics.QrCodeSummaryStatisticsFragment"
+        android:label="QR Code Stats"
+        tools:layout="@layout/fragment_qr_code_summary_statistics" >
+        <argument
+            android:name="highestScore"
+            app:argType="long"
+            android:defaultValue="0L" />
+        <argument
+            android:name="lowestScore"
+            app:argType="long"
+            android:defaultValue="0L" />
+        <argument
+            android:name="sumOfScores"
+            app:argType="long"
+            android:defaultValue="0L" />
+        <argument
+            android:name="totalScanned"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_qrCodeSummaryStatisticsFragment2_to_navigation_qrcode_library2"
+            app:destination="@id/navigation_qrcode_library" />
+    </fragment>
 </navigation>
