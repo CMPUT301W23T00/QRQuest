@@ -49,6 +49,7 @@
                 </TextView>
 
                 <TextView
+                    android:id="@+id/summary_highest_score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingStart="5dp"
@@ -87,6 +88,7 @@
                 </TextView>
 
                 <TextView
+                    android:id="@+id/summary_lowest_score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="248 Points">
@@ -129,6 +131,7 @@
 
                 </TextView>
                 <TextView
+                    android:id="@+id/summary_sum_of_scores"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="12345">
@@ -170,6 +173,7 @@
 
                 </TextView>
                 <TextView
+                    android:id="@+id/summary_total_scanned"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="98765">

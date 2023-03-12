@@ -42,5 +42,21 @@
         android:id="@+id/qrCodeSummaryStatisticsFragment2"
         android:name="com.cmput301w23t00.qrquest.ui.library.qrCodeSummaryStatistics.QrCodeSummaryStatisticsFragment"
         android:label="QR Code Stats"
-        tools:layout="@layout/fragment_qr_code_summary_statistics" />
+        tools:layout="@layout/fragment_qr_code_summary_statistics" >
+        <argument
+            android:name="highestScore"
+            app:argType="long"
+            android:defaultValue="0L" />
+        <argument
+            android:name="lowestScore"
+            app:argType="long"
+            android:defaultValue="0L" />
+        <argument
+            android:name="sumOfScores"
+            app:argType="long"
+            android:defaultValue="0L" />
+        <argument
+            android:name="totalScanned"
+            app:argType="long" />
+    </fragment>
 </navigation>

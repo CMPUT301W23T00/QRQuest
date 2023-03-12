@@ -6,10 +6,10 @@ import java.util.Date;
 
 public class LibraryQRCode {
     private String data;
-    private Integer score;
+    private long score;
     private Date date;
 
-    public LibraryQRCode(String data, Integer score, Date date) {
+    public LibraryQRCode(String data, long score, Date date) {
         this.data = data;
         this.score = score;
         this.date = date;
@@ -23,11 +23,11 @@ public class LibraryQRCode {
         this.data = data;
     }
 
-    public Integer getScore() {
+    public long getScore() {
         return score;
     }
 
-    public void setScore(Integer score) {
+    public void setScore(long score) {
         this.score = score;
     }
 
