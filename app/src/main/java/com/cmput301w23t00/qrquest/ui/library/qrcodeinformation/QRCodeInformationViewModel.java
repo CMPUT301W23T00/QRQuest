@@ -10,25 +10,25 @@ import androidx.lifecycle.ViewModel;
  */
 public class QRCodeInformationViewModel extends ViewModel {
 
-    private final MutableLiveData<String> mText;
+    private MutableLiveData<String> mName;
+    private MutableLiveData<String> mDescription;
 
-    /**
-     *
-     *  The constructor for the QRCodeInformationViewModel class.
-     */
     public QRCodeInformationViewModel() {
-
-        mText = new MutableLiveData<>();
-        mText.setValue("This is QR Code Information Description");
+        mName = new MutableLiveData<>();
+        mDescription = new MutableLiveData<>();
     }
 
-    /**
-     *
-     * This method returns a LiveData object that contains the text to be displayed in the QR code information fragment.
-     * @return the text to be displayed
-     */
-    public LiveData<String> getText() {
+    public LiveData<String> getName() {
+        return mName;
+    }
 
-        return mText;
+    public MutableLiveData<String> getDescription() {
+        return mDescription;
+    }
+
+    public void setQRCodeInfo(String name, String description) {
+        mName.setValue(name);
+        mDescription.setValue(description);
     }
 }
+

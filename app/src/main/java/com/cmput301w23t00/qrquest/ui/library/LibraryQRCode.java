@@ -3,24 +3,23 @@ package com.cmput301w23t00.qrquest.ui.library;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.NonNull;
-
 import java.util.Date;
 
 public class LibraryQRCode implements Parcelable {
     private String data;
-    private long score;
+    private int score;
     private Date date;
 
-    public LibraryQRCode(String data, long score, Date date) {
+    public LibraryQRCode(String data, int score, Date date) {
         this.data = data;
         this.score = score;
         this.date = date;
     }
 
     protected LibraryQRCode(Parcel in) {
-        this.data = in.readString();
-        this.score = in.readLong();
+        data = in.readString();
+        score = in.readInt();
+        date = new Date(in.readLong());
     }
 
     public static final Creator<LibraryQRCode> CREATOR = new Creator<LibraryQRCode>() {
@@ -43,11 +42,11 @@ public class LibraryQRCode implements Parcelable {
         this.data = data;
     }
 
-    public long getScore() {
+    public int getScore() {
         return score;
     }
 
-    public void setScore(long score) {
+    public void setScore(int score) {
         this.score = score;
     }
 
@@ -65,7 +64,7 @@ public class LibraryQRCode implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(@NonNull Parcel parcel, int i) {
+    public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(data);
     }
 }

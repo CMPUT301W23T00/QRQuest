@@ -13,16 +13,13 @@
             android:id="@+id/view_personal_qr_stats_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_qr_stats_button"
-            android:text="@string/view_qr_code_stats"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_margin="25dp" />
         <View
             android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="@drawable/qr_library_list_divider" />
+            android:layout_height="3dp"/>
         <ListView
             android:id="@+id/library_qr_codes_list"
             android:layout_width="match_parent"
