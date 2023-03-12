@@ -7,12 +7,28 @@
     tools:context=".ui.addqrcode.AddQRCodeFragment">
 
     <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-134dp">
 
         <com.budiyev.android.codescanner.CodeScannerView
             android:id="@+id/scanner_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="517dp">
+
+
+        </com.budiyev.android.codescanner.CodeScannerView>
     </FrameLayout>
+
+    <Button
+        android:id="@+id/clickbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/click"
+        app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/frameLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>
