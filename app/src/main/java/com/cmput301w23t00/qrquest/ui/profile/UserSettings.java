@@ -22,10 +22,10 @@ public class UserSettings {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static Boolean geoLocation = true;
     private static Boolean pushNotifications = true;
-    private String userId = "ivqEiEof56L80Z2gkhfI";
+    private static String userId = "ivqEiEof56L80Z2gkhfI";
 
     public UserSettings() {
-        this.db.collection("users").document("ivqEiEof56L80Z2gkhfI").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        this.db.collection("users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @SuppressLint("RestrictedApi")
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
