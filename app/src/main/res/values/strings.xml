@@ -10,4 +10,15 @@
     <string name="summary_sum_of_scores_of_qr_codes_scanned">Sum of Scores of QR Codes Scanned</string>
     <string name="summary_lowest_scoring">Lowest Scoring</string>
     <string name="summary_highest_scoring">Highest Scoring</string>
+    <string name="name">Name</string>
+    <string name="exampleName">Grug</string>
+    <string name="phone">Phone</string>
+    <string name="examplePhone">780–694–2000</string>
+    <string name="email">Email</string>
+    <string name="exampleEmail">grug@gmail.com</string>
+    <string name="create">Create</string>
+    <string name="about_me">About Me</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="intro_logo">Intro Logo</string>
 </resources>

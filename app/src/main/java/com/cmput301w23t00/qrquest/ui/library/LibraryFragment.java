@@ -1,17 +1,13 @@
 package com.cmput301w23t00.qrquest.ui.library;
 
-import static androidx.fragment.app.FragmentManager.TAG;
-
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -19,48 +15,37 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentLibraryBinding;
-import com.cmput301w23t00.qrquest.ui.library.qrCodeSummaryStatistics.QrCodeSummaryStatisticsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.installations.FirebaseInstallations;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.Locale;
 
 public class LibraryFragment extends Fragment {
-    private String userID;
     private long highestScore;
     private long lowestScore;
     private long sumOfScores;
     private long totalScanned;
     private FragmentLibraryBinding binding;
-    private ListView QRList;
     private ArrayAdapter<LibraryQRCode> QRAdapter;
     private ArrayList<LibraryQRCode> dataList;
     FirebaseFirestore db;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        LibraryViewModel libraryViewModel =
-                new ViewModelProvider(this).get(LibraryViewModel.class);
-        Log.d("Loaded1", "222");
+//        LibraryViewModel libraryViewModel =
+//                new ViewModelProvider(this).get(LibraryViewModel.class);
+
         binding = FragmentLibraryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         // QR Code List
         db = FirebaseFirestore.getInstance();
-        final CollectionReference userCollectionReference = db.collection("users");
         final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
         final CollectionReference qrcodesCollectionReference = db.collection("qrcodes");
 
@@ -69,12 +54,10 @@ public class LibraryFragment extends Fragment {
         totalScanned = 0;
         lowestScore = -1;
 
-        QRList = binding.libraryQrCodesList;
+        ListView QRList = binding.libraryQrCodesList;
         dataList = new ArrayList<>();
-        Log.d("userID", "0");
         //userID = FirebaseInstallations.getInstance().getId().toString();
-        userID = "com.google.android.gms.tasks.zzw@b2bf36a";
-        Log.d("userID", userID);
+        String userID = "com.google.android.gms.tasks.zzw@b2bf36a";
         QRAdapter = new LibraryQRCodeAdapter(getActivity(), dataList);
         QRList.setAdapter(QRAdapter);
         usersQRCodesCollectionReference.whereEqualTo("identifierID", userID)
@@ -92,12 +75,12 @@ public class LibraryFragment extends Fragment {
                                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                 if (task.isSuccessful()) {
                                                     for (QueryDocumentSnapshot document : task.getResult()) {
-                                                        Long score = (long) document.getData().get("score");
-                                                        highestScore = score > highestScore ? score : highestScore;
+                                                        long score = (long) document.getData().get("score");
+                                                        highestScore = Math.max(score, highestScore);
                                                         if (lowestScore == -1) {
                                                             lowestScore = score;
                                                         } else {
-                                                            lowestScore = score < lowestScore ? score : lowestScore;
+                                                            lowestScore = Math.min(lowestScore, score);
                                                         }
                                                         sumOfScores += score;
                                                         totalScanned += 1;

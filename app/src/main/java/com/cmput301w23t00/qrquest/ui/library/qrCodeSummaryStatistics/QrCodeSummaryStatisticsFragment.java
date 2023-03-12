@@ -2,7 +2,6 @@ package com.cmput301w23t00.qrquest.ui.library.qrCodeSummaryStatistics;
 
 import static androidx.navigation.fragment.FragmentKt.findNavController;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -10,8 +9,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,7 +21,6 @@ import android.widget.TextView;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentQrCodeSummaryStatisticsBinding;
 
-import org.w3c.dom.Text;
 
 import java.util.Locale;
 
