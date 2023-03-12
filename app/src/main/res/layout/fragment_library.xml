@@ -5,27 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.library.LibraryFragment">
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <Button
-            android:id="@+id/view_personal_qr_stats_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_margin="25dp" />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="3dp"/>
-        <ListView
-            android:id="@+id/library_qr_codes_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:headerDividersEnabled="true" />
-    </LinearLayout>
 
+
+    <TextView
+        android:id="@+id/textLibrary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_qrcode_library"
+        tools:layout_editor_absoluteX="172dp"
+        tools:layout_editor_absoluteY="355dp"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
