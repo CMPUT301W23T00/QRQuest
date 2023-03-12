@@ -1,6 +1,5 @@
 package com.cmput301w23t00.qrquest.ui.library.qrcodeinformation;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,6 +17,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentQrcodeinformationBinding;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * The class  QR code information fragment extends fragment
@@ -26,10 +26,11 @@ import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
  */
 public class QRCodeInformationFragment extends Fragment {
 
-    private FragmentQrcodeinformationBinding binding;
+    private FragmentQrcodeinformationBinding binding; // view binding object for the fragment
+    String userID; // a string to hold the current user's ID
+    FirebaseFirestore db; // Firestore database instance
 
     /**
-     *
      * onCreateView is called when the view is first created.
      * It inflates the view and sets up the QRCodeInformationViewModel to display the QR code information.
      *
@@ -38,7 +39,6 @@ public class QRCodeInformationFragment extends Fragment {
      * @param savedInstanceState the previously saved instance state
      * @return the view for the fragment's UI
      */
-    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -51,10 +51,13 @@ public class QRCodeInformationFragment extends Fragment {
         binding = FragmentQrcodeinformationBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        // Retrieve data passed in from the previous fragment
         Bundle bundle = getArguments();
         if (bundle != null) {
             LibraryQRCode qrCode = bundle.getParcelable("selectedQRCode");
+            userID = bundle.getString("userID");
             if (qrCode != null) {
+                // Update the ViewModel with the information of the selected QR code
                 qrCodeInformationViewModel.setQRCodeInfo(qrCode.getData(), "test description");
             }
         }
@@ -65,7 +68,6 @@ public class QRCodeInformationFragment extends Fragment {
     }
 
     /**
-     *
      * onCreate is called to do initial creation of the fragment.
      *
      * @param savedInstanceState the previously saved instance state
@@ -78,7 +80,6 @@ public class QRCodeInformationFragment extends Fragment {
     }
 
     /**
-     *
      * onCreateOptionsMenu initializes the contents of the Activity's standard options menu.
      * @param menu the options menu in which you place your items
      * @param inflater the MenuInflater object that can be used to inflate any views in the menu
@@ -91,6 +92,12 @@ public class QRCodeInformationFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    /**
+     * onOptionsItemSelected is called when a menu item is selected.
+     *
+     * @param item The menu item that was selected
+     * @return True if the menu item was handled, false otherwise.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -118,12 +125,12 @@ public class QRCodeInformationFragment extends Fragment {
 
         // Back arrow
         if (item.getItemId() == android.R.id.home) {
-            // Handle the back arrow click here
             // Navigate back to the previous fragment
             NavHostFragment.findNavController(this).navigate(R.id.qrCodeInformationFragment_to_action_libraryFragment);
             return true;
         }
 
+        // delete qr code button
         if (id == R.id.qr_delete) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogTheme);
             builder.setCancelable(true);
@@ -131,7 +138,12 @@ public class QRCodeInformationFragment extends Fragment {
             builder.setPositiveButton("Confirm",
                     (dialog, which) -> {
                         // Add code to delete the QR code here
+//                        db = FirebaseFirestore.getInstance();
+//                        final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
+//                        final CollectionReference qrcodesCollectionReference = db.collection("qrcodes");
+
                     });
+
             builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
                 // Code to handle the cancel button here
                 dialog.dismiss();
@@ -147,7 +159,6 @@ public class QRCodeInformationFragment extends Fragment {
     }
 
     /**
-     *
      * onDestroyView is called when the view is destroyed.
      * It cleans up any references to the binding to prevent memory leaks.
      */
