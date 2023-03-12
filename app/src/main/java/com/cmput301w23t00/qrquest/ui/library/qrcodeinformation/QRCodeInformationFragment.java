@@ -17,7 +17,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentQrcodeinformationBinding;
-import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
 
 /**
  * The class  QR code information fragment extends fragment
@@ -51,15 +50,16 @@ public class QRCodeInformationFragment extends Fragment {
         binding = FragmentQrcodeinformationBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            LibraryQRCode qrCode = bundle.getParcelable("selectedQRCode");
-            if (qrCode != null) {
-                qrCodeInformationViewModel.setQRCodeInfo(qrCode.getData(), "test description");
-            }
-        }
-
-        binding.setViewModel(qrCodeInformationViewModel);
+        // uncomment this after library is complete
+//        Bundle bundle = getArguments();
+//        if (bundle != null) {
+//            LibraryQRCode qrCode = bundle.getParcelable("selectedQRCode");
+//            if (qrCode != null) {
+//                qrCodeInformationViewModel.setQRCodeInfo(qrCode.getData(), "test description");
+//            }
+//        }
+//
+//        binding.setViewModel(qrCodeInformationViewModel);
 
         return root;
     }
