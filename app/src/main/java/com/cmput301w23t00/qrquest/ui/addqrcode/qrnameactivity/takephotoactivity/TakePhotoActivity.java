@@ -19,7 +19,9 @@ import androidx.lifecycle.LifecycleOwner;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -126,7 +128,10 @@ public class TakePhotoActivity extends AppCompatActivity implements ImageAnalysi
                 new ImageCapture.OnImageSavedCallback() {
                     @Override
                     public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
-                        Toast.makeText(TakePhotoActivity.this, "Photo has been saved successfully.", Toast.LENGTH_SHORT).show();
+                        Intent returnIntent = new Intent();
+                        returnIntent.putExtra("ImageDataUri", outputFileResults.getSavedUri().toString());
+                        setResult(RESULT_OK, returnIntent);
+                        finish();
                     }
 
                     @Override
