@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.core.ImageCapture;
 
 import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
@@ -43,5 +44,16 @@ public class QrNameActivity extends AppCompatActivity {
         Intent qrCodeIntent = getIntent();
         String qrCodeData = Objects.requireNonNull(qrCodeIntent).getStringExtra("qrCodeData");
 
+        ImageView imgview =  findViewById(R.id.main_backgroundImage);
+
+        imgview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ImageCapture imageCapture =
+                        new ImageCapture.Builder()
+                                .setTargetRotation(view.getDisplay().getRotation())
+                                .build();
+            }
+        }
     }
 }
