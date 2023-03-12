@@ -16,7 +16,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:contentDescription="@string/view_qr_code_stats" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -29,15 +30,15 @@
             android:id="@+id/library_qr_code_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="QR Code Name"
+            android:text="@string/qr_code_name"
             android:textColor="@color/black"
-            android:textStyle="bold"></TextView>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/library_qr_code_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="QR Code Score"></TextView>
+            android:text="@string/qr_code_name" />
     </LinearLayout>
 
     <LinearLayout
@@ -52,7 +53,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_qr_library_date"
             android:padding="5dp"
-            android:text="QR Code Date"
+            android:text="@string/qr_code_name"
             android:textColor="#FFFFFF">
 
         </TextView>
