@@ -31,12 +31,15 @@ public class LibraryQRCodeAdapter extends ArrayAdapter<LibraryQRCode> {
         } else {
             view = convertView;
         }
+        // Get QR code
         LibraryQRCode QRObject = getItem(position);
+        // Get textviews for QR code information
         TextView QRData = view.findViewById(R.id.library_qr_code_data);
         TextView QRDate = view.findViewById(R.id.library_qr_code_date);
         TextView QRScore = view.findViewById(R.id.library_qr_code_score);
-
+        // Format date
         SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
+        // Set QR code information on textviews
         QRData.setText(QRObject.getData());
         QRDate.setText(formatter.format(QRObject.getDate()));
         QRScore.setText(String.format(Locale.CANADA, "%d", QRObject.getScore()));
