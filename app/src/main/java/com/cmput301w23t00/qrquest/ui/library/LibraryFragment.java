@@ -1,7 +1,6 @@
 package com.cmput301w23t00.qrquest.ui.library;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.installations.FirebaseInstallations;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,6 +34,7 @@ public class LibraryFragment extends Fragment {
     private FragmentLibraryBinding binding; // View binding for the library fragment
     private ArrayAdapter<LibraryQRCode> QRAdapter; // Adapter for QR code list
     private ArrayList<LibraryQRCode> dataList; // List of QR codes to be displayed
+    private ArrayList<String> documentIDList; // List of documents
     FirebaseFirestore db; // Firebase Firestore database instance
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -46,7 +45,6 @@ public class LibraryFragment extends Fragment {
         // Connect to firebase instance and get collection references for database querying
         db = FirebaseFirestore.getInstance();
         final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
-        final CollectionReference qrcodesCollectionReference = db.collection("qrcodes");
 
         // Initialize summary statistics values
         highestScore = 0;
@@ -59,11 +57,12 @@ public class LibraryFragment extends Fragment {
         dataList = new ArrayList<>();
         QRAdapter = new LibraryQRCodeAdapter(getActivity(), dataList);
         QRList.setAdapter(QRAdapter);
+        documentIDList = new ArrayList<>();
         // TODO: REPLACE HARDCODED VALUE WITH VALUE FROM DEREK'S PREFERENCES WHEN MERGED
         //userID = FirebaseInstallations.getInstance().getId().toString();
-        String userID = "com.google.android.gms.tasks.zzw@b2bf36a";
+        String userID = "com.google.android.gms.tasks.zzw@d9cfc73";
         // Find all QR codes scanned by current user with unique identifier ID
-        usersQRCodesCollectionReference.whereEqualTo("identifierID", userID)
+        usersQRCodesCollectionReference.whereEqualTo("identifierId", userID)
                 .get().addOnCompleteListener(new OnCompleteListener<>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -90,9 +89,13 @@ public class LibraryFragment extends Fragment {
                                 totalScanned += 1;
                                 // Add found QR code to dataList to display
                                 dataList.add(new LibraryQRCode(qrCodeData, score, dateScanned));
+                                documentIDList.add(document.getId());
                                 // Update view to include newly added QR codes
                                 QRAdapter.notifyDataSetChanged();
                             }
+                        }
+                        if (lowestScore == -1) {
+                            lowestScore = 0;
                         }
                     }
                 });
@@ -117,12 +120,14 @@ public class LibraryFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
                 LibraryQRCode qrCode = dataList.get(index);
+                String docID = documentIDList.get(index);
 
                 // Create a bundle to store data that will be passed to the QR code information fragment
                 Bundle bundle = new Bundle();
                 // Add the selected QR code object and the user ID to the bundle
                 bundle.putParcelable("selectedQRCode", qrCode);
                 bundle.putString("userID", userID);
+                bundle.putString("documentID", docID);
 
                 // Use the Navigation component to navigate to the QR code information fragment,
                 // and pass the bundle as an argument to the destination fragment

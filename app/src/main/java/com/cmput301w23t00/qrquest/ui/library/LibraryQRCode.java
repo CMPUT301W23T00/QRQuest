@@ -21,6 +21,7 @@ public class LibraryQRCode implements Parcelable {
     protected LibraryQRCode(Parcel in) {
         this.data = in.readString();
         this.score = in.readLong();
+        date = new Date(in.readLong());
     }
 
     public static final Creator<LibraryQRCode> CREATOR = new Creator<LibraryQRCode>() {
@@ -67,5 +68,7 @@ public class LibraryQRCode implements Parcelable {
     @Override
     public void writeToParcel(@NonNull Parcel parcel, int i) {
         parcel.writeString(data);
+        parcel.writeInt((int) score);
+        parcel.writeLong(date.getTime());
     }
 }
