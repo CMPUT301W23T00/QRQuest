@@ -20,27 +20,37 @@ import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
 public class QRCodeInfoPageNavigationTest {
+
+    /**
+     * Sets up the activity before each test case by launching the MainActivity
+     * @throws Exception if there is an error launching the MainActivity
+     */
     @Before
     public void setUp() throws Exception {
         ActivityScenario<MainActivity> activityScenario = ActivityScenario.launch(MainActivity.class);
     }
 
+    /**
+     * Tests the navigation from the library fragment to the QR code information page
+     * by clicking on the first item in the qr code list and verifying that the information page is displayed
+     * @throws InterruptedException if there is an error with thread sleep
+     */
     @Test
     public void testQRCodeInfoPageFragmentsNavigation() throws InterruptedException {
-        // nav libraryFragment
+        // Navigate to libraryFragment
         onView(withId(R.id.navigation_qrcode_library)).perform(click());
-        // verify
+        // Verify that libraryFragment is displayed
         onView(withId(R.id.fragment_library_parent)).check(matches(isDisplayed()));
 
-        // click on the first item in the qr code list
+        // Click on the first item in the qr code list
         Thread.sleep(5000); // wait for 5 seconds
         onData(anything())
                 .inAdapterView(withId(R.id.library_qr_codes_list))
                 .atPosition(0)
                 .perform(click());
-        // verify
+        // Verify that QR code information page is displayed
         onView(withId(R.id.fragment_qr_code_info_parent)).check(matches(isDisplayed()));
-
     }
+
 
 }
