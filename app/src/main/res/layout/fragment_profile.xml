@@ -190,57 +190,26 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:layout_marginBottom="21dp"
         android:text="@string/profile_recent_codes"
         android:textAlignment="center"
         android:textStyle="bold"
         android:theme="@style/Theme.QRQuest"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
+    <ListView
+        android:id="@+id/recent_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="60dp"
-        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_recent_box">
-
-        <include
-            android:id="@+id/qr_1"
-            layout="@layout/library_qr_list_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <include
-            android:id="@+id/qr_2"
-            layout="@layout/library_qr_list_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <include
-            android:id="@+id/qr_3"
-            layout="@layout/library_qr_list_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <include
-            android:id="@+id/qr_4"
-            layout="@layout/library_qr_list_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <include
-            android:id="@+id/qr_5"
-            layout="@layout/library_qr_list_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@id/profile_recent_box"
+        tools:ignore="NestedScrolling" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

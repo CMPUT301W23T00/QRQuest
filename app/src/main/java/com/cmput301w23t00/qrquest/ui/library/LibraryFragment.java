@@ -1,5 +1,7 @@
 package com.cmput301w23t00.qrquest.ui.library;
 
+import static android.content.ContentValues.TAG;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import com.cmput301w23t00.qrquest.databinding.FragmentLibraryBinding;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -56,7 +59,8 @@ public class LibraryFragment extends Fragment {
 
         ListView QRList = binding.libraryQrCodesList;
         dataList = new ArrayList<>();
-        String userID = UserProfile.getUserId();
+        String userID = "com.google.android.gms.tasks.zzw@9bae679"; //UserProfile.getUserId();
+        Log.d(TAG, "onCreateView: test1" + userID+ "kk");
         QRAdapter = new LibraryQRCodeAdapter(getActivity(), dataList);
         QRList.setAdapter(QRAdapter);
         usersQRCodesCollectionReference.whereEqualTo("identifierID", userID)
@@ -66,6 +70,7 @@ public class LibraryFragment extends Fragment {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String qrCodeData = (String) document.getData().get("qrCodeData");
+                                Log.d(TAG, "onComplete: test2");
                                 com.google.firebase.Timestamp timestamp = (com.google.firebase.Timestamp) document.getData().get("dateScanned");
                                 Date dateScanned = timestamp.toDate();
                                 long score = new QRCodeProcessor(qrCodeData).getScore();
@@ -81,6 +86,11 @@ public class LibraryFragment extends Fragment {
                                 QRAdapter.notifyDataSetChanged();
                             }
                         }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "onFailure: test3", e);
                     }
                 });
         // QR Stats button

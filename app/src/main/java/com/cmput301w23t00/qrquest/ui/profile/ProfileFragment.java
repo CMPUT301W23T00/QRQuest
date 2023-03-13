@@ -11,7 +11,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -49,6 +51,11 @@ public class ProfileFragment extends Fragment {
     private TextView totalPointsText;
     private TextView highestScoreText;
     private TextView lowestScoreText;
+    private ListView QRlist;
+    private ArrayAdapter<LibraryQRCode> QRAdapter;
+    private ArrayList<LibraryQRCode> dataList;
+
+    private ArrayList<LinearLayout> qr_codes;
     @SuppressLint("DefaultLocale")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -64,6 +71,7 @@ public class ProfileFragment extends Fragment {
         totalPointsText = (TextView) root.findViewById(R.id.profile_total_points_count);
         highestScoreText = (TextView) root.findViewById(R.id.profile_highest_score_count);
         lowestScoreText = (TextView) root.findViewById(R.id.profile_lowest_score_count);
+        QRlist = (ListView) root.findViewById(R.id.recent_list);
 
         UserProfile userProfile = new UserProfile();
 
@@ -75,8 +83,11 @@ public class ProfileFragment extends Fragment {
         final long[] totalScanned = {0};
         final long[] lowestScore = {-1};
 
-        ArrayList<LibraryQRCode> dataList = new ArrayList<>();
+
+        dataList = new ArrayList<>();
         String userID = UserProfile.getUserId();
+        QRAdapter = new LibraryQRCodeAdapter(getActivity(), dataList);
+        QRlist.setAdapter(QRAdapter);
 
         usersQRCodesCollectionReference.whereEqualTo("identifierID", userID)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -84,6 +95,7 @@ public class ProfileFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
+
                                 String qrCodeData = (String) document.getData().get("qrCodeData");
                                 com.google.firebase.Timestamp timestamp = (com.google.firebase.Timestamp) document.getData().get("dateScanned");
                                 Date dateScanned = timestamp.toDate();
@@ -96,7 +108,10 @@ public class ProfileFragment extends Fragment {
                                 }
                                 sumOfScores[0] += score;
                                 totalScanned[0] += 1;
-                                dataList.add(new LibraryQRCode(qrCodeData, score, dateScanned));
+                                if (totalScanned[0] <= 5) {
+                                    dataList.add(new LibraryQRCode(qrCodeData, score, dateScanned));
+                                }
+                                QRAdapter.notifyDataSetChanged();
                             }
                         }
                     }
