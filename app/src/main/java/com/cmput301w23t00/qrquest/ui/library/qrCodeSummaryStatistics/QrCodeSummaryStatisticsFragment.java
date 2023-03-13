@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +22,7 @@ import java.util.Locale;
 
 public class QrCodeSummaryStatisticsFragment extends Fragment {
 
-    private FragmentQrCodeSummaryStatisticsBinding binding;
+    private FragmentQrCodeSummaryStatisticsBinding binding; // View binding for the library fragment
     public static QrCodeSummaryStatisticsFragment newInstance() {
         return new QrCodeSummaryStatisticsFragment();
     }
@@ -31,19 +30,26 @@ public class QrCodeSummaryStatisticsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        Log.d("loaded2", "111");
         binding = FragmentQrCodeSummaryStatisticsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        // Get textviews for summary statistics
         TextView highestScoreText = binding.summaryHighestScore;
         TextView lowestScoreText = binding.summaryLowestScore;
         TextView sumOfScoresText = binding.summarySumOfScores;
         TextView totalScannedText = binding.summaryTotalScanned;
 
-        highestScoreText.setText(String.format(Locale.CANADA,"%d", getArguments().getLong("highestScore")));
-        lowestScoreText.setText(String.format(Locale.CANADA,"%d", getArguments().getLong("lowestScore")));
-        sumOfScoresText.setText(String.format(Locale.CANADA,"%d", getArguments().getLong("sumOfScores")));
-        totalScannedText.setText(String.format(Locale.CANADA,"%d", getArguments().getLong("totalScanned")));
+        // Get summary statistics from bundle
+        long highestScore = getArguments().getLong("highestScore");
+        long lowestScore = getArguments().getLong("lowestScore");
+        long sumOfScores = getArguments().getLong("sumOfScores");
+        long totalScanned = getArguments().getLong("totalScanned");
+
+        // Set textview texts with summary statistics from library fragment bundle
+        highestScoreText.setText(String.format(Locale.CANADA,"%d", highestScore));
+        lowestScoreText.setText(String.format(Locale.CANADA,"%d", lowestScore));
+        sumOfScoresText.setText(String.format(Locale.CANADA,"%d", sumOfScores));
+        totalScannedText.setText(String.format(Locale.CANADA,"%d", totalScanned));
         return root;
     }
 
@@ -62,7 +68,7 @@ public class QrCodeSummaryStatisticsFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home) { // Navigate to library fragment if back button is pressed
             NavHostFragment.findNavController(this).navigate(R.id.action_qrCodeSummaryStatisticsFragment2_to_navigation_qrcode_library2);
             return true;
         }
