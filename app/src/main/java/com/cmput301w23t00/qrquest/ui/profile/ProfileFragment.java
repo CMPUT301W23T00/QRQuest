@@ -114,6 +114,7 @@ public class ProfileFragment extends Fragment {
                             highestScoreText.setText(String.format("%d", (int) highestScore[0]));
                             lowestScoreText.setText(String.format("%d", (int) lowestScore[0]));
                             totalPointsText.setText(String.format("%d", (int) sumOfScores[0]));
+                            QRlist.setMinimumHeight(100*dataList.size());
                         }
                     }
                 });
@@ -122,9 +123,6 @@ public class ProfileFragment extends Fragment {
         aboutMe.setText(UserProfile.getAboutMe());
         phoneNumber.setText(String.format("Phone: %s", UserProfile.getPhoneNumber()));
         email.setText(String.format("Email: %s", UserProfile.getEmail()));
-        highestScoreText.setText(String.format("%d", (int) highestScore[0]));
-        lowestScoreText.setText(String.format("%d", 0));
-        totalPointsText.setText(String.format("%d", (int) sumOfScores[0]));
 
         setHasOptionsMenu(true);
 
