@@ -26,6 +26,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * The LibraryFragment class extends the Fragment class and provides a
+ * fragment that displays all of the users QR codes.
+ */
 public class LibraryFragment extends Fragment {
     private long highestScore; // Highest QR code score for QR code summary statistics fragment
     private long lowestScore; // Lowest QR code score for QR code summary statistics fragment
@@ -36,6 +40,14 @@ public class LibraryFragment extends Fragment {
     private ArrayList<LibraryQRCode> dataList; // List of QR codes to be displayed
     private ArrayList<String> documentIDList; // List of documents
     FirebaseFirestore db; // Firebase Firestore database instance
+    /**
+     * onCreateView inflates the view, showing a user's collection of QR codes with a button to see
+     * summary statistics
+     * @param inflater the LayoutInflater object that can be used to inflate any views in the fragment
+     * @param container the parent view that the fragment's UI should be attached to
+     * @param savedInstanceState the previously saved instance state
+     * @return the view for the fragment's UI
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -139,6 +151,10 @@ public class LibraryFragment extends Fragment {
         return root;
     }
 
+    /**
+     * onDestroyView is called when the view is destroyed.
+     * It cleans up any references to the binding to prevent memory leaks.
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();

@@ -17,16 +17,32 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
+/**
+ * This class represents an ArrayAdapter for LibraryQRCodes
+ */
 public class LibraryQRCodeAdapter extends ArrayAdapter<LibraryQRCode> {
-
+    /**
+     * Constructor for LibraryQRCodeAdapter
+     * @param context information about the application environment
+     * @param QRCodes list of QR codes
+     */
     public LibraryQRCodeAdapter(Context context, ArrayList<LibraryQRCode> QRCodes) {
         super(context, 0,QRCodes);
     }
+
+    /**
+     * getView inflates the view, showing a user's collection of QR codes
+     * and returns the modified view
+     * @param position position of the QR code in the list
+     * @param convertView view to be converted to display QR code item
+     * @param parent parent view containing group of views
+     * @return view of the new QR code item
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view;
-        if (convertView == null) {
+        if (convertView == null) { // if layout is not inflated, inflate
             view = LayoutInflater.from(getContext()).inflate(R.layout.library_qr_list_content,
                     parent, false);
         } else {
