@@ -45,17 +45,16 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-
-        UserSettings userSettings = new UserSettings();
         SharedPreferences settings = getSharedPreferences(SETTINGS_PREFS_NAME, MODE_PRIVATE);
         if (UserSettings.getCreated()) {
+            UserSettings userSettings = new UserSettings();
             userSettings.setPushNotifications(settings.getBoolean("PushNotifications", false));
             userSettings.setGeoLocation(settings.getBoolean("GeoLocation", false));
         }
 
-        UserProfile userProfile = new UserProfile();
         SharedPreferences profile = getSharedPreferences(USER_PROFILE_INFORMATION, MODE_PRIVATE);
         if (UserProfile.getCreated()) {
+            UserProfile userProfile = new UserProfile();
             userProfile.setAboutMe(profile.getString("aboutMe", ""));
             userProfile.setPhoneNumber(profile.getString("phoneNumber", ""));
             userProfile.setEmail(profile.getString("email", ""));
