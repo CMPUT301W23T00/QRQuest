@@ -4,6 +4,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+/**
+ * Type view model for Search Fragment
+ */
 public class SearchViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;

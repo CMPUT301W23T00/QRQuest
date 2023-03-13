@@ -12,10 +12,21 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.cmput301w23t00.qrquest.databinding.FragmentSearchBinding;
 
+/**
+ * SearchFragment is an template class not yet with fully implemented functionality
+ */
 public class SearchFragment extends Fragment {
 
     private FragmentSearchBinding binding;
 
+    /**
+     * onCreateView inflates the view, showing a user's collection of QR codes with a button to see
+     * summary statistics
+     * @param inflater the LayoutInflater object that can be used to inflate any views in the fragment
+     * @param container the parent view that the fragment's UI should be attached to
+     * @param savedInstanceState the previously saved instance state
+     * @return the view for the fragment's UI
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         SearchViewModel searchViewModel =
@@ -29,6 +40,10 @@ public class SearchFragment extends Fragment {
         return root;
     }
 
+    /**
+     * onDestroyView is called when the view is destroyed.
+     * It cleans up any references to the binding to prevent memory leaks.
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
