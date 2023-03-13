@@ -40,6 +40,7 @@ import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.addqrcode.qrnameactivity.takephotoactivity.TakePhotoActivity;
 import com.cmput301w23t00.qrquest.ui.createaccount.CreateAccount;
+import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -188,7 +189,7 @@ public class QrNameActivity extends AppCompatActivity {
                 }
 
 
-                String fid = FirebaseInstallations.getInstance().getId().toString();
+                String fid = UserProfile.getUserId();
 
                 @SuppressLint("SimpleDateFormat")
                 DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");

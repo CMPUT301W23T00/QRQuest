@@ -111,8 +111,6 @@ public class CreateAccount extends AppCompatActivity {
                 userValue.put("recordGeoLocationByDefault", true);
                 userValue.put("identifierId", fid);
 
-                UserProfile.setUserId(fid);
-
                 db.collection("users")
                         .add(userValue)
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

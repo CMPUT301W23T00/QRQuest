@@ -9,8 +9,10 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.cmput301w23t00.qrquest.MainActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -24,22 +26,22 @@ public class UserSettings {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static Boolean geoLocation = true;
     private static Boolean pushNotifications = true;
-    private static String userId = FirebaseInstallations.getInstance().getId().toString();
+    private static String userId;
     private static Boolean created = false;
 
     public UserSettings() {
-        this.db.collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @SuppressLint("RestrictedApi")
+        this.db.collection("users").whereEqualTo("identifierId", userId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                Log.d(TAG, "onSuccess: Document obtained");
-                geoLocation = queryDocumentSnapshots.getDocuments().get(0).getBoolean("recordGeoLocationByDefault");
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    geoLocation = task.getResult().getDocuments().get(0).getBoolean("recordGeoLocationByDefault");
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @SuppressLint("RestrictedApi")
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.e(TAG, "onFailure: Document not obtained", e);
+                Log.e(TAG, "onFailure: ", e);
             }
         });
     }
@@ -67,7 +69,7 @@ public class UserSettings {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
-                DocumentReference documentReference = documentSnapshot.getDocumentReference("recordGeoLocationByDefault");
+                DocumentReference documentReference = documentSnapshot.getReference();
                 documentReference.update("recordGeoLocationByDefault", geoLocation);
             }
         });
@@ -75,5 +77,9 @@ public class UserSettings {
 
     public static void setCreated(Boolean created) {
         UserSettings.created = created;
+    }
+
+    public static void setUserId(String userId) {
+        UserSettings.userId = userId;
     }
 }

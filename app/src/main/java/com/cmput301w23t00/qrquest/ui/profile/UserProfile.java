@@ -8,11 +8,14 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class UserProfile {
 
@@ -27,18 +30,18 @@ public class UserProfile {
 
     public UserProfile() {
         //only occurs when app is initially opened
-        if (firstInstantiation) {
-            this.db.collection("users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @SuppressLint("RestrictedApi")
+        if (!firstInstantiation) {
+            this.db.collection("users").whereEqualTo("identifierId", userId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    Log.d(TAG, "onSuccess: Accessed user information");
-                    aboutMe = documentSnapshot.getString("aboutMe");
-                    phoneNumber = documentSnapshot.getString("phoneNumber");
-                    email = documentSnapshot.getString("email");
-                    name = documentSnapshot.getString("name");
-                    firstInstantiation = false;
-                    created = true;
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        aboutMe = task.getResult().getDocuments().get(0).getString("aboutMe");
+                        phoneNumber = task.getResult().getDocuments().get(0).getString("phoneNumber");
+                        email = task.getResult().getDocuments().get(0).getString("email");
+                        name = task.getResult().getDocuments().get(0).getString("name");
+                        firstInstantiation = false;
+                        created = true;
+                    }
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @SuppressLint("RestrictedApi")
@@ -81,33 +84,68 @@ public class UserProfile {
     public void setAboutMe(String aboutMe) {
         UserProfile.aboutMe = aboutMe;
 
-        DocumentReference docRef = this.db.collection("users").document(this.userId);
-        docRef.update("aboutMe", aboutMe);
+        db.collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                DocumentReference documentReference = documentSnapshot.getReference();
+                documentReference.update("aboutMe", aboutMe);
+            }
+        });
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        UserProfile.phoneNumber = phoneNumber;
+        this.phoneNumber = phoneNumber;
 
-        DocumentReference docRef = this.db.collection("users").document(this.userId);
-        docRef.update("phoneNumber", phoneNumber);
+        db.collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                DocumentReference documentReference = documentSnapshot.getReference();
+                documentReference.update("phoneNumber", phoneNumber);
+            }
+        });
     }
 
     public void setEmail(String email) {
         UserProfile.email = email;
 
-        DocumentReference docRef = this.db.collection("users").document(this.userId);
-        docRef.update("email", email);
+        db.collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                DocumentReference documentReference = documentSnapshot.getReference();
+                documentReference.update("email", email);
+            }
+        });
     }
 
     public void setName(String name) {
         UserProfile.name = name;
 
-        DocumentReference docRef = this.db.collection("users").document(this.userId);
-        docRef.update("name", name);
+        db.collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                DocumentReference documentReference = documentSnapshot.getReference();
+                documentReference.update("name", name);
+            }
+        });
     }
 
     public static void setUserId(String userId) {
         UserProfile.userId = userId;
+    }
+
+    public void setUserId2(String userId) {
+        db.collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                DocumentReference documentReference = documentSnapshot.getReference();
+                documentReference.update("identifierId", userId);
+            }
+        });
     }
 
     public static void setCreated(Boolean created) {

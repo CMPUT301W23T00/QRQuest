@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".ui.profile.ProfileFragment">
 
     <ImageView
@@ -32,7 +35,6 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="177dp"
         android:layout_marginBottom="10dp"
-        android:text="TextView"
         android:textSize="20sp"
         android:textStyle="bold"
         android:theme="@style/Theme.QRQuest"
@@ -50,7 +52,6 @@
         android:layout_marginTop="3dp"
         android:layout_marginEnd="177dp"
         android:layout_marginBottom="10dp"
-        android:text="TextView"
         android:theme="@style/Theme.QRQuest"
         app:layout_constraintBottom_toTopOf="@+id/profile_contact_information_box"
         app:layout_constraintEnd_toEndOf="parent"
@@ -73,12 +74,10 @@
 
     <TextView
         android:id="@+id/profile_phone_number"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="176dp"
-        android:layout_marginEnd="177dp"
+        android:layout_marginStart="124dp"
         android:layout_marginBottom="2dp"
-        android:text="TextView"
         android:theme="@style/Theme.QRQuest"
         app:layout_constraintBottom_toTopOf="@+id/profile_email"
         app:layout_constraintEnd_toEndOf="parent"
@@ -87,16 +86,13 @@
 
     <TextView
         android:id="@+id/profile_email"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="176dp"
-        android:layout_marginEnd="177dp"
+        android:layout_marginStart="124dp"
         android:layout_marginBottom="15dp"
-        android:text="TextView"
         android:theme="@style/Theme.QRQuest"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_phone_number" />
 
@@ -130,7 +126,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView"
                 android:textAlignment="center"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -157,7 +152,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView"
                 android:textAlignment="center"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -184,7 +178,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView"
                 android:textAlignment="center"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -197,13 +190,57 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="319dp"
         android:text="@string/profile_recent_codes"
         android:textAlignment="center"
         android:textStyle="bold"
         android:theme="@style/Theme.QRQuest"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="60dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_recent_box">
+
+        <include
+            android:id="@+id/qr_1"
+            layout="@layout/library_qr_list_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            android:id="@+id/qr_2"
+            layout="@layout/library_qr_list_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            android:id="@+id/qr_3"
+            layout="@layout/library_qr_list_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            android:id="@+id/qr_4"
+            layout="@layout/library_qr_list_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            android:id="@+id/qr_5"
+            layout="@layout/library_qr_list_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

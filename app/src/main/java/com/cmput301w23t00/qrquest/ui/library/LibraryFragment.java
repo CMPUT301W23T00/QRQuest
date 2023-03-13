@@ -17,6 +17,7 @@ import androidx.navigation.Navigation;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentLibraryBinding;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
+import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -55,8 +56,7 @@ public class LibraryFragment extends Fragment {
 
         ListView QRList = binding.libraryQrCodesList;
         dataList = new ArrayList<>();
-        //String userID = FirebaseInstallations.getInstance().getId().toString();
-        String userID = "com.google.android.gms.tasks.zzw@b2bf36a";
+        String userID = UserProfile.getUserId();
         QRAdapter = new LibraryQRCodeAdapter(getActivity(), dataList);
         QRList.setAdapter(QRAdapter);
         usersQRCodesCollectionReference.whereEqualTo("identifierID", userID)

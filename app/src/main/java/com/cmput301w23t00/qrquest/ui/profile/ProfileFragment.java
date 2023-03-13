@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,8 +25,20 @@ import androidx.lifecycle.ViewModelProvider;
 import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentProfileBinding;
+import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
+import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
+import com.cmput301w23t00.qrquest.ui.library.LibraryQRCodeAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 public class ProfileFragment extends Fragment {
 
@@ -33,9 +46,10 @@ public class ProfileFragment extends Fragment {
     private TextView aboutMe;
     private TextView phoneNumber;
     private TextView email;
-    private TextView totalPoints;
-    private TextView highestScore;
-    private TextView lowestScore;
+    private TextView totalPointsText;
+    private TextView highestScoreText;
+    private TextView lowestScoreText;
+    @SuppressLint("DefaultLocale")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         ProfileViewModel profileViewModel =
@@ -47,16 +61,55 @@ public class ProfileFragment extends Fragment {
         aboutMe = (TextView) root.findViewById(R.id.profile_bio);
         phoneNumber = (TextView) root.findViewById(R.id.profile_phone_number);
         email = (TextView) root.findViewById(R.id.profile_email);
-        totalPoints = (TextView) root.findViewById(R.id.profile_total_points_count);
-        highestScore = (TextView) root.findViewById(R.id.profile_highest_score_count);
-        lowestScore = (TextView) root.findViewById(R.id.profile_lowest_score_count);
+        totalPointsText = (TextView) root.findViewById(R.id.profile_total_points_count);
+        highestScoreText = (TextView) root.findViewById(R.id.profile_highest_score_count);
+        lowestScoreText = (TextView) root.findViewById(R.id.profile_lowest_score_count);
 
         UserProfile userProfile = new UserProfile();
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
+
+        final long[] highestScore = {0};
+        final long[] sumOfScores = {0};
+        final long[] totalScanned = {0};
+        final long[] lowestScore = {-1};
+
+        ArrayList<LibraryQRCode> dataList = new ArrayList<>();
+        String userID = UserProfile.getUserId();
+
+        usersQRCodesCollectionReference.whereEqualTo("identifierID", userID)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String qrCodeData = (String) document.getData().get("qrCodeData");
+                                com.google.firebase.Timestamp timestamp = (com.google.firebase.Timestamp) document.getData().get("dateScanned");
+                                Date dateScanned = timestamp.toDate();
+                                long score = new QRCodeProcessor(qrCodeData).getScore();
+                                highestScore[0] = Math.max(score, highestScore[0]);
+                                if (lowestScore[0] == -1) {
+                                    lowestScore[0] = score;
+                                } else {
+                                    lowestScore[0] = Math.min(lowestScore[0], score);
+                                }
+                                sumOfScores[0] += score;
+                                totalScanned[0] += 1;
+                                dataList.add(new LibraryQRCode(qrCodeData, score, dateScanned));
+                            }
+                        }
+                    }
+                });
+        if (lowestScore[0] == -1) lowestScore[0] = 0;
 
         name.setText(UserProfile.getName());
         aboutMe.setText(UserProfile.getAboutMe());
         phoneNumber.setText(String.format("Phone: %s", UserProfile.getPhoneNumber()));
         email.setText(String.format("Email: %s", UserProfile.getEmail()));
+        highestScoreText.setText(String.format("%d", (int) highestScore[0]));
+        lowestScoreText.setText(String.format("%d", (int) lowestScore[0]));
+        totalPointsText.setText(String.format("%d", (int) sumOfScores[0]));
 
         setHasOptionsMenu(true);
 
