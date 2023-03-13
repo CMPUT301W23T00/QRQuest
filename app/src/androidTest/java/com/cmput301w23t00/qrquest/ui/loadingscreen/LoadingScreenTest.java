@@ -16,6 +16,7 @@ import com.cmput301w23t00.qrquest.R;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -37,7 +38,7 @@ public class LoadingScreenTest {
 
     @Test
     public void testLoadingScreenLayoutDisplayed() {
-        onView(withId(R.id.edit_account_parent)).check(matches(isDisplayed()));
+        onView(withId(R.id.loading_screen_parent)).check(matches(isDisplayed()));
     }
 
     // Elements of LoadingScreen displayed
