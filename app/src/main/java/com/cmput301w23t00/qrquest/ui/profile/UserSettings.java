@@ -28,18 +28,22 @@ import com.google.firestore.v1.WriteResult;
  * intermediary between the server and the user interface when information is updated
  */
 public class UserSettings {
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestore db;
     private static Boolean geoLocation = true;
-    private static Boolean pushNotifications = true;
+    private static Boolean pushNotifications = false;
     private static String userId = UserProfile.getUserId();
     private static Boolean created = false;
 
+    public UserSettings(Boolean test) {
+        db = null;
+    }
 
     /**
      * UserSettings constructor, updates the user geo-location settings from the server
      * if the values are differeing when UserSettings is called
      */
     public UserSettings() {
+        db = FirebaseFirestore.getInstance();
         this.db.collection("users").whereEqualTo("identifierId", userId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -96,14 +100,20 @@ public class UserSettings {
     public void setGeoLocation(Boolean geoLocation) {
         this.geoLocation = geoLocation;
         // Update an existing document
-        db.collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
-                DocumentReference documentReference = documentSnapshot.getReference();
-                documentReference.update("recordGeoLocationByDefault", geoLocation);
-            }
-        });
+        if (db != null) {
+            db.collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                    DocumentReference documentReference = documentSnapshot.getReference();
+                    documentReference.update("recordGeoLocationByDefault", geoLocation);
+                }
+            });
+        }
+    }
+
+    public static void setUserId(String userId) {
+        UserSettings.userId = userId;
     }
 
     /**

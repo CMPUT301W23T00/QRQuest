@@ -32,6 +32,9 @@ public class UserProfile {
     private static Boolean firstInstantiation = true;
     private static Boolean created = false;
 
+    public UserProfile(Boolean test) {
+        userId = null;
+    }
     /**
      * UserProfile constructor, on firstInstantiation of the class the user information is
      * updated to match that of the server and then sets firstInstantiation to false
@@ -118,14 +121,16 @@ public class UserProfile {
     public static void setAboutMe(String aboutMe) {
         UserProfile.aboutMe = aboutMe;
 
-        FirebaseFirestore.getInstance().collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
-                DocumentReference documentReference = documentSnapshot.getReference();
-                documentReference.update("aboutMe", aboutMe);
-            }
-        });
+        if (userId != null) {
+            FirebaseFirestore.getInstance().collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                    DocumentReference documentReference = documentSnapshot.getReference();
+                    documentReference.update("aboutMe", aboutMe);
+                }
+            });
+        }
     }
 
     /**
@@ -136,14 +141,16 @@ public class UserProfile {
     public static void setPhoneNumber(String phoneNumber) {
         UserProfile.phoneNumber = phoneNumber;
 
-        FirebaseFirestore.getInstance().collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
-                DocumentReference documentReference = documentSnapshot.getReference();
-                documentReference.update("phoneNumber", phoneNumber);
-            }
-        });
+        if (userId != null) {
+            FirebaseFirestore.getInstance().collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                    DocumentReference documentReference = documentSnapshot.getReference();
+                    documentReference.update("phoneNumber", phoneNumber);
+                }
+            });
+        }
     }
 
     /**
@@ -154,14 +161,16 @@ public class UserProfile {
     public static void setEmail(String email) {
         UserProfile.email = email;
 
-        FirebaseFirestore.getInstance().collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
-                DocumentReference documentReference = documentSnapshot.getReference();
-                documentReference.update("email", email);
-            }
-        });
+        if (userId != null) {
+            FirebaseFirestore.getInstance().collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                    DocumentReference documentReference = documentSnapshot.getReference();
+                    documentReference.update("email", email);
+                }
+            });
+        }
     }
 
     /**
@@ -172,14 +181,16 @@ public class UserProfile {
     public static void setName(String name) {
         UserProfile.name = name;
 
-        FirebaseFirestore.getInstance().collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
-                DocumentReference documentReference = documentSnapshot.getReference();
-                documentReference.update("name", name);
-            }
-        });
+        if (userId != null) {
+            FirebaseFirestore.getInstance().collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                    DocumentReference documentReference = documentSnapshot.getReference();
+                    documentReference.update("name", name);
+                }
+            });
+        }
     }
 
     /**
