@@ -18,18 +18,18 @@
         android:layout_width="130dp"
         android:layout_height="130dp"
         android:layout_marginStart="141dp"
-        android:layout_marginTop="83dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="142dp"
         android:layout_marginBottom="13dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/title_profile"
         android:scaleType="centerCrop"
+        android:src="@drawable/grug"
         android:theme="@style/Theme.QRQuest"
         app:layout_constraintBottom_toTopOf="@+id/profile_username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/grug" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/profile_username"
@@ -108,7 +108,8 @@
         app:layout_constraintBottom_toTopOf="@+id/profile_recent_box"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_email">
+        app:layout_constraintTop_toBottomOf="@+id/profile_email"
+        android:baselineAligned="false">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -123,7 +124,8 @@
                 android:layout_weight="1"
                 android:text="@string/profile_total_points"
                 android:textAlignment="center"
-                android:theme="@style/Theme.QRQuest" />
+                android:theme="@style/Theme.QRQuest"
+                tools:ignore="NestedWeights" />
 
             <TextView
                 android:id="@+id/profile_total_points_count"
@@ -150,7 +152,8 @@
                 android:layout_weight="1"
                 android:text="@string/profile_highest_score"
                 android:textAlignment="center"
-                android:theme="@style/Theme.QRQuest" />
+                android:theme="@style/Theme.QRQuest"
+                tools:ignore="NestedWeights" />
 
             <TextView
                 android:id="@+id/profile_highest_score_count"
@@ -177,7 +180,8 @@
                 android:layout_weight="1"
                 android:text="@string/profile_lowest_score"
                 android:textAlignment="center"
-                android:theme="@style/Theme.QRQuest" />
+                android:theme="@style/Theme.QRQuest"
+                tools:ignore="NestedWeights" />
 
             <TextView
                 android:id="@+id/profile_lowest_score_count"
@@ -211,7 +215,7 @@
         <ListView
             android:id="@+id/recent_list"
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="400dp"
             android:layout_marginTop="20dp"
             android:headerDividersEnabled="true"
             tools:ignore="NestedScrolling" />

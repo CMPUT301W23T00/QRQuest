@@ -73,7 +73,7 @@ public class UserSettingsFragment extends Fragment{
                 restoreActionBar();
             }
         };
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);
 
         return root;
     }
