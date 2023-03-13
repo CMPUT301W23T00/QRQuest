@@ -126,13 +126,6 @@ public class QRCodeInformationFragment extends Fragment {
 //            return true;
 //        }
 //
-//        if (id == R.id.qr_visual_representation) {
-//            // Start a new activity to see a text visual representation of the QR code
-//            Intent intent1 = new Intent(this,MyActivity.class);
-//            this.startActivity(intent1);
-//            return true;
-//        }
-//
 //        if (id == R.id.qr_same_code) {
 //            // Start a new activity to see other players with the same QR code
 //            Intent intent1 = new Intent(this,MyActivity.class);

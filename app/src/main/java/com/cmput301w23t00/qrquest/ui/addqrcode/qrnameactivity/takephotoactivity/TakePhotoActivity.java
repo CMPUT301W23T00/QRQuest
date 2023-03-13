@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.cmput301w23t00.qrquest.R;
 import com.google.common.util.concurrent.ListenableFuture;
 
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 
@@ -58,6 +59,8 @@ public class TakePhotoActivity extends AppCompatActivity implements ImageAnalysi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camera_preview_activity);
+
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Add Photo");
 
         previewView = findViewById(R.id.previewView);
         bCapture = findViewById(R.id.bCapture);

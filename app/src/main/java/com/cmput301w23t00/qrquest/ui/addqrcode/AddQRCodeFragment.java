@@ -88,15 +88,19 @@ public class AddQRCodeFragment extends Fragment {
      */
     public void onResume() {
         super.onResume();
-        mCodeScanner.startPreview();
+        if (mCodeScanner != null) {
+            mCodeScanner.startPreview();
+        }
     }
 
     /**
-     * On resuming the preview
+     * On puase the preview
      */
     @Override
     public void onPause() {
-        mCodeScanner.releaseResources();
+        if (mCodeScanner != null) {
+            mCodeScanner.releaseResources();
+        }
         super.onPause();
     }
 }
