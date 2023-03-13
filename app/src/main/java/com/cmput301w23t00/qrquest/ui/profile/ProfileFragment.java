@@ -56,6 +56,15 @@ public class ProfileFragment extends Fragment {
     private ArrayList<LibraryQRCode> dataList;
 
     private ArrayList<LinearLayout> qr_codes;
+
+    /**
+     * onCreateView inflates the view, showing a user's collection of QR codes with a button to see
+     * summary statistics
+     * @param inflater the LayoutInflater object that can be used to inflate any views in the fragment
+     * @param container the parent view that the fragment's UI should be attached to
+     * @param savedInstanceState the previously saved instance state
+     * @return the view for the fragment's UI
+     */
     @SuppressLint("DefaultLocale")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -149,6 +158,10 @@ public class ProfileFragment extends Fragment {
         super.onPause();
     }
 
+    /**
+     * onDestroyView is called when the view is destroyed.
+     * It cleans up any references to the binding to prevent memory leaks.
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();

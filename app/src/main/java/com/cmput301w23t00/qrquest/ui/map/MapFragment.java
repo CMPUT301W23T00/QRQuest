@@ -26,6 +26,14 @@ public class MapFragment extends Fragment {
     MapView map;
     MyLocationNewOverlay myLocationNewOverlay;
 
+    /**
+     * onCreateView inflates the view, showing a user's collection of QR codes with a button to see
+     * summary statistics
+     * @param inflater the LayoutInflater object that can be used to inflate any views in the fragment
+     * @param container the parent view that the fragment's UI should be attached to
+     * @param savedInstanceState the previously saved instance state
+     * @return the view for the fragment's UI
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_map, null);
@@ -62,6 +70,10 @@ public class MapFragment extends Fragment {
         map.getController().animateTo(myLocation);
     }
 
+    /**
+     * onDestroyView is called when the view is destroyed.
+     * It cleans up any references to the binding to prevent memory leaks.
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();

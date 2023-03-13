@@ -249,6 +249,12 @@ public class QrNameActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * get path from Uri
+     *
+     * @param contentURI a Uri
+     * @return String
+     */
     private String getRealPathFromURI(Uri contentURI) {
         @SuppressLint("Recycle") Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
         if (cursor == null) { // Source is Dropbox or other similar local file path

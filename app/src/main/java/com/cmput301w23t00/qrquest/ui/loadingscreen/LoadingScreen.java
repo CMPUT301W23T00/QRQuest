@@ -23,6 +23,9 @@ import com.google.firebase.installations.FirebaseInstallations;
 
 import java.util.Objects;
 
+/**
+ * LoadingScreen the activity the is displayed for the first 5 seconds of runtime
+ */
 public class LoadingScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
