@@ -24,26 +24,25 @@ public class LoadingScreenTest {
 
     @Test
     public void testLoadingScreenExists() {
-        // Launch the splash screen activity
         ActivityScenario<LoadingScreen> scenario = ActivityScenario.launch(LoadingScreen.class);
         // Check that the activity is launched and not null
         scenario.onActivity(Assert::assertNotNull);
-        // Close the activity
         scenario.close();
     }
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         ActivityScenario<LoadingScreen> activityScenario = ActivityScenario.launch(LoadingScreen.class);
-    }
-    
-    @Test
-    public void testSplashScreen() {
-        onView(withId(R.id.loading_screen_parent)).check(matches(isDisplayed()));
     }
 
     @Test
-    public void testSplashScreenLogo() {
+    public void testLoadingScreenLayoutDisplayed() {
+        onView(withId(R.id.edit_account_parent)).check(matches(isDisplayed()));
+    }
+
+    // Elements of LoadingScreen displayed
+    @Test
+    public void testLoadingScreenLogoDisplayed() {
         onView(withId(R.id.lsQRCode)).check(matches(isDisplayed()));
     }
 
