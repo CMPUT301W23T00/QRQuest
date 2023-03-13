@@ -39,7 +39,7 @@ public class LoadingScreen extends AppCompatActivity {
         SharedPreferences profile = getSharedPreferences(USER_PROFILE_INFORMATION, MODE_PRIVATE);
         if (!profile.getBoolean("existingAccount", false)) {
             fid[0] = FirebaseInstallations.getInstance().getId().toString();
-
+            UserProfile.setUserId(fid[0]);
         }
         else {
             fid[0] = profile.getString("userId", "");
@@ -105,8 +105,6 @@ public class LoadingScreen extends AppCompatActivity {
                     // sends fid to CreateAccount
                     intentNoUID.putExtra("fid", fid[0]);
                     UserProfile.setUserId(fid[0]);
-                    UserProfile.setCreated(true);
-                    UserSettings.setCreated(true);
                     startActivity(intentNoUID);
                 }
                 // if fid is present, goes to MainActivity.

@@ -30,7 +30,7 @@ public class UserProfile {
 
     public UserProfile() {
         //only occurs when app is initially opened
-        if (!firstInstantiation) {
+        if (firstInstantiation && created) {
             this.db.collection("users").whereEqualTo("identifierId", userId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -135,17 +135,6 @@ public class UserProfile {
 
     public static void setUserId(String userId) {
         UserProfile.userId = userId;
-    }
-
-    public void setUserId2(String userId) {
-        db.collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
-                DocumentReference documentReference = documentSnapshot.getReference();
-                documentReference.update("identifierId", userId);
-            }
-        });
     }
 
     public static void setCreated(Boolean created) {

@@ -52,9 +52,9 @@ public class MainActivity extends AppCompatActivity {
             userSettings.setGeoLocation(settings.getBoolean("GeoLocation", false));
         }
 
+        UserProfile userProfile = new UserProfile();
         SharedPreferences profile = getSharedPreferences(USER_PROFILE_INFORMATION, MODE_PRIVATE);
         if (UserProfile.getCreated()) {
-            UserProfile userProfile = new UserProfile();
             userProfile.setAboutMe(profile.getString("aboutMe", ""));
             userProfile.setPhoneNumber(profile.getString("phoneNumber", ""));
             userProfile.setEmail(profile.getString("email", ""));
@@ -62,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
             String Id = FirebaseInstallations.getInstance().getId().toString();
             UserProfile.setUserId(profile.getString("userId", ""));
         }
+        UserProfile.setCreated(true);
+        UserSettings.setCreated(true);
     }
 
     @SuppressLint("ApplySharedPref")

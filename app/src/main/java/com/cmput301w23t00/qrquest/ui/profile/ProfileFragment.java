@@ -89,7 +89,7 @@ public class ProfileFragment extends Fragment {
         QRAdapter = new LibraryQRCodeAdapter(getActivity(), dataList);
         QRlist.setAdapter(QRAdapter);
 
-        usersQRCodesCollectionReference.whereEqualTo("identifierID", userID)
+        usersQRCodesCollectionReference.whereEqualTo("identifierId", userID)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
