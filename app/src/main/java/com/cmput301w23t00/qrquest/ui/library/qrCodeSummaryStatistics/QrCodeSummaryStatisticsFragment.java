@@ -20,13 +20,28 @@ import com.cmput301w23t00.qrquest.databinding.FragmentQrCodeSummaryStatisticsBin
 
 import java.util.Locale;
 
+/**
+ * The QrCodeSummaryStatisticsFragment class extends the Fragment class and provides a
+ * fragment that displays all of the summary statistics about the users QR codes.
+ */
 public class QrCodeSummaryStatisticsFragment extends Fragment {
 
     private FragmentQrCodeSummaryStatisticsBinding binding; // View binding for the library fragment
+
+    /**
+     * Creates a new instance of the QrCodeSummaryStatistics fragment
+     * @return QrCodeSummaryStatisticsFragment
+     */
     public static QrCodeSummaryStatisticsFragment newInstance() {
         return new QrCodeSummaryStatisticsFragment();
     }
-
+    /**
+     * onCreateView inflates the view, showing the summary statistics of a users QR codes
+     * @param inflater the LayoutInflater object that can be used to inflate any views in the fragment
+     * @param container the parent view that the fragment's UI should be attached to
+     * @param savedInstanceState the previously saved instance state
+     * @return the view for the fragment's UI
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -54,9 +69,7 @@ public class QrCodeSummaryStatisticsFragment extends Fragment {
     }
 
     /**
-     *
      * onCreate is called to do initial creation of the fragment.
-     *
      * @param savedInstanceState the previously saved instance state
      */
     public void onCreate(Bundle savedInstanceState) {
@@ -65,7 +78,10 @@ public class QrCodeSummaryStatisticsFragment extends Fragment {
         // Creates this fragment's menu.
         setHasOptionsMenu(true);
     }
-
+    /**
+     * onOptionsItemSelected is called when the user clicks on the Menu
+     * @param item the clicked item
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) { // Navigate to library fragment if back button is pressed
