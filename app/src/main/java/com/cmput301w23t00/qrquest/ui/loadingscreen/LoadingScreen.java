@@ -105,6 +105,8 @@ public class LoadingScreen extends AppCompatActivity {
                     // sends fid to CreateAccount
                     intentNoUID.putExtra("fid", fid[0]);
                     UserProfile.setUserId(fid[0]);
+                    UserProfile.setCreated(true);
+                    UserSettings.setCreated(true);
                     startActivity(intentNoUID);
                 }
                 // if fid is present, goes to MainActivity.

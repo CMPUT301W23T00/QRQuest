@@ -63,7 +63,7 @@ public class LibraryFragment extends Fragment {
         Log.d(TAG, "onCreateView: test1" + userID+ "kk");
         QRAdapter = new LibraryQRCodeAdapter(getActivity(), dataList);
         QRList.setAdapter(QRAdapter);
-        usersQRCodesCollectionReference.whereEqualTo("identifierID", userID)
+        usersQRCodesCollectionReference.whereEqualTo("identifierId", userID)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {

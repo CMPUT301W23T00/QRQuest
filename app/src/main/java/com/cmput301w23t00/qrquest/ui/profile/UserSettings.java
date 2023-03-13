@@ -26,7 +26,7 @@ public class UserSettings {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static Boolean geoLocation = true;
     private static Boolean pushNotifications = true;
-    private static String userId;
+    private static String userId = UserProfile.getUserId();
     private static Boolean created = false;
 
     public UserSettings() {
