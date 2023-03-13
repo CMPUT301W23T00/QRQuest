@@ -1,6 +1,12 @@
 package com.cmput301w23t00.qrquest.ui.addqrcode;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.util.Log;
+
+import com.cmput301w23t00.qrquest.R;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -29,6 +35,24 @@ public class QRCodeProcessor {
         add("Ultra");
         add("Sonic");
         add("Shark");
+    }};
+
+    List<Integer> ZeroBitImage = new ArrayList<>() {{
+        add(R.drawable.closedeyes);
+        add(R.drawable.eyebrows);
+        add(R.drawable.round);
+        add(R.drawable.nose);
+        add(R.drawable.smile);
+        add(R.drawable.freckles);
+    }};
+
+    List<Integer> OneBitImage = new ArrayList<>() {{
+        add(R.drawable.open);
+        add(-1);
+        add(R.drawable.square);
+        add(-1);
+        add(R.drawable.frown);
+        add(-1);
     }};
 
     // Constructor that initializes the QR code data instance variable
@@ -95,6 +119,48 @@ public class QRCodeProcessor {
         Final += Math.pow((double) Current,(double) (Repeats-1));
 
         return ((int) Final);
+    }
+
+    /** Generates the visual representation of a QR Code
+     *
+     * @return An Bitmap for the QR code
+     */
+    public Bitmap getBitmap(Context context) {
+        // Generate a SHA-256 hash of the QR code data
+        String res = sha256(this.QRCodeData);
+        // Take the first two characters of the hash
+        String FirstTwo = res.substring(0,2);
+        // Convert the first two characters to an integer
+        int IntString = Integer.parseInt(FirstTwo, 16);
+        // Convert the integer to a binary string and take the first six characters
+        String bin = Integer.toBinaryString(IntString);
+        if (bin.length() < 8) {
+            bin = String.format("%s%0" + (8 - bin.length()) + "d", bin, 0);
+        }
+        bin = bin.substring(0,6);
+
+        // Create a string by combining the strings from the ZeroBit and OneBit lists
+
+        // TODO: Change the Size thing
+        Bitmap Size = BitmapFactory.decodeResource(context.getResources(), ZeroBitImage.get(0));
+        Bitmap Result = Bitmap.createBitmap(Size.getWidth(),Size.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(Result);
+        for (int i = 0; i < bin.length(); i++) {
+            if (bin.charAt(i) == '0') {
+                if (ZeroBitImage.get(i) != -1) {
+                    Bitmap map = BitmapFactory.decodeResource(context.getResources(), ZeroBitImage.get(i));
+                    canvas.drawBitmap(map, 0, 0, null);
+                }
+            } else {
+                if (OneBitImage.get(i) != -1) {
+                    Bitmap map = BitmapFactory.decodeResource(context.getResources(), OneBitImage.get(i));
+                    canvas.drawBitmap(map, 0, 0, null);
+                }
+            }
+        }
+
+        // Return the final bitmap
+        return Result;
     }
 
     /** Generates a sha-256 hash from a given string input

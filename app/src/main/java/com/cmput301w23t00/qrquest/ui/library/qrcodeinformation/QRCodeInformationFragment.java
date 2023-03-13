@@ -1,6 +1,8 @@
 package com.cmput301w23t00.qrquest.ui.library.qrcodeinformation;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -70,6 +73,9 @@ public class QRCodeInformationFragment extends Fragment {
                 libraryQRCode = qrCode;
                 QRCodeProcessor qrCodeProcessor = new QRCodeProcessor(qrCode.getData());
                 qrCodeInformationViewModel.setQRCodeInfo(qrCodeProcessor.getName(), "test description");
+                Bitmap Image = qrCodeProcessor.getBitmap(getActivity());
+                ImageView TempImage = root.findViewById(R.id.qr_code_image);
+                TempImage.setImageBitmap(Image);
             }
         }
 
