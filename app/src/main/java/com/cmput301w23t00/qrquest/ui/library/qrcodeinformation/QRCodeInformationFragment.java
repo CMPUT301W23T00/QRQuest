@@ -2,6 +2,7 @@ package com.cmput301w23t00.qrquest.ui.library.qrcodeinformation;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +19,10 @@ import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentQrcodeinformationBinding;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
@@ -29,7 +34,9 @@ public class QRCodeInformationFragment extends Fragment {
 
     private FragmentQrcodeinformationBinding binding; // view binding object for the fragment
     String userID; // a string to hold the current user's ID
+    String docID; // the qr code document id
     FirebaseFirestore db; // Firestore database instance
+    LibraryQRCode libraryQRCode;
 
     /**
      * onCreateView is called when the view is first created.
@@ -57,9 +64,12 @@ public class QRCodeInformationFragment extends Fragment {
         if (bundle != null) {
             LibraryQRCode qrCode = bundle.getParcelable("selectedQRCode");
             userID = bundle.getString("userID");
+            docID = bundle.getString("documentID");
             if (qrCode != null) {
                 // Update the ViewModel with the information of the selected QR code
-                qrCodeInformationViewModel.setQRCodeInfo(new QRCodeProcessor(qrCode.getData()).getName(), "test description");
+                libraryQRCode = qrCode;
+                QRCodeProcessor qrCodeProcessor = new QRCodeProcessor(qrCode.getData());
+                qrCodeInformationViewModel.setQRCodeInfo(qrCodeProcessor.getName(), "test description");
             }
         }
 
@@ -133,30 +143,54 @@ public class QRCodeInformationFragment extends Fragment {
 
         // delete qr code button
         if (id == R.id.qr_delete) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogTheme);
-            builder.setCancelable(true);
-            builder.setTitle("Are you sure you want to delete this QR Code?");
-            builder.setPositiveButton("Confirm",
-                    (dialog, which) -> {
-                        // Add code to delete the QR code here
-//                        db = FirebaseFirestore.getInstance();
-//                        final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
-//                        final CollectionReference qrcodesCollectionReference = db.collection("qrcodes");
-
-                    });
-
-            builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
-                // Code to handle the cancel button here
-                dialog.dismiss();
-            });
-
-            AlertDialog dialog = builder.create();
-            dialog.show();
-
-            return true;
+            deleteQRCode();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Deletes a QR Code
+     * @return
+     */
+    public boolean deleteQRCode() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogTheme);
+        builder.setCancelable(true);
+        builder.setTitle("Are you sure you want to delete this QR Code?");
+        builder.setPositiveButton("Confirm",
+                (dialog, which) -> {
+                    // Add code to delete the QR code here
+                    db = FirebaseFirestore.getInstance();
+                    final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
+                    // Get the document reference
+                    DocumentReference qr_code = usersQRCodesCollectionReference.document(docID);
+
+                    // Delete the document
+                    qr_code.delete()
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_libraryFragment);
+                                    dialog.dismiss();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w("ERROR!", "Error deleting QR Code", e);
+                                }
+                            });
+                });
+
+        builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
+            // Code to handle the cancel button here
+            dialog.dismiss();
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        return true;
     }
 
     /**
@@ -169,4 +203,5 @@ public class QRCodeInformationFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
 }

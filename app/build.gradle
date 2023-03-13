@@ -76,5 +76,14 @@ dependencies {
     implementation 'org.osmdroid:osmdroid-android:6.1.10'
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'com.google.android.gms:play-services-location:18.0.0'
-    androidTestImplementation 'org.junit.jupiter:junit-jupiter'
+
+    //Android tests
+    androidTestImplementation 'androidx.test:runner:1.4.0'
+    androidTestImplementation 'androidx.test:rules:1.4.0'
+    debugImplementation('androidx.fragment:fragment-testing:1.1.0') {
+        // exclude androidx.test:core while fragment_testing depends on 1.1.0
+        exclude group: 'androidx.test', module: 'core'
+    }
+    testImplementation 'com.android.support.test:runner:1.0.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
 }

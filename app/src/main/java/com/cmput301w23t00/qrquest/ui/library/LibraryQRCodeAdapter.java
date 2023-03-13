@@ -17,27 +17,47 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
+/**
+ * This class represents an ArrayAdapter for LibraryQRCodes
+ */
 public class LibraryQRCodeAdapter extends ArrayAdapter<LibraryQRCode> {
-
+    /**
+     * Constructor for LibraryQRCodeAdapter
+     * @param context information about the application environment
+     * @param QRCodes list of QR codes
+     */
     public LibraryQRCodeAdapter(Context context, ArrayList<LibraryQRCode> QRCodes) {
         super(context, 0,QRCodes);
     }
+
+    /**
+     * getView inflates the view, showing a user's collection of QR codes
+     * and returns the modified view
+     * @param position position of the QR code in the list
+     * @param convertView view to be converted to display QR code item
+     * @param parent parent view containing group of views
+     * @return view of the new QR code item
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view;
-        if (convertView == null) {
+        if (convertView == null) { // if layout is not inflated, inflate
             view = LayoutInflater.from(getContext()).inflate(R.layout.library_qr_list_content,
                     parent, false);
         } else {
             view = convertView;
         }
+        // Get QR code
         LibraryQRCode QRObject = getItem(position);
+        // Get textviews for QR code information
         TextView QRData = view.findViewById(R.id.library_qr_code_data);
         TextView QRDate = view.findViewById(R.id.library_qr_code_date);
         TextView QRScore = view.findViewById(R.id.library_qr_code_score);
-
+        // Format date
         SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
+        // Set QR code information on textviews
+        QRData.setText(QRObject.getData());
         QRCodeProcessor qrCodeProcessor = new QRCodeProcessor(QRObject.getData());
         QRData.setText(qrCodeProcessor.getName());
         QRDate.setText(formatter.format(QRObject.getDate()));
