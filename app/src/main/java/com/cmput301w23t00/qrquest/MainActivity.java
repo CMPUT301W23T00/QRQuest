@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
             userProfile.setEmail(profile.getString("email", ""));
             userProfile.setName(profile.getString("name", ""));
             String Id = FirebaseInstallations.getInstance().getId().toString();
-            UserProfile.setUserId(profile.getString("userId", ""));
         }
         UserProfile.setCreated(true);
         UserSettings.setCreated(true);
@@ -88,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         editorProfile.putString("email", /*"grug@gmail.com" */UserProfile.getEmail());
         editorProfile.putString("name", /*"Grug"*/UserProfile.getName());
         editorProfile.putBoolean("existingAccount", UserProfile.getCreated());
-        editorProfile.putString("userId", "com.google.android.gms.tasks.zzw@9bae679" /*UserProfile.getUserId()*/);
+        editorProfile.putString("userId", UserProfile.getUserId());
         editorProfile.commit();
     }
 }
