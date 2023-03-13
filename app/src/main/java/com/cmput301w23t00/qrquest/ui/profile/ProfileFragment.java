@@ -61,8 +61,8 @@ public class ProfileFragment extends Fragment {
     private ArrayList<LinearLayout> qr_codes;
 
     /**
-     * onCreateView inflates the view, showing a user's collection of QR codes with a button to see
-     * summary statistics
+     * onCreateView inflates the view, showing a user's collection of recent QR codes as well as
+     * their profile information
      * @param inflater the LayoutInflater object that can be used to inflate any views in the fragment
      * @param container the parent view that the fragment's UI should be attached to
      * @param savedInstanceState the previously saved instance state
@@ -157,6 +157,9 @@ public class ProfileFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * onPause is called when the view is temporarily left by the user
+     */
     @Override
     public void onPause() {
         super.onPause();

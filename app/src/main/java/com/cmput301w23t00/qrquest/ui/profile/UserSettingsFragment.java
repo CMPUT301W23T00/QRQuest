@@ -30,6 +30,9 @@ import com.cmput301w23t00.qrquest.databinding.FragmentProfileBinding;
 import com.cmput301w23t00.qrquest.ui.editaccount.EditAccount;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+/**
+ * This class models the fragment used to display the user settings page
+ */
 public class UserSettingsFragment extends Fragment{
 
     public SwitchCompat pushNotifications;
@@ -42,6 +45,14 @@ public class UserSettingsFragment extends Fragment{
         super(R.layout.fragment_settings);
     }
 
+    /**
+     * onCreateView inflates the view, showing a button that leads to an edit profile page as well
+     * as settings for enabling/disabling push notifications and geo-location recording
+     * @param inflater the LayoutInflater object that can be used to inflate any views in the fragment
+     * @param container the parent view that the fragment's UI should be attached to
+     * @param savedInstanceState the previously saved instance state
+     * @return the view for the fragment's UI
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -115,16 +126,26 @@ public class UserSettingsFragment extends Fragment{
         ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
+    /**
+     * onPause is called when the view is temporarily left by the user
+     */
     @Override
     public void onPause() {
         super.onPause();
     }
 
+    /**
+     * onResume is called when the view that was temporarily left is returned to
+     */
     @Override
     public void onResume() {
         super.onResume();
     }
 
+    /**
+     * onDestroyView is called when the view is destroyed.
+     * It cleans up any references to the binding to prevent memory leaks.
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();

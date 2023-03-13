@@ -22,6 +22,11 @@ import com.google.firebase.firestore.model.Document;
 import com.google.firebase.installations.FirebaseInstallations;
 import com.google.firestore.v1.WriteResult;
 
+/**
+ * UserSettings class is used to temporarily store user information for the
+ * duration of the app to reduce server accesses and act as an
+ * intermediary between the server and the user interface when information is updated
+ */
 public class UserSettings {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static Boolean geoLocation = true;
@@ -29,6 +34,11 @@ public class UserSettings {
     private static String userId = UserProfile.getUserId();
     private static Boolean created = false;
 
+
+    /**
+     * UserSettings constructor, updates the user geo-location settings from the server
+     * if the values are differeing when UserSettings is called
+     */
     public UserSettings() {
         this.db.collection("users").whereEqualTo("identifierId", userId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -46,22 +56,43 @@ public class UserSettings {
         });
     }
 
+    /**
+     * pushNotifications getter
+     * @return pushNotifications settings value
+     */
     public Boolean getPushNotifications() {
         return pushNotifications;
     }
 
+    /**
+     * geoLocation getter
+     * @return geoLocation settings value
+     */
     public Boolean getGeoLocation() {
         return geoLocation;
     }
 
+    /**
+     * Used to check if an account exists for settings to be contained in
+     * @return created value, whether or not an account exists
+     */
     public static Boolean getCreated() {
         return created;
     }
 
+    /**
+     * pushNotifications setter
+     * @param pushNotifications changes class pushNotifications value to parameter value
+     */
     public void setPushNotifications(Boolean pushNotifications) {
         this.pushNotifications = pushNotifications;
     }
 
+    /**
+     * geoNotifications setter that additionally updates geoLocation setting on the server
+     * value, is stored and updated later if connection cannot be established
+     * @param geoLocation changes class geoLocation value to parameter value
+     */
     public void setGeoLocation(Boolean geoLocation) {
         this.geoLocation = geoLocation;
         // Update an existing document
@@ -75,11 +106,12 @@ public class UserSettings {
         });
     }
 
+    /**
+     * Lets the UserSettings class know that an account exists to check settings
+     * preferences from
+     * @param created changes class created value to parameter value
+     */
     public static void setCreated(Boolean created) {
         UserSettings.created = created;
-    }
-
-    public static void setUserId(String userId) {
-        UserSettings.userId = userId;
     }
 }
