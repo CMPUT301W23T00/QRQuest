@@ -2,6 +2,8 @@ package com.cmput301w23t00.qrquest.ui.createaccount;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -9,6 +11,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 
 import static org.junit.Assert.assertFalse;
@@ -17,6 +20,8 @@ import static org.junit.Assert.assertTrue;
 import androidx.lifecycle.Lifecycle;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.action.ViewActions;
+import androidx.test.espresso.intent.Intents;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.uiautomator.UiDevice;
 
 import com.cmput301w23t00.qrquest.MainActivity;
@@ -26,9 +31,11 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.io.IOException;
 
+@RunWith(AndroidJUnit4.class)
 public class CreateAccountTest {
     @Test
     public void testCreateAccountExists() {
@@ -41,6 +48,7 @@ public class CreateAccountTest {
     @Before
     public void setUp() {
         ActivityScenario<CreateAccount> activityScenario = ActivityScenario.launch(CreateAccount.class);
+        Intents.init();
     }
 
     @Test
@@ -79,6 +87,7 @@ public class CreateAccountTest {
         onView(withId(R.id.addCreateButton)).check(matches(isDisplayed()));
     }
 
+
     @Before
     public void turnOffDeviceAnimations() throws IOException {
         UiDevice device = UiDevice.getInstance(getInstrumentation());
@@ -96,16 +105,17 @@ public class CreateAccountTest {
         String email = "test@gmail.com";
 
         // Input data into UI fields
-        onView(withId(R.id.addNameField)).perform(typeText(name));
-        onView(withId(R.id.addPhoneField)).perform(typeText(phone));
-        onView(withId(R.id.addEmailField)).perform(typeText(email));
+
+        onView(withId(R.id.addNameField)).perform(click(), typeText(name), closeSoftKeyboard());
+        onView(withId(R.id.addNameField)).check(matches(withText(name)));
+        onView(withId(R.id.addPhoneField)).perform(click(), replaceText(phone), closeSoftKeyboard());
+        onView(withId(R.id.addPhoneField)).check(matches(withText(phone)));
+        onView(withId(R.id.addEmailField)).perform(click(), typeText(email), closeSoftKeyboard());
+        onView(withId(R.id.addEmailField)).check(matches(withText(email)));
 
         // Click the "Create Account" button
         onView(withId(R.id.addCreateButton)).perform(click());
 
-        activityScenario.onActivity(activity -> {
-            assertFalse(activity.isFinishing());
-        });
         intended(hasComponent(MainActivity.class.getName()));
     }
 
@@ -116,6 +126,7 @@ public class CreateAccountTest {
         device.executeShellCommand("settings put global window_animation_scale 1");
         device.executeShellCommand("settings put global transition_animation_scale 1");
         device.executeShellCommand("settings put global animator_duration_scale 1");
+        Intents.release();
     }
 
     // checks if activity is finished when back button is pressed.
