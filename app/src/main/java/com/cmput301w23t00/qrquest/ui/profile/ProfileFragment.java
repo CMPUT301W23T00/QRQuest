@@ -42,6 +42,9 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * This class models the fragment used to display the user profile
+ */
 public class ProfileFragment extends Fragment {
 
     private TextView name;
@@ -121,8 +124,9 @@ public class ProfileFragment extends Fragment {
                                 QRAdapter.notifyDataSetChanged();
                             }
                             highestScoreText.setText(String.format("%d", (int) highestScore[0]));
-                            lowestScoreText.setText(String.format("%d", (int) lowestScore[0]));
                             totalPointsText.setText(String.format("%d", (int) sumOfScores[0]));
+                            if (lowestScore[0] == -1) lowestScoreText.setText(String.format("%d", 0));
+                            else lowestScoreText.setText(String.format("%d", (int) lowestScore[0]));
                             QRlist.setMinimumHeight(100*dataList.size());
                         }
                     }
