@@ -1,24 +1,24 @@
 package com.cmput301w23t00.qrquest.ui.library;
 
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import com.cmput301w23t00.qrquest.R;
-import android.view.View;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.cmput301w23t00.qrquest.MainActivity;
 
-import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * Tests that navigation in LibraryFragment works correctly
+ */
 @RunWith(AndroidJUnit4.class)
 public class LibraryNavigationTest {
     @Before
@@ -38,6 +38,4 @@ public class LibraryNavigationTest {
         onView(withId(R.id.fragment_qr_code_summary_statistics_parent)).check(matches(isDisplayed()));
 
     }
-
-
 }

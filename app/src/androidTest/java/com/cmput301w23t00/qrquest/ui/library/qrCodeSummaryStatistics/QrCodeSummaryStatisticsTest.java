@@ -1,33 +1,24 @@
 package com.cmput301w23t00.qrquest.ui.library.qrCodeSummaryStatistics;
 
-import static android.app.PendingIntent.getActivity;
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.Espresso.pressBack;
-import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 import com.cmput301w23t00.qrquest.R;
 
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.fragment.app.testing.FragmentScenario;
-import androidx.navigation.Navigation;
-import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.cmput301w23t00.qrquest.MainActivity;
-
-import org.hamcrest.Matcher;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * Tests that correct information is displayed in QrCodeSummaryStatisticsFragments
+ */
 @RunWith(AndroidJUnit4.class)
 public class QrCodeSummaryStatisticsTest {
     private FragmentScenario<QrCodeSummaryStatisticsFragment> fragmentScenario;
