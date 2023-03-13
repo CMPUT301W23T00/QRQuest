@@ -1,6 +1,7 @@
 package com.cmput301w23t00.qrquest.ui.library;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,14 @@ import androidx.navigation.Navigation;
 
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentLibraryBinding;
+import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.installations.FirebaseInstallations;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,7 +59,6 @@ public class LibraryFragment extends Fragment {
         dataList = new ArrayList<>();
         QRAdapter = new LibraryQRCodeAdapter(getActivity(), dataList);
         QRList.setAdapter(QRAdapter);
-
         // TODO: REPLACE HARDCODED VALUE WITH VALUE FROM DEREK'S PREFERENCES WHEN MERGED
         //userID = FirebaseInstallations.getInstance().getId().toString();
         String userID = "com.google.android.gms.tasks.zzw@b2bf36a";
@@ -72,35 +74,24 @@ public class LibraryFragment extends Fragment {
                                 com.google.firebase.Timestamp timestamp = (com.google.firebase.Timestamp) document.getData().get("dateScanned");
                                 // Convert Firebase Timestamp to Date
                                 Date dateScanned = timestamp.toDate();
-                                // Find the scores of all QR Codes the user has scanned
-                                qrcodesCollectionReference.whereEqualTo("qrCodeData", qrCodeData)
-                                        .get().addOnCompleteListener(new OnCompleteListener<>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                if (task.isSuccessful()) { // if found iterate through all QR codes
-                                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                                        // Get score of QR code
-                                                        long score = (long) document.getData().get("score");
-                                                        // Check if current score is highest score
-                                                        highestScore = Math.max(score, highestScore);
-                                                        // Check if current score is lowest score
-                                                        if (lowestScore == -1) {
-                                                            lowestScore = score;
-                                                        } else {
-                                                            lowestScore = Math.min(lowestScore, score);
-                                                        }
-                                                        // Increment sum of scores with current score
-                                                        sumOfScores += score;
-                                                        // Increment total QR codes scanned
-                                                        totalScanned += 1;
-                                                        // Add found QR code to dataList to display
-                                                        dataList.add(new LibraryQRCode(qrCodeData, score, dateScanned));
-                                                    }
-                                                    // Update view to include newly added QR codes
-                                                    QRAdapter.notifyDataSetChanged();
-                                                }
-                                            }
-                                        });
+                                // Get score of QR code
+                                long score = new QRCodeProcessor(qrCodeData).getScore();
+                                // Check if current score is highest score
+                                highestScore = Math.max(score, highestScore);
+                                // Check if current score is lowest score
+                                if (lowestScore == -1) {
+                                    lowestScore = score;
+                                } else {
+                                    lowestScore = Math.min(lowestScore, score);
+                                }
+                                // Increment sum of scores with current score
+                                sumOfScores += score;
+                                // Increment total QR codes scanned
+                                totalScanned += 1;
+                                // Add found QR code to dataList to display
+                                dataList.add(new LibraryQRCode(qrCodeData, score, dateScanned));
+                                // Update view to include newly added QR codes
+                                QRAdapter.notifyDataSetChanged();
                             }
                         }
                     }

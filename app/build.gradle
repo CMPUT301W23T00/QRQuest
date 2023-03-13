@@ -62,6 +62,16 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.github.yuriy-budiyev:code-scanner:2.3.2'
 
+    // Camera
+    def cameraxVersion = "1.1.0"
+    implementation "androidx.camera:camera-core:${cameraxVersion}"
+    implementation "androidx.camera:camera-camera2:${cameraxVersion}"
+    implementation "androidx.camera:camera-lifecycle:${cameraxVersion}"
+    implementation 'com.google.firebase:firebase-storage'
+
+    // CameraX View class
+    implementation 'androidx.camera:camera-view:1.1.0'
+
     // Map
     implementation 'org.osmdroid:osmdroid-android:6.1.10'
     implementation 'androidx.preference:preference:1.1.1'

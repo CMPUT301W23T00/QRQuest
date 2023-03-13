@@ -16,6 +16,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentQrcodeinformationBinding;
+import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -58,7 +59,7 @@ public class QRCodeInformationFragment extends Fragment {
             userID = bundle.getString("userID");
             if (qrCode != null) {
                 // Update the ViewModel with the information of the selected QR code
-                qrCodeInformationViewModel.setQRCodeInfo(qrCode.getData(), "test description");
+                qrCodeInformationViewModel.setQRCodeInfo(new QRCodeProcessor(qrCode.getData()).getName(), "test description");
             }
         }
 
