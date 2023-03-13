@@ -45,7 +45,6 @@ public class LibraryFragment extends Fragment {
         // QR Code List
         db = FirebaseFirestore.getInstance();
         final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
-        //final CollectionReference qrcodesCollectionReference = db.collection("qrcodes");
 
         highestScore = 0;
         sumOfScores = 0;
