@@ -59,8 +59,7 @@ public class LibraryFragment extends Fragment {
 
         ListView QRList = binding.libraryQrCodesList;
         dataList = new ArrayList<>();
-        String userID = "com.google.android.gms.tasks.zzw@9bae679"; //UserProfile.getUserId();
-        Log.d(TAG, "onCreateView: test1" + userID+ "kk");
+        String userID = /*"com.google.android.gms.tasks.zzw@9bae679"*/ UserProfile.getUserId();
         QRAdapter = new LibraryQRCodeAdapter(getActivity(), dataList);
         QRList.setAdapter(QRAdapter);
         usersQRCodesCollectionReference.whereEqualTo("identifierId", userID)
@@ -70,7 +69,6 @@ public class LibraryFragment extends Fragment {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String qrCodeData = (String) document.getData().get("qrCodeData");
-                                Log.d(TAG, "onComplete: test2");
                                 com.google.firebase.Timestamp timestamp = (com.google.firebase.Timestamp) document.getData().get("dateScanned");
                                 Date dateScanned = timestamp.toDate();
                                 long score = new QRCodeProcessor(qrCodeData).getScore();
@@ -86,11 +84,6 @@ public class LibraryFragment extends Fragment {
                                 QRAdapter.notifyDataSetChanged();
                             }
                         }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "onFailure: test3", e);
                     }
                 });
         // QR Stats button

@@ -83,7 +83,7 @@ public class ProfileFragment extends Fragment {
 
 
         dataList = new ArrayList<>();
-        String userID = UserProfile.getUserId();
+        String userID = /*"com.google.android.gms.tasks.zzw@9bae679"*/ UserProfile.getUserId();
         QRAdapter = new LibraryQRCodeAdapter(getActivity(), dataList);
         QRlist.setAdapter(QRAdapter);
 
