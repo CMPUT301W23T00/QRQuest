@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -54,6 +55,7 @@ public class LibraryQRCodeAdapter extends ArrayAdapter<LibraryQRCode> {
         TextView QRData = view.findViewById(R.id.library_qr_code_data);
         TextView QRDate = view.findViewById(R.id.library_qr_code_date);
         TextView QRScore = view.findViewById(R.id.library_qr_code_score);
+        ImageView qrImage = view.findViewById(R.id.library_qr_code_image);
         // Format date
         SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
         // Set QR code information on textviews
@@ -62,6 +64,8 @@ public class LibraryQRCodeAdapter extends ArrayAdapter<LibraryQRCode> {
         QRData.setText(qrCodeProcessor.getName());
         QRDate.setText(formatter.format(QRObject.getDate()));
         QRScore.setText(String.format(Locale.CANADA, "%d", qrCodeProcessor.getScore()));
+
+        qrImage.setImageBitmap(qrCodeProcessor.getBitmap(getContext()));
         return view;
     }
 }
