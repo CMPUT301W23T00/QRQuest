@@ -17,6 +17,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentQrcodeinformationBinding;
+import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,7 +34,7 @@ public class QRCodeInformationFragment extends Fragment {
 
     private FragmentQrcodeinformationBinding binding; // view binding object for the fragment
     String userID; // a string to hold the current user's ID
-    String docID;
+    String docID; // the qr code document id
     FirebaseFirestore db; // Firestore database instance
     LibraryQRCode libraryQRCode;
 
@@ -67,7 +68,8 @@ public class QRCodeInformationFragment extends Fragment {
             if (qrCode != null) {
                 // Update the ViewModel with the information of the selected QR code
                 libraryQRCode = qrCode;
-                qrCodeInformationViewModel.setQRCodeInfo(qrCode.getData(), "test description");
+                QRCodeProcessor qrCodeProcessor = new QRCodeProcessor(qrCode.getData());
+                qrCodeInformationViewModel.setQRCodeInfo(qrCodeProcessor.getName(), "test description");
             }
         }
 
