@@ -47,9 +47,12 @@
 
     <EditText
         android:id="@+id/editNameField"
-        android:layout_width="370dp"
+        android:layout_width="340dp"
         android:layout_height="48dp"
+        android:layout_marginStart="21dp"
         android:layout_marginTop="264dp"
+        android:layout_marginEnd="21dp"
+        android:autofillHints=""
         android:background="@drawable/text_input"
         android:ems="10"
         android:hint="@string/exampleName"
@@ -57,10 +60,8 @@
         android:paddingHorizontal="15dp"
         android:textColorHint="#b3b3b3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:autofillHints="" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/editAboutMeText"
@@ -75,9 +76,12 @@
 
     <EditText
         android:id="@+id/editAboutMeField"
-        android:layout_width="370dp"
+        android:layout_width="340dp"
         android:layout_height="48dp"
+        android:layout_marginStart="21dp"
         android:layout_marginTop="50dp"
+        android:layout_marginEnd="21dp"
+        android:autofillHints=""
         android:background="@drawable/text_input"
         android:ems="10"
         android:hint="@string/exampleName"
@@ -85,10 +89,8 @@
         android:paddingHorizontal="15dp"
         android:textColorHint="#b3b3b3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editNameField"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/editNameField" />
 
     <TextView
         android:id="@+id/editPhoneText"
@@ -103,9 +105,12 @@
 
     <EditText
         android:id="@+id/editPhoneField"
-        android:layout_width="370dp"
+        android:layout_width="340dp"
         android:layout_height="48dp"
+        android:layout_marginStart="21dp"
         android:layout_marginTop="50dp"
+        android:layout_marginEnd="21dp"
+        android:autofillHints=""
         android:background="@drawable/text_input"
         android:ems="10"
         android:hint="@string/examplePhone"
@@ -113,10 +118,8 @@
         android:paddingHorizontal="15dp"
         android:textColorHint="#b3b3b3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editAboutMeField"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/editAboutMeField" />
 
     <TextView
         android:id="@+id/editEmailText"
@@ -131,9 +134,12 @@
 
     <EditText
         android:id="@+id/editEmailField"
-        android:layout_width="370dp"
+        android:layout_width="340dp"
         android:layout_height="48dp"
+        android:layout_marginStart="21dp"
         android:layout_marginTop="50dp"
+        android:layout_marginEnd="21dp"
+        android:autofillHints=""
         android:background="@drawable/text_input"
         android:ems="10"
         android:hint="@string/exampleEmail"
@@ -141,16 +147,16 @@
         android:paddingHorizontal="15dp"
         android:textColorHint="#b3b3b3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editPhoneField"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/editPhoneField" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/editCancelButton"
-        android:layout_width="180dp"
+        android:layout_width="160dp"
         android:layout_height="55dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="11dp"
         android:background="@drawable/button_shape"
         android:fontFamily="sans-serif"
         android:text="@string/cancel"
@@ -158,15 +164,18 @@
         android:textColor="#000000"
         android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="@+id/editConfirmButton"
+        app:layout_constraintEnd_toStartOf="@+id/editConfirmButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editConfirmButton"
+        app:layout_constraintTop_toBottomOf="@+id/editEmailField"
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/editConfirmButton"
-        android:layout_width="180dp"
+        android:layout_width="160dp"
         android:layout_height="55dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="21dp"
         android:background="@drawable/button_shape"
         android:backgroundTint="#000000"
         android:fontFamily="sans-serif"
@@ -176,7 +185,9 @@
         android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editEmailField" />
+        app:layout_constraintStart_toEndOf="@+id/editCancelButton"
+        app:layout_constraintTop_toBottomOf="@+id/editEmailField"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

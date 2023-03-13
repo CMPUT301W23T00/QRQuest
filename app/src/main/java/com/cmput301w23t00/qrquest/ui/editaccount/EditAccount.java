@@ -21,8 +21,6 @@ public class EditAccount extends AppCompatActivity {
     Button editCancelButton, editConfirmButton;
     ImageView editProfileImage;
 
-    UserProfile userProfile;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +90,7 @@ public class EditAccount extends AppCompatActivity {
                     return;
                 }
 
-                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                if (!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
                     editEmailField.setError("Please enter a valid email address.");
                     return;
                 }
@@ -104,10 +102,10 @@ public class EditAccount extends AppCompatActivity {
                     return;
                 }
 
-                userProfile.setName(nameInput);
-                userProfile.setAboutMe(emailInput);
-                userProfile.setPhoneNumber(phoneNumInput);
-                userProfile.setEmail(aboutMeInput);
+                UserProfile.setName(nameInput);
+                UserProfile.setAboutMe(aboutMeInput);
+                UserProfile.setPhoneNumber(phoneNumInput);
+                UserProfile.setEmail(emailInput);
 
                 finish();
             }

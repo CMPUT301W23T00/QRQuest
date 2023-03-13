@@ -19,7 +19,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public class UserProfile {
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static String aboutMe;
     private static String phoneNumber;
     private static String email;
@@ -31,7 +30,7 @@ public class UserProfile {
     public UserProfile() {
         //only occurs when app is initially opened
         if (firstInstantiation && created) {
-            this.db.collection("users").whereEqualTo("identifierId", userId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            FirebaseFirestore.getInstance().collection("users").whereEqualTo("identifierId", userId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
@@ -81,10 +80,10 @@ public class UserProfile {
         return firstInstantiation;
     }
 
-    public void setAboutMe(String aboutMe) {
+    public static void setAboutMe(String aboutMe) {
         UserProfile.aboutMe = aboutMe;
 
-        db.collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        FirebaseFirestore.getInstance().collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
@@ -94,10 +93,10 @@ public class UserProfile {
         });
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public static void setPhoneNumber(String phoneNumber) {
+        UserProfile.phoneNumber = phoneNumber;
 
-        db.collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        FirebaseFirestore.getInstance().collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
@@ -107,10 +106,10 @@ public class UserProfile {
         });
     }
 
-    public void setEmail(String email) {
+    public static void setEmail(String email) {
         UserProfile.email = email;
 
-        db.collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        FirebaseFirestore.getInstance().collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
@@ -120,10 +119,10 @@ public class UserProfile {
         });
     }
 
-    public void setName(String name) {
+    public static void setName(String name) {
         UserProfile.name = name;
 
-        db.collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        FirebaseFirestore.getInstance().collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
