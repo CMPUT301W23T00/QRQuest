@@ -1,0 +1,50 @@
+package com.cmput301w23t00.qrquest.ui.loadingscreen;
+
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+
+import androidx.test.core.app.ActivityScenario;
+
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
+import com.cmput301w23t00.qrquest.R;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+@RunWith(AndroidJUnit4.class)
+public class LoadingScreenTest {
+
+    @Test
+    public void testLoadingScreenExists() {
+        // Launch the splash screen activity
+        ActivityScenario<LoadingScreen> scenario = ActivityScenario.launch(LoadingScreen.class);
+        // Check that the activity is launched and not null
+        scenario.onActivity(Assert::assertNotNull);
+        // Close the activity
+        scenario.close();
+    }
+
+    @Before
+    public void setUp() throws Exception {
+        ActivityScenario<LoadingScreen> activityScenario = ActivityScenario.launch(LoadingScreen.class);
+    }
+    
+    @Test
+    public void testSplashScreen() {
+        onView(withId(R.id.loading_screen_parent)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testSplashScreenLogo() {
+        onView(withId(R.id.lsQRCode)).check(matches(isDisplayed()));
+    }
+
+}
