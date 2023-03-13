@@ -1,5 +1,6 @@
 package com.cmput301w23t00.qrquest.ui.profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -7,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
@@ -25,6 +27,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentProfileBinding;
+import com.cmput301w23t00.qrquest.ui.editaccount.EditAccount;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class UserSettingsFragment extends Fragment{
@@ -32,6 +35,8 @@ public class UserSettingsFragment extends Fragment{
     public SwitchCompat pushNotifications;
     public SwitchCompat geoLocation;
     private UserSettings userSettings = new UserSettings();
+
+    public Button editProfileButton;
 
     public UserSettingsFragment() {
         super(R.layout.fragment_settings);
@@ -48,9 +53,19 @@ public class UserSettingsFragment extends Fragment{
 
         pushNotifications = (SwitchCompat) root.findViewById(R.id.push_notification_switch);
         geoLocation = (SwitchCompat) root.findViewById(R.id.geo_location_switch_settings);
+        editProfileButton = (Button) root.findViewById(R.id.editProfileButton);
+
 
         pushNotifications.setChecked(userSettings.getPushNotifications());
         geoLocation.setChecked(userSettings.getGeoLocation());
+
+        editProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentToEditProfile = new Intent(getActivity(),EditAccount.class);
+                startActivity(intentToEditProfile);
+            }
+        });
 
         pushNotifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
