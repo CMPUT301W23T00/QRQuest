@@ -17,24 +17,31 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Tests that navigation in LibraryFragment works correctly
+ * Tests for navigation of LibraryFragment
  */
 @RunWith(AndroidJUnit4.class)
 public class LibraryNavigationTest {
+    /**
+     * Sets up tests
+     * @throws Exception if activity cannot be started
+     */
     @Before
     public void setUp() throws Exception {
         ActivityScenario<MainActivity> activityScenario = ActivityScenario.launch(MainActivity.class);
     }
 
+    /**
+     * Tests that navigation to QrCodeSummaryStatisticsFragment works correctly
+     */
     @Test
     public void testLibraryFragmentsNavigation() {
-        // nav libraryFragment
+        // Navigate to LibraryFragment
         onView(withId(R.id.navigation_qrcode_library)).perform(click());
-        // verify
+        // Verify navigation to LibraryFragment occurred
         onView(withId(R.id.fragment_library_parent)).check(matches(isDisplayed()));
-        // nav qrCodeSummaryStatisticsFragment
+        // Navigate to QrCodeSummaryStatisticsFragment
         onView(withId(R.id.view_personal_qr_stats_button)).perform(click());
-        // verify
+        // Verify navigation to QrCodeSummaryStatisticsFragment occurred
         onView(withId(R.id.fragment_qr_code_summary_statistics_parent)).check(matches(isDisplayed()));
 
     }

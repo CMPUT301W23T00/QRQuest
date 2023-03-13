@@ -17,23 +17,26 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Tests that correct information is displayed in QrCodeSummaryStatisticsFragments
+ * UI tests for QRSummaryStatisticFragment
  */
 @RunWith(AndroidJUnit4.class)
 public class QrCodeSummaryStatisticsTest {
     private FragmentScenario<QrCodeSummaryStatisticsFragment> fragmentScenario;
 
+    /**
+     * Tests that QRSummaryStatisticFragment displays the correct information when passed a bundle
+     */
     @Test
     public void testStatisticsDisplay() {
-        // create bundle
+        // Create bundle to be passed to QrCodeSummaryStatisticsFragment
         Bundle bundle = new Bundle();
         bundle.putLong("highestScore", 0);
         bundle.putLong("lowestScore", 0);
         bundle.putLong("sumOfScores", 0);
         bundle.putLong("totalScanned", 0);
-        // navigate
+        // Navigate to QrCodeSummaryStatisticsFragment
         fragmentScenario = FragmentScenario.launchInContainer(QrCodeSummaryStatisticsFragment.class, bundle);
-        // verify
+        // Verify navigation is correct and QrCodeSummaryStatisticsFragment displays correct information
         onView(withId(R.id.fragment_qr_code_summary_statistics_parent)).check(matches(isDisplayed()));
         onView(withId(R.id.summary_highest_score)).check(matches(withText("0")));
         onView(withId(R.id.summary_lowest_score)).check(matches(withText("0")));
