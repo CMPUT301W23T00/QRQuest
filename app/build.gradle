@@ -77,4 +77,6 @@ dependencies {
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'com.google.android.gms:play-services-location:18.0.0'
     androidTestImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.robolectric:robolectric:4.4'
+
 }
