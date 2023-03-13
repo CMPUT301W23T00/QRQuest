@@ -1,7 +1,8 @@
 package com.cmput301w23t00.qrquest.ui.editaccount;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,15 +11,17 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cmput301w23t00.qrquest.R;
+import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 public class EditAccount extends AppCompatActivity {
     EditText editNameField, editAboutMeField, editEmailField, editPhoneField;
     Button editCancelButton, editConfirmButton;
     ImageView editProfileImage;
+
+    UserProfile userProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +38,17 @@ public class EditAccount extends AppCompatActivity {
         editConfirmButton = findViewById(R.id.editConfirmButton);
         editProfileImage = findViewById(R.id.editProfileImage);
 
-        // ADD USER VALUES
-        // FIRST GET USER VALUES
-        //editNameField.setText();
-        //editAboutMeField.setText();
-        //editEmailField.setText();
-        //editPhoneField.setText();
+        // Gets relevant values from UserProfile.
+        String name = UserProfile.getName();
+        String aboutMe = UserProfile.getAboutMe();
+        String phoneNum = UserProfile.getPhoneNumber();
+        String email = UserProfile.getEmail();
+
+        // Sets user value in input field.
+        editNameField.setText(name);
+        editAboutMeField.setText(aboutMe);
+        editEmailField.setText(email);
+        editPhoneField.setText(phoneNum);
 
         editProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,12 +64,6 @@ public class EditAccount extends AppCompatActivity {
         editCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // add profile picture check
-
-                // Go back to settings.
-                // IMPORTANT: add settings class.
-                //Intent intentEditCancelled = new Intent(EditAccount.this, .class);
-                //startActivity(intentEditCancelled);
                 finish();
             }
         });
@@ -69,25 +71,44 @@ public class EditAccount extends AppCompatActivity {
         editConfirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // manipulate name, email, phone, about me, profile image in db
-                String name = editNameField.getText().toString();
-                String email = editEmailField.getText().toString();
-                String phoneNum = editPhoneField.getText().toString();
-                String aboutMe = editAboutMeField.getText().toString();
+                String nameInput = editNameField.getText().toString();
+                String emailInput = editEmailField.getText().toString();
+                String phoneNumInput = editPhoneField.getText().toString();
+                String aboutMeInput = editAboutMeField.getText().toString();
 
-                Map<String, Object> userValue = new HashMap<>();
-                userValue.put("name", name);
-                userValue.put("email", email);
-                userValue.put("phoneNumber", phoneNum);
-                userValue.put("aboutMe", aboutMe);
+                // VALIDATION CHECKS
+                if (TextUtils.isEmpty(nameInput)){
+                    editNameField.setError("Please enter your name.");
+                    return;
+                }
 
+                if (TextUtils.isEmpty(phoneNumInput)){
+                    editPhoneField.setError("Please enter your phone number.");
+                    return;
+                }
 
-                // replace userid with a system that queries
+                if (TextUtils.isEmpty(emailInput)){
+                    editEmailField.setError("Please enter your email address.");
+                    return;
+                }
 
-                // Go back to settings.
-                // IMPORTANT: add settings class.
-                //Intent intentEditConfirmed = new Intent(EditAccount.this, .class);
-                //startActivity(intentEditConfirmed);
+                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    editEmailField.setError("Please enter a valid email address.");
+                    return;
+                }
+
+                String patternString = "^\\d{3}-\\d{3}-\\d{4}$";
+                Pattern pattern = Pattern.compile(patternString);
+                if(!pattern.matcher(phoneNum).matches()){
+                    editPhoneField.setError("Please enter a valid phone number, i.e: 123-456-7890.");
+                    return;
+                }
+
+                userProfile.setName(nameInput);
+                userProfile.setAboutMe(emailInput);
+                userProfile.setPhoneNumber(phoneNumInput);
+                userProfile.setEmail(aboutMeInput);
+
                 finish();
             }
         });
