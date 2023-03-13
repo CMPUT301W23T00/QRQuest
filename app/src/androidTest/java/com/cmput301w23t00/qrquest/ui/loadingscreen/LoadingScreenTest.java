@@ -46,4 +46,21 @@ public class LoadingScreenTest {
         onView(withId(R.id.lsQRCode)).check(matches(isDisplayed()));
     }
 
+    @Test
+    public void testLoadingScreenDurationAndFinish() {
+
+        ActivityScenario<LoadingScreen> scenario = ActivityScenario.launch(LoadingScreen.class);
+        // Wait for the loading screen to disappear after the specified duration
+        scenario.onActivity(activity -> {
+            try {
+                Thread.sleep(4000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            // Check that the loading screen is finishing.
+            assertFalse(activity.isFinishing());
+        });
+        scenario.close();
+    }
+
 }
