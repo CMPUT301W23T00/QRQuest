@@ -24,8 +24,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Date;
-
 /**
  * The class  QR code information fragment extends fragment
  *
@@ -143,15 +141,17 @@ public class QRCodeInformationFragment extends Fragment {
 
         // delete qr code button
         if (id == R.id.qr_delete) {
-            String qrData = libraryQRCode.getData();
-            Date qrDate = libraryQRCode.getDate();
-            deleteQRCode(userID, qrDate, qrData);
+            deleteQRCode();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    public boolean deleteQRCode(String userID, Date qrDate, String qrData) {
+    /**
+     * Deletes a QR Code
+     * @return
+     */
+    public boolean deleteQRCode() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogTheme);
         builder.setCancelable(true);
         builder.setTitle("Are you sure you want to delete this QR Code?");
