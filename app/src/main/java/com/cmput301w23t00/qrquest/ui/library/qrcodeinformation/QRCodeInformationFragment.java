@@ -40,7 +40,6 @@ public class QRCodeInformationFragment extends Fragment {
     String docID; // the qr code document id
     FirebaseFirestore db; // Firestore database instance
     LibraryQRCode libraryQRCode;
-    Context mContext;
 
     /**
      * onCreateView is called when the view is first created.
@@ -74,12 +73,9 @@ public class QRCodeInformationFragment extends Fragment {
                 libraryQRCode = qrCode;
                 QRCodeProcessor qrCodeProcessor = new QRCodeProcessor(qrCode.getData());
                 qrCodeInformationViewModel.setQRCodeInfo(qrCodeProcessor.getName(), "test description");
-                if (mContext != null) {
-                    Bitmap Image = qrCodeProcessor.getBitmap(mContext);
-                    ImageView TempImage = root.findViewById(R.id.qr_code_image);
-
-                    TempImage.setImageBitmap(Image);
-                }
+                Bitmap Image = qrCodeProcessor.getBitmap(getActivity());
+                ImageView TempImage = root.findViewById(R.id.qr_code_image);
+                TempImage.setImageBitmap(Image);
             }
         }
 
@@ -202,19 +198,6 @@ public class QRCodeInformationFragment extends Fragment {
 
         return true;
     }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.mContext = context;
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mContext = null;
-    }
-
 
     /**
      * onDestroyView is called when the view is destroyed.
