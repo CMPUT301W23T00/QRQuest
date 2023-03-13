@@ -16,10 +16,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
+import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
+import com.cmput301w23t00.qrquest.ui.profile.UserSettings;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -109,12 +112,20 @@ public class CreateAccount extends AppCompatActivity {
                 userValue.put("recordGeoLocationByDefault", true);
                 userValue.put("identifierId", fid);
 
+                UserProfile userProfile = new UserProfile();
+                userProfile.setAboutMe("");
+                userProfile.setPhoneNumber(phoneNum);
+                userProfile.setEmail(email);
+                userProfile.setName(name);
+
                 db.collection("users")
                         .add(userValue)
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
                                 Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                                UserSettings.setCreated(true);
+                                UserProfile.setCreated(true);
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -125,8 +136,8 @@ public class CreateAccount extends AppCompatActivity {
                         });
 
                 // Goes to home screen.
-                Intent intentAccountCreated = new Intent(CreateAccount.this, MainActivity.class);
-                startActivity(intentAccountCreated);
+                Intent intentWithUID = new Intent(CreateAccount.this, MainActivity.class);
+                startActivity(intentWithUID);
 
                 finish();
             }

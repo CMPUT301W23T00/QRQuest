@@ -1,6 +1,7 @@
 package com.cmput301w23t00.qrquest.ui.loadingscreen;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -11,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.createaccount.CreateAccount;
+import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
+import com.cmput301w23t00.qrquest.ui.profile.UserSettings;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,7 +33,20 @@ public class LoadingScreen extends AppCompatActivity {
         final String[] fid = new String[1];
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final String TAG = "LoadingScreen";
-        fid[0] = FirebaseInstallations.getInstance().getId().toString();
+        final String USER_PROFILE_INFORMATION = "userProfile";
+        final String SETTINGS_PREFS_NAME = "userPreferences";
+
+        SharedPreferences profile = getSharedPreferences(USER_PROFILE_INFORMATION, MODE_PRIVATE);
+        if (!profile.getBoolean("existingAccount", false)) {
+            fid[0] = FirebaseInstallations.getInstance().getId().toString();
+            UserProfile.setUserId(fid[0]);
+        }
+        else {
+            fid[0] = profile.getString("userId", "");
+            UserProfile.setCreated(true);
+            UserProfile.setUserId(profile.getString("userId", ""));
+            UserSettings.setCreated(true);
+        }
 
         // Instead of getSupportActionBar().hide(); pre-req is that Support Action Bar must be set.
         Objects.requireNonNull(getSupportActionBar()).hide();
@@ -86,6 +102,7 @@ public class LoadingScreen extends AppCompatActivity {
                     Intent intentNoUID = new Intent(LoadingScreen.this, CreateAccount.class);
                     // sends fid to CreateAccount
                     intentNoUID.putExtra("fid", fid[0]);
+                    UserProfile.setUserId(fid[0]);
                     startActivity(intentNoUID);
                 }
                 // if fid is present, goes to MainActivity.

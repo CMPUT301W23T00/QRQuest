@@ -43,7 +43,15 @@
         android:id="@+id/navigation_profile"
         android:name="com.cmput301w23t00.qrquest.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+    <action
+        android:id="@+id/action_navigation_profile_to_navigation_settings"
+        app:destination="@id/navigation_settings"
+        app:launchSingleTop="true"
+        app:popUpTo="@+id/mobile_navigation"
+        app:popUpToSaveState="true"
+        app:popUpToInclusive="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/qrCodeSummaryStatisticsFragment2"
@@ -80,5 +88,18 @@
             android:id="@+id/qrCodeInformationFragment_to_action_libraryFragment"
             app:destination="@id/navigation_qrcode_library" />
 
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.cmput301w23t00.qrquest.ui.profile.UserSettingsFragment"
+        android:label="@string/settings_menu"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_navigation_settings_to_navigation_profile"
+            app:destination="@id/navigation_profile"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/mobile_navigation"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

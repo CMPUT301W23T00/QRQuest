@@ -1,5 +1,7 @@
 package com.cmput301w23t00.qrquest.ui.library;
 
+import static android.content.ContentValues.TAG;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +18,9 @@ import androidx.navigation.Navigation;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentLibraryBinding;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
+import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -71,9 +75,7 @@ public class LibraryFragment extends Fragment {
         QRAdapter = new LibraryQRCodeAdapter(getActivity(), dataList);
         QRList.setAdapter(QRAdapter);
         documentIDList = new ArrayList<>();
-        // TODO: REPLACE HARDCODED VALUE WITH VALUE FROM DEREK'S PREFERENCES WHEN MERGED
-        //userID = FirebaseInstallations.getInstance().getId().toString();
-        String userID = "com.google.android.gms.tasks.zzw@d9cfc73";
+        String userID = UserProfile.getUserId();
         // Find all QR codes scanned by current user with unique identifier ID
         usersQRCodesCollectionReference.whereEqualTo("identifierId", userID)
                 .get().addOnCompleteListener(new OnCompleteListener<>() {
