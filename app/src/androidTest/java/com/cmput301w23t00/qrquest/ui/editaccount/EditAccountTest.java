@@ -1,10 +1,18 @@
 package com.cmput301w23t00.qrquest.ui.editaccount;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.intent.Intents.intended;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -12,13 +20,19 @@ import static org.junit.Assert.assertTrue;
 import androidx.lifecycle.Lifecycle;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.action.ViewActions;
+import androidx.test.espresso.intent.Intents;
+import androidx.test.uiautomator.UiDevice;
 
+import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.createaccount.CreateAccount;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
 
 public class EditAccountTest {
     @Test
@@ -32,6 +46,7 @@ public class EditAccountTest {
     @Before
     public void setUp() {
         ActivityScenario<EditAccount> activityScenario = ActivityScenario.launch(EditAccount.class);
+        Intents.init();
     }
 
     @Test
@@ -99,4 +114,38 @@ public class EditAccountTest {
         * if previous values of account is set on fields
      */
 
+    @Test
+    public void testEditAccountSuccess() throws InterruptedException {
+        // Set up test data
+
+        ActivityScenario<EditAccount> activityScenario = ActivityScenario.launch(EditAccount.class);
+        String name = "TestCreateAccountSuccess";
+        String phone = "123-456-7890";
+        String email = "test@gmail.com";
+        String aboutMe = "I live to walk";
+
+        // Input data into UI fields
+
+        onView(withId(R.id.editNameField)).perform(click(), typeText(name), closeSoftKeyboard());
+        onView(withId(R.id.editNameField)).check(matches(withText(name)));
+        onView(withId(R.id.editPhoneField)).perform(click(), replaceText(phone), closeSoftKeyboard());
+        onView(withId(R.id.editPhoneField)).check(matches(withText(phone)));
+        onView(withId(R.id.editEmailField)).perform(click(), typeText(email), closeSoftKeyboard());
+        onView(withId(R.id.editEmailField)).check(matches(withText(email)));
+        onView(withId(R.id.editAboutMeField)).perform(click(), typeText(aboutMe), closeSoftKeyboard());
+        onView(withId(R.id.editAboutMeField)).check(matches(withText(aboutMe)));
+
+        // Click the "Create Account" button
+        //onView(withId(R.id.editConfirmButton)).perform(click());
+        //intended(hasComponent(MainActivity.class.getName()));
+    }
+
+    @After
+    public void turnOnDeviceAnimations() throws IOException {
+        UiDevice device = UiDevice.getInstance(getInstrumentation());
+        device.executeShellCommand("settings put global window_animation_scale 1");
+        device.executeShellCommand("settings put global transition_animation_scale 1");
+        device.executeShellCommand("settings put global animator_duration_scale 1");
+        Intents.release();
+    }
 }
