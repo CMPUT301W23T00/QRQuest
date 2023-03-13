@@ -200,4 +200,5 @@ public class QRCodeInformationFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
 }
