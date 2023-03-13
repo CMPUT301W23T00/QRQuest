@@ -16,9 +16,15 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentQrcodeinformationBinding;
-import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.Date;
 
 /**
  * The class  QR code information fragment extends fragment
@@ -30,6 +36,7 @@ public class QRCodeInformationFragment extends Fragment {
     private FragmentQrcodeinformationBinding binding; // view binding object for the fragment
     String userID; // a string to hold the current user's ID
     FirebaseFirestore db; // Firestore database instance
+    LibraryQRCode libraryQRCode;
 
     /**
      * onCreateView is called when the view is first created.
@@ -59,7 +66,8 @@ public class QRCodeInformationFragment extends Fragment {
             userID = bundle.getString("userID");
             if (qrCode != null) {
                 // Update the ViewModel with the information of the selected QR code
-                qrCodeInformationViewModel.setQRCodeInfo(new QRCodeProcessor(qrCode.getData()).getName(), "test description");
+                libraryQRCode = qrCode;
+                qrCodeInformationViewModel.setQRCodeInfo(qrCode.getData(), "test description");
             }
         }
 
@@ -133,30 +141,53 @@ public class QRCodeInformationFragment extends Fragment {
 
         // delete qr code button
         if (id == R.id.qr_delete) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogTheme);
-            builder.setCancelable(true);
-            builder.setTitle("Are you sure you want to delete this QR Code?");
-            builder.setPositiveButton("Confirm",
-                    (dialog, which) -> {
-                        // Add code to delete the QR code here
-//                        db = FirebaseFirestore.getInstance();
-//                        final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
-//                        final CollectionReference qrcodesCollectionReference = db.collection("qrcodes");
-
-                    });
-
-            builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
-                // Code to handle the cancel button here
-                dialog.dismiss();
-            });
-
-            AlertDialog dialog = builder.create();
-            dialog.show();
-
-            return true;
+            String qrData = libraryQRCode.getData();
+            Date qrDate = libraryQRCode.getDate();
+            deleteQRCode(userID, qrDate, qrData);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public boolean deleteQRCode(String userID, Date qrDate, String qrData) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogTheme);
+        builder.setCancelable(true);
+        builder.setTitle("Are you sure you want to delete this QR Code?");
+        builder.setPositiveButton("Confirm",
+                (dialog, which) -> {
+                    // Add code to delete the QR code here
+                    db = FirebaseFirestore.getInstance();
+                    final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
+
+                    usersQRCodesCollectionReference.whereEqualTo("identifierID", userID)
+                            .whereEqualTo("dateScanned", qrDate)
+                            .whereEqualTo("qrCodeData", qrData)
+                            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            // deletes the QR Code
+                                            usersQRCodesCollectionReference.document(document.getId()).delete();
+                                            // Navigate back to the previous fragment
+                                            NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_libraryFragment);
+                                            dialog.dismiss();
+                                            break;
+                                        }
+                                    }
+                                }
+                            });
+                });
+
+        builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
+            // Code to handle the cancel button here
+            dialog.dismiss();
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        return true;
     }
 
     /**
