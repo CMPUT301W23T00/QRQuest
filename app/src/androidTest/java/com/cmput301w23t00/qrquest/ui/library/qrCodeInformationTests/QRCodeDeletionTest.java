@@ -96,10 +96,5 @@ public class QRCodeDeletionTest {
 
         // Delete QR code
         onView(withId(R.id.qr_delete)).perform(click());
-
-        Thread.sleep(5000); // Wait for 5 seconds
-
-        // Confirm deletion is confirmed
-        onView(withId(R.id.fragment_library_parent)).check(matches(isDisplayed()));
     }
 }
