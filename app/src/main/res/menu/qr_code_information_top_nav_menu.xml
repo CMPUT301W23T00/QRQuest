@@ -11,13 +11,6 @@
         tools:ignore="AlwaysShowAction"/>
 
     <item
-        android:id="@+id/qr_visual_representation"
-        android:icon="@drawable/baseline_smart_toy_20"
-        android:title="@string/title_qrcode_library"
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction"/>
-
-    <item
         android:id="@+id/qr_same_code"
         android:icon="@drawable/baseline_people_18"
         android:title="@string/title_qrcode_library"
