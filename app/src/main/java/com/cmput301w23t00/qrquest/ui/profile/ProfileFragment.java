@@ -111,6 +111,9 @@ public class ProfileFragment extends Fragment {
                                 }
                                 QRAdapter.notifyDataSetChanged();
                             }
+                            highestScoreText.setText(String.format("%d", (int) highestScore[0]));
+                            lowestScoreText.setText(String.format("%d", (int) lowestScore[0]));
+                            totalPointsText.setText(String.format("%d", (int) sumOfScores[0]));
                         }
                     }
                 });
