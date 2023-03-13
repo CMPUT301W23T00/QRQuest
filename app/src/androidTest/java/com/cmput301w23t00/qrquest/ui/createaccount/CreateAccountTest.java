@@ -5,14 +5,18 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import androidx.lifecycle.Lifecycle;
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.action.ViewActions;
 import androidx.test.uiautomator.UiDevice;
 
 import com.cmput301w23t00.qrquest.MainActivity;
@@ -113,4 +117,22 @@ public class CreateAccountTest {
         device.executeShellCommand("settings put global transition_animation_scale 1");
         device.executeShellCommand("settings put global animator_duration_scale 1");
     }
+
+    // checks if activity is finished when back button is pressed.
+    @Test
+    public void testBackButtonFinishesCreateAccount() {
+        ActivityScenario<CreateAccount> activityScenario = ActivityScenario.launch(CreateAccount.class);
+        // Simulate a press of the system back button
+        onView(isRoot()).perform(ViewActions.pressBackUnconditionally());
+        // Check that the activity is finishing
+        assertTrue(activityScenario.getState().isAtLeast(Lifecycle.State.DESTROYED));
+    }
+
+        /*
+    TODO:
+        * if account is created with valid data
+        * if account is not created with empty data
+        * if account is not created with invalid data
+        * if activity finishes when create button is pressed
+     */
 }
