@@ -1,7 +1,6 @@
 package com.cmput301w23t00.qrquest.ui.library;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.installations.FirebaseInstallations;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,6 +34,7 @@ public class LibraryFragment extends Fragment {
     private FragmentLibraryBinding binding;
     private ArrayAdapter<LibraryQRCode> QRAdapter;
     private ArrayList<LibraryQRCode> dataList;
+    private ArrayList<String> documentIDList;
     FirebaseFirestore db;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -46,7 +45,7 @@ public class LibraryFragment extends Fragment {
         // QR Code List
         db = FirebaseFirestore.getInstance();
         final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
-        final CollectionReference qrcodesCollectionReference = db.collection("qrcodes");
+        //final CollectionReference qrcodesCollectionReference = db.collection("qrcodes");
 
         highestScore = 0;
         sumOfScores = 0;
@@ -55,6 +54,7 @@ public class LibraryFragment extends Fragment {
 
         ListView QRList = binding.libraryQrCodesList;
         dataList = new ArrayList<>();
+        documentIDList = new ArrayList<>();
         //String userID = FirebaseInstallations.getInstance().getId().toString();
         String userID = "com.google.android.gms.tasks.zzw@b2bf36a";
         QRAdapter = new LibraryQRCodeAdapter(getActivity(), dataList);
@@ -78,6 +78,7 @@ public class LibraryFragment extends Fragment {
                                 sumOfScores += score;
                                 totalScanned += 1;
                                 dataList.add(new LibraryQRCode(qrCodeData, score, dateScanned));
+                                documentIDList.add(document.getId());
                                 QRAdapter.notifyDataSetChanged();
                             }
                         }
@@ -101,12 +102,14 @@ public class LibraryFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
                 LibraryQRCode qrCode = dataList.get(index);
+                String docID = documentIDList.get(index);
 
                 // Create a bundle to store data that will be passed to the QR code information fragment
                 Bundle bundle = new Bundle();
                 // Add the selected QR code object and the user ID to the bundle
                 bundle.putParcelable("selectedQRCode", qrCode);
                 bundle.putString("userID", userID);
+                bundle.putString("documentID", docID);
 
                 // Use the Navigation component to navigate to the QR code information fragment,
                 // and pass the bundle as an argument to the destination fragment

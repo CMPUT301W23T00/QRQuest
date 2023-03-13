@@ -2,6 +2,7 @@ package com.cmput301w23t00.qrquest.ui.library.qrcodeinformation;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,12 +18,11 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentQrcodeinformationBinding;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Date;
 
@@ -35,6 +35,7 @@ public class QRCodeInformationFragment extends Fragment {
 
     private FragmentQrcodeinformationBinding binding; // view binding object for the fragment
     String userID; // a string to hold the current user's ID
+    String docID;
     FirebaseFirestore db; // Firestore database instance
     LibraryQRCode libraryQRCode;
 
@@ -64,6 +65,7 @@ public class QRCodeInformationFragment extends Fragment {
         if (bundle != null) {
             LibraryQRCode qrCode = bundle.getParcelable("selectedQRCode");
             userID = bundle.getString("userID");
+            docID = bundle.getString("documentID");
             if (qrCode != null) {
                 // Update the ViewModel with the information of the selected QR code
                 libraryQRCode = qrCode;
@@ -158,23 +160,22 @@ public class QRCodeInformationFragment extends Fragment {
                     // Add code to delete the QR code here
                     db = FirebaseFirestore.getInstance();
                     final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
+                    // Get the document reference
+                    DocumentReference qr_code = usersQRCodesCollectionReference.document(docID);
 
-                    usersQRCodesCollectionReference.whereEqualTo("identifierID", userID)
-                            .whereEqualTo("dateScanned", qrDate)
-                            .whereEqualTo("qrCodeData", qrData)
-                            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    // Delete the document
+                    qr_code.delete()
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        for (QueryDocumentSnapshot document : task.getResult()) {
-                                            // deletes the QR Code
-                                            usersQRCodesCollectionReference.document(document.getId()).delete();
-                                            // Navigate back to the previous fragment
-                                            NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_libraryFragment);
-                                            dialog.dismiss();
-                                            break;
-                                        }
-                                    }
+                                public void onSuccess(Void aVoid) {
+                                    NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_libraryFragment);
+                                    dialog.dismiss();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w("ERROR!", "Error deleting QR Code", e);
                                 }
                             });
                 });
