@@ -95,6 +95,7 @@ public class CreateAccountTest {
         device.executeShellCommand("settings put global transition_animation_scale 0");
         device.executeShellCommand("settings put global animator_duration_scale 0");
     }
+
     @Test
     public void testCreateAccountSuccess() throws InterruptedException {
         // Set up test data
@@ -119,6 +120,125 @@ public class CreateAccountTest {
         intended(hasComponent(MainActivity.class.getName()));
     }
 
+    @Test
+    public void testCreateAccountFailureEmptyPhone() throws InterruptedException {
+        // Set up test data
+
+        ActivityScenario<CreateAccount> activityScenario = ActivityScenario.launch(CreateAccount.class);
+        String name = "testCreateAccountFailureEmptyPhone";
+        String phone = "";
+        String email = "test@gmail.com";
+
+        // Input data into UI fields
+
+        onView(withId(R.id.addNameField)).perform(click(), typeText(name), closeSoftKeyboard());
+        onView(withId(R.id.addNameField)).check(matches(withText(name)));
+        onView(withId(R.id.addPhoneField)).perform(click(), replaceText(phone), closeSoftKeyboard());
+        onView(withId(R.id.addPhoneField)).check(matches(withText(phone)));
+        onView(withId(R.id.addEmailField)).perform(click(), typeText(email), closeSoftKeyboard());
+        onView(withId(R.id.addEmailField)).check(matches(withText(email)));
+
+        // Click the "Create Account" button
+        onView(withId(R.id.addCreateButton)).perform(click());
+
+        activityScenario.onActivity(activity -> assertFalse(activity.isFinishing()));
+    }
+
+    @Test
+    public void testCreateAccountFailureEmptyName() throws InterruptedException {
+        // Set up test data
+
+        ActivityScenario<CreateAccount> activityScenario = ActivityScenario.launch(CreateAccount.class);
+        String name = "";
+        String phone = "123-456-7890";
+        String email = "testCreateAccountFailureEmptyName@gmail.com";
+
+        // Input data into UI fields
+
+        onView(withId(R.id.addNameField)).perform(click(), typeText(name), closeSoftKeyboard());
+        onView(withId(R.id.addNameField)).check(matches(withText(name)));
+        onView(withId(R.id.addPhoneField)).perform(click(), replaceText(phone), closeSoftKeyboard());
+        onView(withId(R.id.addPhoneField)).check(matches(withText(phone)));
+        onView(withId(R.id.addEmailField)).perform(click(), typeText(email), closeSoftKeyboard());
+        onView(withId(R.id.addEmailField)).check(matches(withText(email)));
+
+        // Click the "Create Account" button
+        onView(withId(R.id.addCreateButton)).perform(click());
+
+        activityScenario.onActivity(activity -> assertFalse(activity.isFinishing()));
+    }
+
+    @Test
+    public void testCreateAccountFailureEmptyEmail() throws InterruptedException {
+        // Set up test data
+
+        ActivityScenario<CreateAccount> activityScenario = ActivityScenario.launch(CreateAccount.class);
+        String name = "testCreateAccountFailureEmptyEmail";
+        String phone = "123-456-7890";
+        String email = "";
+
+        // Input data into UI fields
+
+        onView(withId(R.id.addNameField)).perform(click(), typeText(name), closeSoftKeyboard());
+        onView(withId(R.id.addNameField)).check(matches(withText(name)));
+        onView(withId(R.id.addPhoneField)).perform(click(), replaceText(phone), closeSoftKeyboard());
+        onView(withId(R.id.addPhoneField)).check(matches(withText(phone)));
+        onView(withId(R.id.addEmailField)).perform(click(), typeText(email), closeSoftKeyboard());
+        onView(withId(R.id.addEmailField)).check(matches(withText(email)));
+
+        // Click the "Create Account" button
+        onView(withId(R.id.addCreateButton)).perform(click());
+
+        activityScenario.onActivity(activity -> assertFalse(activity.isFinishing()));
+    }
+
+    @Test
+    public void testCreateAccountFailureInvalidPhone() throws InterruptedException {
+        // Set up test data
+
+        ActivityScenario<CreateAccount> activityScenario = ActivityScenario.launch(CreateAccount.class);
+        String name = "testCreateAccountFailureInvalidPhone";
+        String phone = "123324213";
+        String email = "test@gmail.com";
+
+        // Input data into UI fields
+
+        onView(withId(R.id.addNameField)).perform(click(), typeText(name), closeSoftKeyboard());
+        onView(withId(R.id.addNameField)).check(matches(withText(name)));
+        onView(withId(R.id.addPhoneField)).perform(click(), replaceText(phone), closeSoftKeyboard());
+        onView(withId(R.id.addPhoneField)).check(matches(withText(phone)));
+        onView(withId(R.id.addEmailField)).perform(click(), typeText(email), closeSoftKeyboard());
+        onView(withId(R.id.addEmailField)).check(matches(withText(email)));
+
+        // Click the "Create Account" button
+        onView(withId(R.id.addCreateButton)).perform(click());
+
+        activityScenario.onActivity(activity -> assertFalse(activity.isFinishing()));
+    }
+
+    @Test
+    public void testCreateAccountFailureInvalidEmail() throws InterruptedException {
+        // Set up test data
+
+        ActivityScenario<CreateAccount> activityScenario = ActivityScenario.launch(CreateAccount.class);
+        String name = "testCreateAccountFailureInvalidEmail";
+        String phone = "123-456-7890";
+        String email = "testgmail.com";
+
+        // Input data into UI fields
+
+        onView(withId(R.id.addNameField)).perform(click(), typeText(name), closeSoftKeyboard());
+        onView(withId(R.id.addNameField)).check(matches(withText(name)));
+        onView(withId(R.id.addPhoneField)).perform(click(), replaceText(phone), closeSoftKeyboard());
+        onView(withId(R.id.addPhoneField)).check(matches(withText(phone)));
+        onView(withId(R.id.addEmailField)).perform(click(), typeText(email), closeSoftKeyboard());
+        onView(withId(R.id.addEmailField)).check(matches(withText(email)));
+
+        // Click the "Create Account" button
+        onView(withId(R.id.addCreateButton)).perform(click());
+
+        activityScenario.onActivity(activity -> assertFalse(activity.isFinishing()));
+    }
 
     @After
     public void turnOnDeviceAnimations() throws IOException {
@@ -139,11 +259,4 @@ public class CreateAccountTest {
         assertTrue(activityScenario.getState().isAtLeast(Lifecycle.State.DESTROYED));
     }
 
-        /*
-    TODO:
-        * if account is created with valid data
-        * if account is not created with empty data
-        * if account is not created with invalid data
-        * if activity finishes when create button is pressed
-     */
 }
