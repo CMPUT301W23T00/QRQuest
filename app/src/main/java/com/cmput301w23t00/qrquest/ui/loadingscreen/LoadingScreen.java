@@ -45,9 +45,7 @@ public class LoadingScreen extends AppCompatActivity {
             fid[0] = profile.getString("userId", "");
             UserProfile.setCreated(true);
             UserProfile.setUserId(profile.getString("userId", ""));
-            SharedPreferences settings = getSharedPreferences(SETTINGS_PREFS_NAME, MODE_PRIVATE);
             UserSettings.setCreated(true);
-            UserSettings.setUserId(settings.getString("userId", ""));
         }
 
         // Instead of getSupportActionBar().hide(); pre-req is that Support Action Bar must be set.

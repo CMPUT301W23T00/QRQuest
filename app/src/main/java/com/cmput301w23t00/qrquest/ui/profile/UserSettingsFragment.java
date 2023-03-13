@@ -40,8 +40,6 @@ public class UserSettingsFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        UserSettingsViewModel viewModel =
-                new ViewModelProvider(this).get(UserSettingsViewModel.class);
 
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
 

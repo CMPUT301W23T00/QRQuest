@@ -59,8 +59,6 @@ public class ProfileFragment extends Fragment {
     @SuppressLint("DefaultLocale")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        ProfileViewModel profileViewModel =
-                new ViewModelProvider(this).get(ProfileViewModel.class);
 
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
 
