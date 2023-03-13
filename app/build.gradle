@@ -53,6 +53,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.4.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.fragment:fragment:1.4.1'
+    implementation 'androidx.test.uiautomator:uiautomator:2.2.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -84,6 +85,7 @@ dependencies {
         // exclude androidx.test:core while fragment_testing depends on 1.1.0
         exclude group: 'androidx.test', module: 'core'
     }
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.4.0'
     testImplementation 'com.android.support.test:runner:1.0.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
 }
