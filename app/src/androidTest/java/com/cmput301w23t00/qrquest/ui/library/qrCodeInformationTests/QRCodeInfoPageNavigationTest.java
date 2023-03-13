@@ -51,6 +51,4 @@ public class QRCodeInfoPageNavigationTest {
         // Verify that QR code information page is displayed
         onView(withId(R.id.fragment_qr_code_info_parent)).check(matches(isDisplayed()));
     }
-
-
 }
