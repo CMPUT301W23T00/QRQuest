@@ -42,6 +42,9 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * This class models the fragment used to display the user profile
+ */
 public class ProfileFragment extends Fragment {
 
     private TextView name;
@@ -58,8 +61,8 @@ public class ProfileFragment extends Fragment {
     private ArrayList<LinearLayout> qr_codes;
 
     /**
-     * onCreateView inflates the view, showing a user's collection of QR codes with a button to see
-     * summary statistics
+     * onCreateView inflates the view, showing a user's collection of recent QR codes as well as
+     * their profile information
      * @param inflater the LayoutInflater object that can be used to inflate any views in the fragment
      * @param container the parent view that the fragment's UI should be attached to
      * @param savedInstanceState the previously saved instance state
@@ -121,8 +124,9 @@ public class ProfileFragment extends Fragment {
                                 QRAdapter.notifyDataSetChanged();
                             }
                             highestScoreText.setText(String.format("%d", (int) highestScore[0]));
-                            lowestScoreText.setText(String.format("%d", (int) lowestScore[0]));
                             totalPointsText.setText(String.format("%d", (int) sumOfScores[0]));
+                            if (lowestScore[0] == -1) lowestScoreText.setText(String.format("%d", 0));
+                            else lowestScoreText.setText(String.format("%d", (int) lowestScore[0]));
                             QRlist.setMinimumHeight(100*dataList.size());
                         }
                     }
@@ -153,6 +157,9 @@ public class ProfileFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * onPause is called when the view is temporarily left by the user
+     */
     @Override
     public void onPause() {
         super.onPause();
