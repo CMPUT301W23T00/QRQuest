@@ -38,6 +38,7 @@ import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.addqrcode.qrnameactivity.takephotoactivity.TakePhotoActivity;
 import com.cmput301w23t00.qrquest.ui.createaccount.CreateAccount;
 import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
+import com.cmput301w23t00.qrquest.ui.profile.UserSettings;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -75,6 +76,7 @@ public class QrNameActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Uri picturesUri = Uri.EMPTY;
     public static final String REQUEST_RESULT = "REQUEST_RESULT";
+    private UserSettings userSettings = new UserSettings();
 
 
     String qrCodeData;
@@ -99,6 +101,9 @@ public class QrNameActivity extends AppCompatActivity {
         ImageView imgview = findViewById(R.id.main_backgroundImage);
         Button canButton = findViewById(R.id.take_photo_cancel_button);
         Button conButton = findViewById(R.id.take_photo_confirm_button);
+        @SuppressLint("UseSwitchCompatOrMaterialCode")
+        Switch leaveLocationSwitch = findViewById(R.id.leaveLocationSwitch);
+        leaveLocationSwitch.setChecked(userSettings.getGeoLocation());
         FusedLocationProviderClient client;
         client = LocationServices.getFusedLocationProviderClient(this);
         String locationCord = "";
