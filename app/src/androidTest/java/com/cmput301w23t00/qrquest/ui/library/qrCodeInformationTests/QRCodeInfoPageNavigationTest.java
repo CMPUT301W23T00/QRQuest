@@ -13,6 +13,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
+import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +38,9 @@ public class QRCodeInfoPageNavigationTest {
      */
     @Test
     public void testQRCodeInfoPageFragmentsNavigation() throws InterruptedException {
+
+        UserProfile.setUserId("com.google.android.gms.tasks.zzw@9bae679");
+
         // Navigate to libraryFragment
         onView(withId(R.id.navigation_qrcode_library)).perform(click());
         // Verify that libraryFragment is displayed
