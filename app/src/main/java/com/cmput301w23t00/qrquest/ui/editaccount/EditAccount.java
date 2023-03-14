@@ -97,7 +97,7 @@ public class EditAccount extends AppCompatActivity {
 
                 String patternString = "^\\d{3}-\\d{3}-\\d{4}$";
                 Pattern pattern = Pattern.compile(patternString);
-                if(!pattern.matcher(phoneNum).matches()){
+                if(!pattern.matcher(phoneNumInput).matches()){
                     editPhoneField.setError("Please enter a valid phone number, i.e: 123-456-7890.");
                     return;
                 }

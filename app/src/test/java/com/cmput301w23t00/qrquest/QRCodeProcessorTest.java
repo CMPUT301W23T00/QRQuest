@@ -4,9 +4,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
-
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 
 /**

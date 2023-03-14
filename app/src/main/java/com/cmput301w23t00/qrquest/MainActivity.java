@@ -16,8 +16,6 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.cmput301w23t00.qrquest.databinding.ActivityMainBinding;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.installations.FirebaseInstallations;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
@@ -59,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
             userProfile.setPhoneNumber(profile.getString("phoneNumber", ""));
             userProfile.setEmail(profile.getString("email", ""));
             userProfile.setName(profile.getString("name", ""));
-            String Id = FirebaseInstallations.getInstance().getId().toString();
         }
         UserProfile.setCreated(true);
         UserSettings.setCreated(true);

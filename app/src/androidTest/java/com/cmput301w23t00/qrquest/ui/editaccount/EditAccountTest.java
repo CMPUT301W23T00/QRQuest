@@ -6,15 +6,12 @@ import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.intent.Intents.intended;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import androidx.lifecycle.Lifecycle;
@@ -23,9 +20,9 @@ import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.uiautomator.UiDevice;
 
-import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.createaccount.CreateAccount;
+import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -47,6 +44,7 @@ public class EditAccountTest {
     public void setUp() {
         ActivityScenario<EditAccount> activityScenario = ActivityScenario.launch(EditAccount.class);
         Intents.init();
+        UserProfile userProfile = new UserProfile();
     }
 
     @Test
