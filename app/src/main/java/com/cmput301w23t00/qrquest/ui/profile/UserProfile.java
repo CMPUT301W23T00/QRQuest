@@ -3,7 +3,6 @@ package com.cmput301w23t00.qrquest.ui.profile;
 import static androidx.fragment.app.FragmentManager.TAG;
 
 import android.annotation.SuppressLint;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import androidx.annotation.NonNull;

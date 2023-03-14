@@ -17,11 +17,10 @@ import com.cmput301w23t00.qrquest.ui.profile.UserSettings;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.installations.FirebaseInstallations;
 
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * LoadingScreen the activity the is displayed for the first 5 seconds of runtime
@@ -41,7 +40,7 @@ public class LoadingScreen extends AppCompatActivity {
 
         SharedPreferences profile = getSharedPreferences(USER_PROFILE_INFORMATION, MODE_PRIVATE);
         if (!profile.getBoolean("existingAccount", false)) {
-            fid[0] = FirebaseInstallations.getInstance().getId().toString();
+            fid[0] = UUID.randomUUID().toString();
             UserProfile.setUserId(fid[0]);
         }
         else {

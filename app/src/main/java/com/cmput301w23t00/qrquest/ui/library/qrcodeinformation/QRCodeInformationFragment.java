@@ -1,7 +1,6 @@
 package com.cmput301w23t00.qrquest.ui.library.qrcodeinformation;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;

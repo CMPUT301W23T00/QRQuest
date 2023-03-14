@@ -3,12 +3,10 @@ package com.cmput301w23t00.qrquest.ui.profile;
 import static androidx.fragment.app.FragmentManager.TAG;
 
 import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.cmput301w23t00.qrquest.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -17,10 +15,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.Source;
-import com.google.firebase.firestore.model.Document;
-import com.google.firebase.installations.FirebaseInstallations;
-import com.google.firestore.v1.WriteResult;
 
 /**
  * UserSettings class is used to temporarily store user information for the

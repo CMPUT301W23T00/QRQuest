@@ -5,7 +5,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
-import com.cmput301w23t00.qrquest.ui.profile.UserSettings;
 
 public class UserProfileClass {
     private UserProfile createMockUser() {

@@ -26,6 +26,7 @@ import androidx.test.uiautomator.UiDevice;
 
 import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
+import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -49,6 +50,7 @@ public class CreateAccountTest {
     public void setUp() {
         ActivityScenario<CreateAccount> activityScenario = ActivityScenario.launch(CreateAccount.class);
         Intents.init();
+        UserProfile userProfile = new UserProfile();
     }
 
     @Test

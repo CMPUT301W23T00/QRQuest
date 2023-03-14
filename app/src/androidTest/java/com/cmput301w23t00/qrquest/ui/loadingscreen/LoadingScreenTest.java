@@ -1,12 +1,10 @@
 package com.cmput301w23t00.qrquest.ui.loadingscreen;
 
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 
 import androidx.test.core.app.ActivityScenario;
 
@@ -16,7 +14,6 @@ import com.cmput301w23t00.qrquest.R;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
