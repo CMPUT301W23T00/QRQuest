@@ -58,16 +58,16 @@ public class UserSettings {
      * pushNotifications getter
      * @return pushNotifications settings value
      */
-    public Boolean getPushNotifications() {
-        return pushNotifications;
+    public static Boolean getPushNotifications() {
+        return UserSettings.pushNotifications;
     }
 
     /**
      * geoLocation getter
      * @return geoLocation settings value
      */
-    public Boolean getGeoLocation() {
-        return geoLocation;
+    public static Boolean getGeoLocation() {
+        return UserSettings.geoLocation;
     }
 
     /**
@@ -75,7 +75,7 @@ public class UserSettings {
      * @return created value, whether or not an account exists
      */
     public static Boolean getCreated() {
-        return created;
+        return UserSettings.created;
     }
 
     /**
@@ -83,7 +83,7 @@ public class UserSettings {
      * @param pushNotifications changes class pushNotifications value to parameter value
      */
     public void setPushNotifications(Boolean pushNotifications) {
-        this.pushNotifications = pushNotifications;
+        UserSettings.pushNotifications = pushNotifications;
     }
 
     /**
@@ -92,7 +92,7 @@ public class UserSettings {
      * @param geoLocation changes class geoLocation value to parameter value
      */
     public void setGeoLocation(Boolean geoLocation) {
-        this.geoLocation = geoLocation;
+        UserSettings.geoLocation = geoLocation;
         // Update an existing document
         if (db != null) {
             db.collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
