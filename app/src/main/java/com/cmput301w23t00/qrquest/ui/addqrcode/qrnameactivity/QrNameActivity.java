@@ -96,7 +96,7 @@ public class QrNameActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         Intent qrCodeIntent = getIntent();
-        this.qrCodeData = Objects.requireNonNull(qrCodeIntent).getStringExtra("qrCodeData");
+        this.qrCodeData = QRCodeProcessor.sha256(Objects.requireNonNull(qrCodeIntent).getStringExtra("qrCodeData"));
 
         ImageView imgview = findViewById(R.id.main_backgroundImage);
         Button canButton = findViewById(R.id.take_photo_cancel_button);

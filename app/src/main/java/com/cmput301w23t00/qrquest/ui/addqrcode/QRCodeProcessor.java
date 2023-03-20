@@ -64,8 +64,7 @@ public class QRCodeProcessor {
      * @return Human-readable name of the QR Code
      */
     public String getName() {
-        // Generate a SHA-256 hash of the QR code data
-        String res = sha256(this.QRCodeData);
+        String res = this.QRCodeData;
         // Take the first two characters of the hash
         String FirstTwo = res.substring(0,2);
         // Convert the first two characters to an integer
@@ -96,8 +95,7 @@ public class QRCodeProcessor {
      * @return An integer score for the QR Code
      */
     public int getScore() {
-        // Generate a SHA-256 hash of the QR code data
-        String res = sha256(this.QRCodeData);
+        String res = this.QRCodeData;
         // Calculate the score based on the hash
         double Final = 0;
         int Current = 0;
@@ -125,8 +123,7 @@ public class QRCodeProcessor {
      * @return An Bitmap for the QR code
      */
     public Bitmap getBitmap(Context context) {
-        // Generate a SHA-256 hash of the QR code data
-        String res = sha256(this.QRCodeData);
+        String res = this.QRCodeData;
         // Take the first two characters of the hash
         String FirstTwo = res.substring(0,2);
         // Convert the first two characters to an integer
