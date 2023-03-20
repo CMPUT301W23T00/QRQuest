@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -21,6 +22,7 @@ import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentQrcodeinformationBinding;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
+import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
@@ -37,6 +39,7 @@ public class QRCodeInformationFragment extends Fragment {
     private FragmentQrcodeinformationBinding binding; // view binding object for the fragment
     String userID; // a string to hold the current user's ID
     String docID; // the qr code document id
+    Boolean isMap; // determines which page to return to
     FirebaseFirestore db; // Firestore database instance
     LibraryQRCode libraryQRCode;
 
@@ -67,6 +70,7 @@ public class QRCodeInformationFragment extends Fragment {
             LibraryQRCode qrCode = bundle.getParcelable("selectedQRCode");
             userID = bundle.getString("userID");
             docID = bundle.getString("documentID");
+            isMap = bundle.getBoolean("isMap");
             if (qrCode != null) {
                 // Update the ViewModel with the information of the selected QR code
                 libraryQRCode = qrCode;
@@ -135,7 +139,12 @@ public class QRCodeInformationFragment extends Fragment {
         // Back arrow
         if (item.getItemId() == android.R.id.home) {
             // Navigate back to the previous fragment
-            NavHostFragment.findNavController(this).navigate(R.id.qrCodeInformationFragment_to_action_libraryFragment);
+            if (isMap) {
+                NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_mapFragment);
+            } else {
+                NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_libraryFragment);
+            }
+
             return true;
         }
 
@@ -157,27 +166,34 @@ public class QRCodeInformationFragment extends Fragment {
         builder.setTitle("Are you sure you want to delete this QR Code?");
         builder.setPositiveButton("Confirm",
                 (dialog, which) -> {
-                    // Add code to delete the QR code here
-                    db = FirebaseFirestore.getInstance();
-                    final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
-                    // Get the document reference
-                    DocumentReference qr_code = usersQRCodesCollectionReference.document(docID);
+                    if (userID == UserProfile.getUserId()) {
+                        // Add code to delete the QR code here
+                        db = FirebaseFirestore.getInstance();
+                        final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
+                        // Get the document reference
+                        DocumentReference qr_code = usersQRCodesCollectionReference.document(docID);
 
-                    // Delete the document
-                    qr_code.delete()
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
+                        // Delete the document
+                        qr_code.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                if (isMap) {
+                                    NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_mapFragment);
+                                } else {
                                     NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_libraryFragment);
-                                    dialog.dismiss();
                                 }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w("ERROR!", "Error deleting QR Code", e);
-                                }
-                            });
+                                dialog.dismiss();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w("ERROR!", "Error deleting QR Code", e);
+                            }
+                        });
+                    } else {
+                        Toast.makeText(getActivity(),"Can't delete QR Code since it isn't yours",Toast.LENGTH_SHORT).show();
+                    }
                 });
 
         builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {

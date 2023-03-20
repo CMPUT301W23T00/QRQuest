@@ -9,7 +9,13 @@
         android:id="@+id/navigation_map"
         android:name="com.cmput301w23t00.qrquest.ui.map.MapFragment"
         android:label="@string/title_map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_navigation_map_to_qrCodeInformationFragment"
+            app:destination="@id/qrCodeInformationFragment"
+            app:popUpTo="@+id/mobile_navigation"
+            app:popUpToInclusive="true"/>
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_qrcode_library"
@@ -24,7 +30,9 @@
             app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_libraryFragment_to_qrCodeInformationFragment"
-            app:destination="@id/qrCodeInformationFragment" />
+            app:destination="@id/qrCodeInformationFragment"
+            app:popUpTo="@+id/mobile_navigation"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
@@ -87,6 +95,10 @@
         <action
             android:id="@+id/qrCodeInformationFragment_to_action_libraryFragment"
             app:destination="@id/navigation_qrcode_library" />
+
+        <action
+            android:id="@+id/qrCodeInformationFragment_to_action_mapFragment"
+            app:destination="@id/navigation_map" />
 
     </fragment>
 

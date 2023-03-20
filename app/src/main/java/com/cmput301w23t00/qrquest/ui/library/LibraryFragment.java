@@ -140,6 +140,7 @@ public class LibraryFragment extends Fragment {
                 bundle.putParcelable("selectedQRCode", qrCode);
                 bundle.putString("userID", userID);
                 bundle.putString("documentID", docID);
+                bundle.putBoolean("isMap", false);
 
                 // Use the Navigation component to navigate to the QR code information fragment,
                 // and pass the bundle as an argument to the destination fragment
