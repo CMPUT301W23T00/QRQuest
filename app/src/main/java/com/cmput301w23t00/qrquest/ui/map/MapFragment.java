@@ -1,26 +1,41 @@
 package com.cmput301w23t00.qrquest.ui.map;
 
+import static android.content.ContentValues.TAG;
+
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.arlib.floatingsearchview.FloatingSearchView;
+import com.arlib.floatingsearchview.suggestions.SearchSuggestionsAdapter;
+import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
 import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -34,7 +49,12 @@ import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This is a class which defines the map page.
@@ -75,6 +95,7 @@ public class MapFragment extends Fragment {
 
             map.getOverlays().add(this.myLocationNewOverlay);
             map.setMultiTouchControls(true);
+            map.setBuiltInZoomControls(false);
 
             usersQRCodesCollectionReference.get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -125,6 +146,132 @@ public class MapFragment extends Fragment {
                         }
                     });
 
+            FloatingSearchView mSearchView = v.findViewById(R.id.floating_search_view);
+
+            mSearchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
+                @Override
+                public void onSearchTextChanged(String oldQuery, final String newQuery) {
+                    if (!oldQuery.equals("") && newQuery.equals("")) {
+                        mSearchView.clearSuggestions();
+                    } else {
+
+                        //this shows the top left circular progress
+                        //you can call it where ever you want, but
+                        //it makes sense to do it when loading something in
+                        //the background.
+                        mSearchView.showProgress();
+
+                        Geocoder geocoder = new Geocoder(getContext());
+                        List<Address> list = new ArrayList<>();
+
+                        // Regex by Iain Fraser
+                        // Source : https://stackoverflow.com/a/18690202
+                        Pattern mPattern = Pattern.compile("^[-+]?([1-8]?\\d(\\.\\d+)?|90(\\.0+)?),\\s*[-+]?(180(\\.0+)?|((1[0-7]\\d)|([1-9]?\\d))(\\.\\d+)?)$\n");
+                        Matcher matcher = mPattern.matcher(newQuery.toString());
+
+                        if (matcher.matches()) {
+                            String latString = newQuery.trim().split(",\\s+")[0];
+                            String lonString = newQuery.trim().split(",\\s+")[1];
+                            try {
+                                list = geocoder.getFromLocation(Double.parseDouble(latString), Double.parseDouble(lonString), 1);
+                            } catch (IOException e) {
+                                Log.e(TAG, "geoLocate: IOException: Location " + e.getMessage() );
+                            }
+                        } else {
+                            try {
+                                list = geocoder.getFromLocationName(newQuery, 1);
+                            } catch (IOException e){
+                                Log.e(TAG, "geoLocate: IOException: " + e.getMessage() );
+                            }
+                        }
+
+
+
+                        if(list.size() > 0){
+                            Address address = list.get(0);
+
+                            /*
+                            // Original Author: Ryan Lee
+                            // https://stackoverflow.com/a/46920982
+                            // ported and modified from Swift 3.0 to Java by Kolby ML
+                             */
+                            double latitude = address.getLatitude();
+                            double longitude = address.getLongitude();
+                            double distance = 1;
+
+                            // ~1 mile of lat and lon in degrees
+                            double lat = 0.0144927536231884;
+                            double lon = 0.0181818181818182;
+
+                            double lowerLat = latitude - (lat * distance);
+                            double lowerLon = longitude - (lon * distance);
+
+                            double greaterLat = latitude + (lat * distance);
+                            double greaterLon = longitude + (lon * distance);
+
+                            com.google.firebase.firestore.GeoPoint lesserGeopoint = new com.google.firebase.firestore.GeoPoint(lowerLat, lowerLon);
+                            com.google.firebase.firestore.GeoPoint greaterGeopoint = new com.google.firebase.firestore.GeoPoint(greaterLat, greaterLon);
+
+                            db.collection("usersQRCodes").whereGreaterThan("lcoation", lesserGeopoint).whereLessThan("lcoation", greaterGeopoint).get().addOnCompleteListener(new OnCompleteListener<>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) { // If found iterate through all user QR codes
+                                        List<QRCodeSuggestions> queryList = new ArrayList();
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            String qrCodeData = (String) document.getData().get("qrCodeData");
+                                            String identifierId = (String) document.getData().get("identifierId");
+                                            com.google.firebase.Timestamp timestamp = (com.google.firebase.Timestamp) document.getData().get("dateScanned");
+                                            // Convert Firebase Timestamp to Date
+                                            Date dateScanned = timestamp.toDate();
+                                            queryList.add(new QRCodeSuggestions(new QRCodeProcessor(qrCodeData).getName(), qrCodeData, identifierId, document.getId(), dateScanned));
+                                        }
+                                        //this will swap the data and
+                                        //render the collapse/expand animations as necessary
+                                        mSearchView.swapSuggestions(queryList);
+
+                                        //let the users know that the background
+                                        //process has completed
+                                        mSearchView.hideProgress();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+
+            mSearchView.setOnBindSuggestionCallback(new SearchSuggestionsAdapter.OnBindSuggestionCallback() {
+                @Override
+                public void onBindSuggestion(View suggestionView, ImageView leftIcon, TextView textView, SearchSuggestion item, int itemPosition) {
+                    QRCodeSuggestions qrCodeSuggestions = (QRCodeSuggestions) item;
+                    leftIcon.setImageBitmap(new QRCodeProcessor(qrCodeSuggestions.getQrCodeData()).getBitmap(getContext()));
+                }
+
+            });
+
+            mSearchView.setOnSearchListener(new FloatingSearchView.OnSearchListener() {
+                @Override
+                public void onSuggestionClicked(final SearchSuggestion searchSuggestion) {
+                    QRCodeSuggestions qrCodeSuggestions = (QRCodeSuggestions) searchSuggestion;
+
+                    // Create a bundle to store data that will be passed to the QR code information fragment
+                    Bundle bundle = new Bundle();
+                    // Add the selected QR code object and the user ID to the bundle
+                    bundle.putParcelable("selectedQRCode", new LibraryQRCode(qrCodeSuggestions.getQrCodeData(), new QRCodeProcessor(qrCodeSuggestions.getQrCodeData()).getScore(), qrCodeSuggestions.getDate()));
+                    bundle.putString("userID", qrCodeSuggestions.getIdentifierId());
+                    bundle.putString("documentID", qrCodeSuggestions.getDocumentId());
+                    bundle.putBoolean("isMap", true);
+
+                    // Use the Navigation component to navigate to the QR code information fragment,
+                    // and pass the bundle as an argument to the destination fragment
+                    NavHostFragment.findNavController(MapFragment.this).navigate(R.id.action_navigation_map_to_qrCodeInformationFragment, bundle);
+
+                }
+
+                @Override
+                public void onSearchAction(String currentQuery) {
+                }
+            });
             renderLocation();
         }
 
@@ -148,5 +295,16 @@ public class MapFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
 }
