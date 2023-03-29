@@ -3,9 +3,6 @@ package com.cmput301w23t00.qrquest.ui.map;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -14,9 +11,9 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,7 +22,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -33,11 +29,10 @@ import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.SearchSuggestionsAdapter;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.cmput301w23t00.qrquest.R;
+import com.cmput301w23t00.qrquest.databinding.FragmentMapBinding;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
-import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -62,11 +57,11 @@ import java.util.regex.Pattern;
  * This is a class which defines the map page.
  */
 public class MapFragment extends Fragment {
-    CustomMapView map;
+    MapView map;
     MyLocationNewOverlay myLocationNewOverlay;
     FirebaseFirestore db; // Firebase Firestore database instance
     Boolean markerIsClicked = false;
-    View loading;
+    private FragmentMapBinding binding; // View binding for the map fragment
 
     /**
      * onCreateView inflates the view, showing a user's collection of QR codes with a button to see
@@ -78,10 +73,12 @@ public class MapFragment extends Fragment {
      */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_map, null);
+        //View v = inflater.inflate(R.layout.fragment_map, null);
 
         // Connect to firebase instance and get collection references for database querying
         db = FirebaseFirestore.getInstance();
+        binding = FragmentMapBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
         final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
 
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -89,30 +86,12 @@ public class MapFragment extends Fragment {
         }
 
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            map = v.findViewById(R.id.mapview);
+            map = root.findViewById(R.id.mapview);
             Configuration.getInstance().setUserAgentValue(getActivity().getPackageName());
 
             this.myLocationNewOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getActivity()), map);
             this.myLocationNewOverlay.enableFollowLocation();
             this.myLocationNewOverlay.enableMyLocation();
-            myLocationNewOverlay.runOnFirstFix(new Runnable() {
-                @Override
-                public void run() {
-                    final GeoPoint myLocation = myLocationNewOverlay.getMyLocation();
-                    if (myLocation != null) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                map.getController().setZoom(19.0);
-                                map.getController().setCenter(myLocation);
-                                v.findViewById(R.id.loading_panel).setVisibility(View.INVISIBLE);
-                            }
-                        });
-                    };
-                }
-            });
-
-            Log.d("bob", "bobbers" + map.getMapCenter().toString());
 
             map.getOverlays().add(this.myLocationNewOverlay);
             map.setMultiTouchControls(true);
@@ -167,7 +146,7 @@ public class MapFragment extends Fragment {
                         }
                     });
 
-            FloatingSearchView mSearchView = v.findViewById(R.id.floating_search_view);
+            FloatingSearchView mSearchView = root.findViewById(R.id.floating_search_view);
 
             mSearchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
                 @Override
@@ -293,9 +272,28 @@ public class MapFragment extends Fragment {
                 public void onSearchAction(String currentQuery) {
                 }
             });
+            renderLocation();
         }
 
-        return v;
+        Button leaderboardButton = binding.circleButton;
+        leaderboardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_navigation_map_to_leaderboardFragment);
+            }
+        });
+
+        return root;
+    }
+
+    /**
+     * This function when called centers the map on the users geolocation
+     */
+    private void renderLocation() {
+        GeoPoint myLocation = this.myLocationNewOverlay.getMyLocation();
+        map.getController().setCenter(myLocation);
+        map.getController().setZoom(19.0);
+        map.getController().animateTo(myLocation);
     }
 
     /**

@@ -24,6 +24,7 @@ import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentQrcodeinformationBinding;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
+import com.cmput301w23t00.qrquest.ui.map.leaderboard.leaderboardUser;
 import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,8 +43,10 @@ public class QRCodeInformationFragment extends Fragment {
     String userID; // a string to hold the current user's ID
     String docID; // the qr code document id
     Boolean isMap; // determines which page to return to
+    Boolean isLeaderboard;
     FirebaseFirestore db; // Firestore database instance
     LibraryQRCode libraryQRCode;
+    leaderboardUser _leaderboardUser;
 
     /**
      * onCreateView is called when the view is first created.
@@ -139,10 +142,12 @@ public class QRCodeInformationFragment extends Fragment {
 //        }
 
         // Back arrow
-        if (item.getItemId() == android.R.id.home) {
+        if (id == android.R.id.home) {
             // Navigate back to the previous fragment
             if (isMap) {
                 NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_mapFragment);
+            } if (isLeaderboard) {
+                NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_leaderboard);
             } else {
                 NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_libraryFragment);
             }

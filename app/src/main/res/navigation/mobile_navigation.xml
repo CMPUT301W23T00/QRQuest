@@ -15,6 +15,11 @@
             app:destination="@id/qrCodeInformationFragment"
             app:popUpTo="@+id/mobile_navigation"
             app:popUpToInclusive="true"/>
+
+        <action
+            android:id="@+id/action_navigation_map_to_leaderboardFragment"
+            app:destination="@id/leaderboardFragment"/>
+
     </fragment>
 
     <fragment
@@ -99,6 +104,26 @@
         <action
             android:id="@+id/qrCodeInformationFragment_to_action_mapFragment"
             app:destination="@id/navigation_map" />
+
+        <action
+            android:id="@+id/qrCodeInformationFragment_to_action_leaderboard"
+            app:destination="@id/leaderboardFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/leaderboardFragment"
+        android:name="com.cmput301w23t00.qrquest.ui.map.leaderboard.leaderboardFragment"
+        android:label="Game-Wide High Scores"
+        tools:layout="@layout/fragment_leaderboard">
+
+        <action
+            android:id="@+id/leaderboard_to_action_mapFragment"
+            app:destination="@id/navigation_map" />
+
+        <action
+            android:id="@+id/leaderboard_to_action_qrcodeinfopage"
+            app:destination="@id/qrCodeInformationFragment" />
 
     </fragment>
 
