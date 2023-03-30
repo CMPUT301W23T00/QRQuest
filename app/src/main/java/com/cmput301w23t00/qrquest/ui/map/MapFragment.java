@@ -16,14 +16,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
@@ -292,6 +295,15 @@ public class MapFragment extends Fragment {
                 }
             });
         }
+
+        Button leaderboardButton = binding.circleButton;
+        leaderboardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "Button clicked", Toast.LENGTH_SHORT).show();
+                Navigation.findNavController(view).navigate(R.id.action_navigation_map_to_leaderboardFragment);
+            }
+        });
 
         return v;
     }
