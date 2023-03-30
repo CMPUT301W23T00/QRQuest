@@ -27,6 +27,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class leaderboardFragment extends Fragment {
 
@@ -47,6 +48,8 @@ public class leaderboardFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
 
+        final CollectionReference usersCollectionReference = db.collection("users");
+
         // Set adapter for QR code listview to update based on firebase data
 
         // this is only the top half for now, need to change it later
@@ -58,31 +61,50 @@ public class leaderboardFragment extends Fragment {
         documentIDList = new ArrayList<>();
         String userID = UserProfile.getUserId();
 
+        List<String> userIdList = new ArrayList<>();
+
         // loop through all users and get their highest scoring QR code
-        
-        // Find all QR codes scanned by current user with unique identifier ID
-        usersQRCodesCollectionReference.whereEqualTo("identifierId", userID)
-                .get().addOnCompleteListener(new OnCompleteListener<>() {
+        usersCollectionReference.get().addOnCompleteListener(new OnCompleteListener<>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) { // If found iterate through all user QR codes
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                // Get QR code data and date QR code scanned
-                                String qrCodeData = (String) document.getData().get("qrCodeData");
-                                com.google.firebase.Timestamp timestamp = (com.google.firebase.Timestamp) document.getData().get("dateScanned");
-                                // Convert Firebase Timestamp to Date
-                                Date dateScanned = timestamp.toDate();
-                                // Get score of QR code
-                                long score = new QRCodeProcessor(qrCodeData).getScore();
-                                // Add found QR code to dataList to display
-                                dataList.add(new LibraryQRCode(qrCodeData, score, dateScanned));
-                                documentIDList.add(document.getId());
-                                // Update view to include newly added QR codes
-                                QRAdapter.notifyDataSetChanged();
+                                String userId = (String) document.getData().get("identifierId");
+
+                                if (userId != "") {
+                                    userIdList.add(userId);
+                                }
                             }
                         }
                     }
                 });
+
+        for (int i = 0; i < userIdList.size(); i++) {
+            // Find all QR codes scanned by current user with unique identifier ID
+            usersQRCodesCollectionReference.whereEqualTo("identifierId", userIdList.get(i))
+                    .get().addOnCompleteListener(new OnCompleteListener<>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) { // If found iterate through all user QR codes
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    // Get QR code data and date QR code scanned
+                                    String qrCodeData = (String) document.getData().get("qrCodeData");
+                                    com.google.firebase.Timestamp timestamp = (com.google.firebase.Timestamp) document.getData().get("dateScanned");
+                                    // Convert Firebase Timestamp to Date
+                                    Date dateScanned = timestamp.toDate();
+                                    // Get score of QR code
+                                    long score = new QRCodeProcessor(qrCodeData).getScore();
+                                    // Add found QR code to dataList to display
+                                    // Update view to include newly added QR codes
+
+                                }
+//                                documentIDList.add(document.getId());
+//                                dataList.add(new LibraryQRCode(qrCodeData, score, dateScanned));
+//                                QRAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    });
+        }
 
         QRList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
