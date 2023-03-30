@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,7 +58,7 @@ import java.util.regex.Pattern;
  * This is a class which defines the map page.
  */
 public class MapFragment extends Fragment {
-    CustomMapView map;
+    MapView map;
     MyLocationNewOverlay myLocationNewOverlay;
     FirebaseFirestore db; // Firebase Firestore database instance
     Boolean markerIsClicked = false;
@@ -73,14 +74,12 @@ public class MapFragment extends Fragment {
      */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        //View v = inflater.inflate(R.layout.fragment_map, null);
+        View v = inflater.inflate(R.layout.fragment_map, null);
 
         // Connect to firebase instance and get collection references for database querying
         db = FirebaseFirestore.getInstance();
-
-        binding = FragmentMapBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-
+        FragmentMapBinding binding = FragmentMapBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
         final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
 
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -88,30 +87,12 @@ public class MapFragment extends Fragment {
         }
 
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            map = root.findViewById(R.id.mapview);
+            map = v.findViewById(R.id.mapview);
             Configuration.getInstance().setUserAgentValue(getActivity().getPackageName());
 
             this.myLocationNewOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getActivity()), map);
             this.myLocationNewOverlay.enableFollowLocation();
             this.myLocationNewOverlay.enableMyLocation();
-            myLocationNewOverlay.runOnFirstFix(new Runnable() {
-                @Override
-                public void run() {
-                    final GeoPoint myLocation = myLocationNewOverlay.getMyLocation();
-                    if (myLocation != null) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                map.getController().setZoom(19.0);
-                                map.getController().setCenter(myLocation);
-                                root.findViewById(R.id.loading_panel).setVisibility(View.INVISIBLE);
-                            }
-                        });
-                    };
-                }
-            });
-
-            Log.d("bob", "bobbers" + map.getMapCenter().toString());
 
             map.getOverlays().add(this.myLocationNewOverlay);
             map.setMultiTouchControls(true);
@@ -166,7 +147,7 @@ public class MapFragment extends Fragment {
                         }
                     });
 
-            FloatingSearchView mSearchView = root.findViewById(R.id.floating_search_view);
+            FloatingSearchView mSearchView = v.findViewById(R.id.floating_search_view);
 
             mSearchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
                 @Override
@@ -292,17 +273,29 @@ public class MapFragment extends Fragment {
                 public void onSearchAction(String currentQuery) {
                 }
             });
+            renderLocation();
         }
 
         Button leaderboardButton = binding.circleButton;
         leaderboardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(getContext(), "Button clicked", Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(view).navigate(R.id.action_navigation_map_to_leaderboardFragment);
             }
         });
 
-        return root;
+        return v;
+    }
+
+    /**
+     * This function when called centers the map on the users geolocation
+     */
+    private void renderLocation() {
+        GeoPoint myLocation = this.myLocationNewOverlay.getMyLocation();
+        map.getController().setCenter(myLocation);
+        map.getController().setZoom(19.0);
+        map.getController().animateTo(myLocation);
     }
 
     /**
