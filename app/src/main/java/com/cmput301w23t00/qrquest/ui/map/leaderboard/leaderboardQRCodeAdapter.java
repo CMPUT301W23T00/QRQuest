@@ -52,7 +52,7 @@ public class leaderboardQRCodeAdapter extends ArrayAdapter<leaderboardQRCode> {
         // Get QR code
         leaderboardQRCode QRObject = getItem(position);
         // Get textviews for QR code information
-        TextView QRData = view.findViewById(R.id.leaderboard_qr_code_data);
+        TextView userName = view.findViewById(R.id.leaderboard_user_name);
         TextView QRDate = view.findViewById(R.id.leaderboard_qr_code_date);
         TextView UserPosition = view.findViewById(R.id.leaderboard_qr_code_position);
         TextView QRScore = view.findViewById(R.id.leaderboard_qr_code_score);
@@ -60,9 +60,9 @@ public class leaderboardQRCodeAdapter extends ArrayAdapter<leaderboardQRCode> {
         // Format date
         SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
         // Set QR code information on textviews
-        QRData.setText(QRObject.getData());
+        userName.setText(QRObject.getUser());
         QRCodeProcessor qrCodeProcessor = new QRCodeProcessor(QRObject.getData());
-        QRData.setText(qrCodeProcessor.getName());
+        UserPosition.setText(String.format(Locale.CANADA, "%d",QRObject.getPosition()));
         QRDate.setText(formatter.format(QRObject.getDate()));
         QRScore.setText(String.format(Locale.CANADA, "%d", qrCodeProcessor.getScore()));
 
