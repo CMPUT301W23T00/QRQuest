@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -74,12 +73,12 @@ public class MapFragment extends Fragment {
      */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_map, null);
+        //View v = inflater.inflate(R.layout.fragment_map, null);
 
         // Connect to firebase instance and get collection references for database querying
         db = FirebaseFirestore.getInstance();
-        FragmentMapBinding binding = FragmentMapBinding.inflate(inflater, container, false);
-        View view = binding.getRoot();
+        binding = FragmentMapBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
         final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
 
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -87,7 +86,7 @@ public class MapFragment extends Fragment {
         }
 
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            map = v.findViewById(R.id.mapview);
+            map = root.findViewById(R.id.mapview);
             Configuration.getInstance().setUserAgentValue(getActivity().getPackageName());
 
             this.myLocationNewOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getActivity()), map);
@@ -147,7 +146,7 @@ public class MapFragment extends Fragment {
                         }
                     });
 
-            FloatingSearchView mSearchView = v.findViewById(R.id.floating_search_view);
+            FloatingSearchView mSearchView = root.findViewById(R.id.floating_search_view);
 
             mSearchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
                 @Override
@@ -280,12 +279,11 @@ public class MapFragment extends Fragment {
         leaderboardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Button clicked", Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(view).navigate(R.id.action_navigation_map_to_leaderboardFragment);
             }
         });
 
-        return v;
+        return root;
     }
 
     /**
