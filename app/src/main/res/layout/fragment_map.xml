@@ -7,11 +7,14 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
-    <org.osmdroid.views.MapView
+    <com.cmput301w23t00.qrquest.ui.map.CustomMapView
         android:id="@+id/mapview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tilesource="Mapnik" />
+
+        tilesource="Mapnik" >
+
+    </com.cmput301w23t00.qrquest.ui.map.CustomMapView>
 
 
     <RelativeLayout
@@ -30,5 +33,17 @@
             app:floatingSearch_searchHint="Search..."
             app:floatingSearch_showSearchKey="false"
             app:floatingSearch_suggestionsListAnimDuration="250" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/loading_panel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" >
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
     </RelativeLayout>
 </RelativeLayout>
