@@ -86,21 +86,27 @@ public class leaderboardFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) { // If found iterate through all user QR codes
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    // Get QR code data and date QR code scanned
-                                    String qrCodeData = (String) document.getData().get("qrCodeData");
-                                    com.google.firebase.Timestamp timestamp = (com.google.firebase.Timestamp) document.getData().get("dateScanned");
-                                    // Convert Firebase Timestamp to Date
-                                    Date dateScanned = timestamp.toDate();
-                                    // Get score of QR code
-                                    long score = new QRCodeProcessor(qrCodeData).getScore();
-                                    // Add found QR code to dataList to display
-                                    // Update view to include newly added QR codes
+                                QueryDocumentSnapshot final_document = null;
+                                String qrCodeData = null;
+                                Date dateScanned = null;
+                                long score = 0;
 
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                    String tempQRCodeData = (String) document.getData().get("qrCodeData");
+                                    long tempScore = new QRCodeProcessor(tempQRCodeData).getScore();
+
+                                    if (tempScore > score) {
+                                        qrCodeData = tempQRCodeData;
+                                        score = tempScore;
+                                        com.google.firebase.Timestamp timestamp = (com.google.firebase.Timestamp) document.getData().get("dateScanned");
+                                        dateScanned = timestamp.toDate();
+                                        final_document = document;
+                                    }
                                 }
-//                                documentIDList.add(document.getId());
-//                                dataList.add(new LibraryQRCode(qrCodeData, score, dateScanned));
-//                                QRAdapter.notifyDataSetChanged();
+                                documentIDList.add(final_document.getId());
+                                dataList.add(new LibraryQRCode(qrCodeData, score, dateScanned));
+                                QRAdapter.notifyDataSetChanged();
                             }
                         }
                     });
