@@ -3,7 +3,6 @@ package com.cmput301w23t00.qrquest.ui.map;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -12,7 +11,6 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -23,19 +21,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.SearchSuggestionsAdapter;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.cmput301w23t00.qrquest.R;
+import com.cmput301w23t00.qrquest.databinding.FragmentMapBinding;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
-import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -64,6 +59,7 @@ public class MapFragment extends Fragment {
     MyLocationNewOverlay myLocationNewOverlay;
     FirebaseFirestore db; // Firebase Firestore database instance
     Boolean markerIsClicked = false;
+    private FragmentMapBinding binding; // View binding for the map fragment
 
     /**
      * onCreateView inflates the view, showing a user's collection of QR codes with a button to see
@@ -79,6 +75,8 @@ public class MapFragment extends Fragment {
 
         // Connect to firebase instance and get collection references for database querying
         db = FirebaseFirestore.getInstance();
+        FragmentMapBinding binding = FragmentMapBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
         final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
 
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
