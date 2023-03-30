@@ -3,9 +3,6 @@ package com.cmput301w23t00.qrquest.ui.map;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -80,8 +77,10 @@ public class MapFragment extends Fragment {
 
         // Connect to firebase instance and get collection references for database querying
         db = FirebaseFirestore.getInstance();
+
         binding = FragmentMapBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
         final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
 
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -105,7 +104,7 @@ public class MapFragment extends Fragment {
                             public void run() {
                                 map.getController().setZoom(19.0);
                                 map.getController().setCenter(myLocation);
-                                v.findViewById(R.id.loading_panel).setVisibility(View.INVISIBLE);
+                                root.findViewById(R.id.loading_panel).setVisibility(View.INVISIBLE);
                             }
                         });
                     };

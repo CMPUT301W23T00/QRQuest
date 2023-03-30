@@ -128,6 +128,18 @@
     </fragment>
 
     <fragment
+        android:id="@+id/leaderboardFragment"
+        android:name="com.cmput301w23t00.qrquest.ui.map.leaderboard.leaderboardFragment"
+        android:label="QR Code Leaderboard"
+        tools:layout="@layout/fragment_leaderboard">
+
+        <action
+            android:id="@+id/leaderboard_to_action_mapFragment"
+            app:destination="@id/navigation_map" />
+
+    </fragment>
+
+    <fragment
         android:id="@+id/navigation_settings"
         android:name="com.cmput301w23t00.qrquest.ui.profile.UserSettingsFragment"
         android:label="@string/settings_menu"
