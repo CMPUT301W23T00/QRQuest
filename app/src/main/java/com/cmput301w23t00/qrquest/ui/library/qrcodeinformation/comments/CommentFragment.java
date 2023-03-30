@@ -1,5 +1,8 @@
-package com.cmput301w23t00.qrquest.ui.library.qrcodeinformation;
+package com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.comments;
 
+import static androidx.fragment.app.FragmentManager.TAG;
+
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -22,19 +25,23 @@ import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentQrcodeinformationBinding;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
+import com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.QRCodeInformationViewModel;
 import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 /**
  * The class  QR code information fragment extends fragment
  *
  * The QRCodeInformationFragment class extends the Fragment class and provides a fragment that displays information about a QR code.
  */
-public class QRCodeInformationFragment extends Fragment {
+public class CommentFragment extends Fragment {
 
     private FragmentQrcodeinformationBinding binding; // view binding object for the fragment
     String userID; // a string to hold the current user's ID
@@ -64,25 +71,17 @@ public class QRCodeInformationFragment extends Fragment {
         binding = FragmentQrcodeinformationBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // Retrieve data passed in from the previous fragment
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            LibraryQRCode qrCode = bundle.getParcelable("selectedQRCode");
-            userID = bundle.getString("userID");
-            docID = bundle.getString("documentID");
-            isMap = bundle.getBoolean("isMap");
-            if (qrCode != null) {
-                // Update the ViewModel with the information of the selected QR code
-                libraryQRCode = qrCode;
-                QRCodeProcessor qrCodeProcessor = new QRCodeProcessor(qrCode.getData());
-                qrCodeInformationViewModel.setQRCodeInfo(qrCodeProcessor.getName(), "test description");
-                Bitmap Image = qrCodeProcessor.getBitmap(getActivity());
-                ImageView TempImage = root.findViewById(R.id.qr_code_image);
-                TempImage.setImageBitmap(Image);
-            }
-        }
-
         binding.setViewModel(qrCodeInformationViewModel);
+
+        FirebaseFirestore.getInstance().collection("usersQRCodes").whereEqualTo("identifierId", "1234");.get().addOnCompleteListener(task1 -> {
+            if (task1.isSuccessful()) {
+                FirebaseFirestore.getInstance().collection("users").getDocuments().addOnCompleteListener(task2 -> {
+                    if (task2.isSuccessful()) {
+
+                    }
+                });
+            };
+        });
 
         return root;
     }
@@ -97,6 +96,8 @@ public class QRCodeInformationFragment extends Fragment {
         super.onCreate(savedInstanceState);
         // Creates this fragment's menu.
         setHasOptionsMenu(true);
+
+        
     }
 
     /**
@@ -122,88 +123,14 @@ public class QRCodeInformationFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.qr_comments) {
-            // Start a new activity to see comments on this QR code
-            NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_commentFragment);
-            return true;
-        }
-//
-//        if (id == R.id.qr_same_code) {
-//            // Start a new activity to see other players with the same QR code
-//            Intent intent1 = new Intent(this,MyActivity.class);
-//            this.startActivity(intent1);
-//            return true;
-//        }
-
         // Back arrow
         if (item.getItemId() == android.R.id.home) {
             // Navigate back to the previous fragment
-            if (isMap) {
-                NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_mapFragment);
-            } else {
-                NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_libraryFragment);
-            }
-
+            NavHostFragment.findNavController(CommentFragment.this).navigate(R.id.commentFragment_to_action_qrCodeInformationFragment);
             return true;
         }
 
-        // delete qr code button
-        if (id == R.id.qr_delete) {
-            deleteQRCode();
-        }
-
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Deletes a QR Code
-     * @return
-     */
-    public boolean deleteQRCode() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogTheme);
-        builder.setCancelable(true);
-        builder.setTitle("Are you sure you want to delete this QR Code?");
-        builder.setPositiveButton("Confirm",
-                (dialog, which) -> {
-                    if (userID == UserProfile.getUserId()) {
-                        // Add code to delete the QR code here
-                        db = FirebaseFirestore.getInstance();
-                        final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
-                        // Get the document reference
-                        DocumentReference qr_code = usersQRCodesCollectionReference.document(docID);
-
-                        // Delete the document
-                        qr_code.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                if (isMap) {
-                                    NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_mapFragment);
-                                } else {
-                                    NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_libraryFragment);
-                                }
-                                dialog.dismiss();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w("ERROR!", "Error deleting QR Code", e);
-                            }
-                        });
-                    } else {
-                        Toast.makeText(getActivity(),"Can't delete QR Code since it isn't yours",Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-        builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
-            // Code to handle the cancel button here
-            dialog.dismiss();
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
-        return true;
     }
 
     /**
