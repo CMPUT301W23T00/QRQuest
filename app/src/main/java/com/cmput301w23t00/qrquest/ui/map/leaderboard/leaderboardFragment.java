@@ -10,8 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -19,7 +17,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentLeaderboardBinding;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
-import com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.QRCodeInformationFragment;
 import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -45,12 +42,6 @@ public class leaderboardFragment extends Fragment {
 
         binding = FragmentLeaderboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        // Get the ActionBar
-        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-
-        // Set the title of the ActionBar
-        actionBar.setTitle("Game-Wide High Scores");
 
         // Connect to firebase instance and get collection references for database querying
         db = FirebaseFirestore.getInstance();
@@ -154,9 +145,7 @@ public class leaderboardFragment extends Fragment {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        // Back arrow
+         // Back arrow
         if (item.getItemId() == android.R.id.home) {
             // Navigate back to the previous fragment
             NavHostFragment.findNavController(leaderboardFragment.this).navigate(R.id.leaderboard_to_action_mapFragment);
