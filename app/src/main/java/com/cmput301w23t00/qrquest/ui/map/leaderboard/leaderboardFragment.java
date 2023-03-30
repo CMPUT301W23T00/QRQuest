@@ -2,6 +2,7 @@ package com.cmput301w23t00.qrquest.ui.map.leaderboard;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -13,10 +14,12 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentLeaderboardBinding;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
+import com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.QRCodeInformationFragment;
 import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -141,6 +144,26 @@ public class leaderboardFragment extends Fragment {
         });
 
         return root;
+    }
+
+    /**
+     * onOptionsItemSelected is called when a menu item is selected.
+     *
+     * @param item The menu item that was selected
+     * @return True if the menu item was handled, false otherwise.
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        // Back arrow
+        if (item.getItemId() == android.R.id.home) {
+            // Navigate back to the previous fragment
+            NavHostFragment.findNavController(leaderboardFragment.this).navigate(R.id.leaderboard_to_action_mapFragment);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
