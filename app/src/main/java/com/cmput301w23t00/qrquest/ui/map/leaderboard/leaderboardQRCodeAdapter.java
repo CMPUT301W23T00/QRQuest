@@ -44,7 +44,7 @@ public class leaderboardQRCodeAdapter extends ArrayAdapter<leaderboardQRCode> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view;
         if (convertView == null) { // if layout is not inflated, inflate
-            view = LayoutInflater.from(getContext()).inflate(R.layout.library_qr_list_content,
+            view = LayoutInflater.from(getContext()).inflate(R.layout.leaderboard_qr_list_content,
                     parent, false);
         } else {
             view = convertView;
@@ -52,10 +52,11 @@ public class leaderboardQRCodeAdapter extends ArrayAdapter<leaderboardQRCode> {
         // Get QR code
         leaderboardQRCode QRObject = getItem(position);
         // Get textviews for QR code information
-        TextView QRData = view.findViewById(R.id.library_qr_code_data);
-        TextView QRDate = view.findViewById(R.id.library_qr_code_date);
-        TextView QRScore = view.findViewById(R.id.library_qr_code_score);
-        ImageView qrImage = view.findViewById(R.id.library_qr_code_image);
+        TextView QRData = view.findViewById(R.id.leaderboard_qr_code_data);
+        TextView QRDate = view.findViewById(R.id.leaderboard_qr_code_date);
+        TextView UserPosition = view.findViewById(R.id.leaderboard_qr_code_position);
+        TextView QRScore = view.findViewById(R.id.leaderboard_qr_code_score);
+        ImageView qrImage = view.findViewById(R.id.leaderboard_qr_code_image);
         // Format date
         SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
         // Set QR code information on textviews

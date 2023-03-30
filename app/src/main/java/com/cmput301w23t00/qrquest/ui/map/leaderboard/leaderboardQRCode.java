@@ -14,17 +14,20 @@ public class leaderboardQRCode implements Parcelable {
     private String data;
     private long score;
     private Date date;
+    private long position;
 
     /**
      * Constructs a QR code based on input
      * @param data data of QR code
      * @param score score of QR code
      * @param date date QR code was scanned
+     * @param position position of user based on qr code
      */
-    public leaderboardQRCode(String data, long score, Date date) {
+    public leaderboardQRCode(String data, long score, Date date, long position) {
         this.data = data;
         this.score = score;
         this.date = date;
+        this.position = position;
     }
 
     /**
@@ -35,6 +38,7 @@ public class leaderboardQRCode implements Parcelable {
         this.data = in.readString();
         this.score = in.readLong();
         date = new Date(in.readLong());
+        this.position = in.readLong();
     }
 
     public static final Creator<leaderboardQRCode> CREATOR = new Creator<leaderboardQRCode>() {
