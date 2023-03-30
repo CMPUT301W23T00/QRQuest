@@ -53,11 +53,11 @@ public class leaderboardFragment extends Fragment {
         // Set adapter for QR code listview to update based on firebase data
 
         // this is only the top half for now, need to change it later
-        ListView QRList = binding.leaderboardQrCodesListTopHalf;
+        ListView QRListTemp = binding.leaderboardQrCodesListTopHalf;
         dataList = new ArrayList<>();
         documentIDList = new ArrayList<>();
         QRAdapter = new LibraryQRCodeAdapter(getActivity(), dataList);
-        QRList.setAdapter(QRAdapter);
+        QRListTemp.setAdapter(QRAdapter);
         documentIDList = new ArrayList<>();
         String userID = UserProfile.getUserId();
 
@@ -106,7 +106,7 @@ public class leaderboardFragment extends Fragment {
                     });
         }
 
-        QRList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        QRListTemp.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
                 LibraryQRCode qrCode = dataList.get(index);
