@@ -15,8 +15,6 @@ import androidx.navigation.Navigation;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentLeaderboardBinding;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
-import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
-import com.cmput301w23t00.qrquest.ui.library.LibraryQRCodeAdapter;
 import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,13 +25,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class leaderboardFragment extends Fragment {
 
     private FragmentLeaderboardBinding binding; // View binding for the library fragment
-    private ArrayAdapter<LibraryQRCode> QRAdapter; // Adapter for QR code list
-    private ArrayList<LibraryQRCode> dataList; // List of QR codes to be displayed
+    private ArrayAdapter<leaderboardQRCode> QRAdapter; // Adapter for QR code list
+    private ArrayList<leaderboardQRCode> dataList; // List of QR codes to be displayed
     private ArrayList<String> documentIDList; // List of documents
     FirebaseFirestore db; // Firebase Firestore database instance
 
@@ -56,66 +53,67 @@ public class leaderboardFragment extends Fragment {
         ListView QRListTemp = binding.leaderboardQrCodesListTopHalf;
         dataList = new ArrayList<>();
         documentIDList = new ArrayList<>();
-        QRAdapter = new LibraryQRCodeAdapter(getActivity(), dataList);
+        QRAdapter = new leaderboardQRCodeAdapter(getActivity(), dataList);
         QRListTemp.setAdapter(QRAdapter);
         documentIDList = new ArrayList<>();
         String userID = UserProfile.getUserId();
 
-        List<String> userIdList = new ArrayList<>();
+        ArrayList<String> userIdList = new ArrayList<>();
 
         // loop through all users and get their highest scoring QR code
         usersCollectionReference.get().addOnCompleteListener(new OnCompleteListener<>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) { // If found iterate through all user QR codes
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                String userId = (String) document.getData().get("identifierId");
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) { // If found iterate through all user QR codes
+                    for (QueryDocumentSnapshot document : task.getResult()) {
 
-                                if (userId != "") {
-                                    userIdList.add(userId);
-                                }
-                            }
-                        }
-                    }
-                });
+                        String userId = (String) document.getData().get("identifierId");
 
-        for (int i = 0; i < userIdList.size(); i++) {
-            // Find all QR codes scanned by current user with unique identifier ID
-            usersQRCodesCollectionReference.whereEqualTo("identifierId", userIdList.get(i))
-                    .get().addOnCompleteListener(new OnCompleteListener<>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) { // If found iterate through all user QR codes
-                                QueryDocumentSnapshot final_document = null;
-                                String qrCodeData = null;
-                                Date dateScanned = null;
-                                long score = 0;
+                        // Find all QR codes scanned by current user with unique identifier ID
+                        usersQRCodesCollectionReference.whereEqualTo("identifierId", userId)
+                                .get().addOnCompleteListener(new OnCompleteListener<>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) { // If found iterate through all user QR codes
 
-                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                            QueryDocumentSnapshot final_document = null;
+                                            String qrCodeData = null;
+                                            Date dateScanned = null;
+                                            long score = 0;
 
-                                    String tempQRCodeData = (String) document.getData().get("qrCodeData");
-                                    long tempScore = new QRCodeProcessor(tempQRCodeData).getScore();
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                String tempQRCodeData = (String) document.getData().get("qrCodeData");
+                                                long tempScore = new QRCodeProcessor(tempQRCodeData).getScore();
+                                                System.out.println(userId);
 
-                                    if (tempScore > score) {
-                                        qrCodeData = tempQRCodeData;
-                                        score = tempScore;
-                                        com.google.firebase.Timestamp timestamp = (com.google.firebase.Timestamp) document.getData().get("dateScanned");
-                                        dateScanned = timestamp.toDate();
-                                        final_document = document;
+                                                if (tempScore > score) {
+                                                    qrCodeData = tempQRCodeData;
+                                                    score = tempScore;
+                                                    System.out.println(score);
+                                                    com.google.firebase.Timestamp timestamp = (com.google.firebase.Timestamp) document.getData().get("dateScanned");
+                                                    dateScanned = timestamp.toDate();
+                                                    final_document = document;
+                                                }
+                                            }
+                                            try {
+                                                documentIDList.add(final_document.getId());
+                                                dataList.add(new leaderboardQRCode(qrCodeData, score, dateScanned, 1));
+                                                QRAdapter.notifyDataSetChanged();
+                                            } catch (NullPointerException e) {
+                                            }
+                                        }
                                     }
-                                }
-                                documentIDList.add(final_document.getId());
-                                dataList.add(new LibraryQRCode(qrCodeData, score, dateScanned));
-                                QRAdapter.notifyDataSetChanged();
-                            }
-                        }
-                    });
-        }
+                                });
+                    }
+                }
+            }
+        });
+
 
         QRListTemp.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
-                LibraryQRCode qrCode = dataList.get(index);
+                leaderboardQRCode qrCode = dataList.get(index);
                 String docID = documentIDList.get(index);
 
                 // Create a bundle to store data that will be passed to the QR code information fragment
