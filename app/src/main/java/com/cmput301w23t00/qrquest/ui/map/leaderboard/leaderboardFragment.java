@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -41,6 +43,12 @@ public class leaderboardFragment extends Fragment {
         binding = FragmentLeaderboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        // Get the ActionBar
+        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+
+        // Set the title of the ActionBar
+        actionBar.setTitle("Game-Wide High Scores");
+
         // Connect to firebase instance and get collection references for database querying
         db = FirebaseFirestore.getInstance();
         final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
@@ -68,6 +76,7 @@ public class leaderboardFragment extends Fragment {
                     for (QueryDocumentSnapshot document : task.getResult()) {
 
                         String userId = (String) document.getData().get("identifierId");
+                        String userName = (String) document.getData().get("name");
 
                         // Find all QR codes scanned by current user with unique identifier ID
                         usersQRCodesCollectionReference.whereEqualTo("identifierId", userId)
@@ -97,7 +106,7 @@ public class leaderboardFragment extends Fragment {
                                             }
                                             try {
                                                 documentIDList.add(final_document.getId());
-                                                dataList.add(new leaderboardQRCode(qrCodeData, score, dateScanned, 1));
+                                                dataList.add(new leaderboardQRCode(userName, qrCodeData, score, dateScanned, 1));
                                                 QRAdapter.notifyDataSetChanged();
                                             } catch (NullPointerException e) {
                                             }
@@ -123,10 +132,11 @@ public class leaderboardFragment extends Fragment {
                 bundle.putString("userID", userID);
                 bundle.putString("documentID", docID);
                 bundle.putBoolean("isMap", false);
+                bundle.putBoolean("isLeaderboard", true);
 
                 // Use the Navigation component to navigate to the QR code information fragment,
                 // and pass the bundle as an argument to the destination fragment
-                Navigation.findNavController(view).navigate(R.id.action_libraryFragment_to_qrCodeInformationFragment, bundle);
+                Navigation.findNavController(view).navigate(R.id.leaderboard_to_action_qrcodeinfopage, bundle);
             }
         });
 
