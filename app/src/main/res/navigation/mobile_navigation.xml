@@ -114,7 +114,7 @@
     <fragment
         android:id="@+id/leaderboardFragment"
         android:name="com.cmput301w23t00.qrquest.ui.map.leaderboard.leaderboardFragment"
-        android:label="QR Code Leaderboard"
+        android:label="Game-Wide High Scores"
         tools:layout="@layout/fragment_leaderboard">
 
         <action

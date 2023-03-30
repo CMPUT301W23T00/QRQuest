@@ -162,7 +162,7 @@ public class QRCodeInformationFragment extends Fragment {
 //        }
 
         // Back arrow
-        if (item.getItemId() == android.R.id.home) {
+        if (id == android.R.id.home) {
             // Navigate back to the previous fragment
             if (isMap) {
                 NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_mapFragment);
