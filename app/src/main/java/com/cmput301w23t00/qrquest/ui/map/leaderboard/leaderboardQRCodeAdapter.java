@@ -56,14 +56,12 @@ public class leaderboardQRCodeAdapter extends ArrayAdapter<leaderboardQRCode> {
         // Get QR code
         leaderboardQRCode QRObject = getItem(position);
 
-        String userID = UserProfile.getUserId();
+        String CurrentUserID = UserProfile.getUserId();
+        String CurrentUserName = UserProfile.getName();
 
-        if(Objects.equals(QRObject.getUserId(), userID))
-        {
+        if (Objects.equals(QRObject.getUserId(), CurrentUserID) && Objects.equals(QRObject.getUser(), CurrentUserName)) {
             view.setBackgroundColor(Color.parseColor("#9DD0FF"));
-        }
-        else
-        {
+        } else {
             view.setBackgroundColor (Color.TRANSPARENT); // default color
         }
 
@@ -73,6 +71,7 @@ public class leaderboardQRCodeAdapter extends ArrayAdapter<leaderboardQRCode> {
         TextView UserPosition = view.findViewById(R.id.leaderboard_qr_code_position);
         TextView QRScore = view.findViewById(R.id.leaderboard_qr_code_score);
         ImageView qrImage = view.findViewById(R.id.leaderboard_qr_code_image);
+
         // Format date
         SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
         // Set QR code information on textviews
@@ -81,6 +80,16 @@ public class leaderboardQRCodeAdapter extends ArrayAdapter<leaderboardQRCode> {
         UserPosition.setText(String.format(Locale.CANADA, "%d",QRObject.getPosition()));
         QRDate.setText(formatter.format(QRObject.getDate()));
         QRScore.setText(String.format(Locale.CANADA, "%d", qrCodeProcessor.getScore()));
+
+        if(Objects.equals(QRObject.getPosition(), (long) 1)) {
+            UserPosition.setBackgroundColor(Color.parseColor("#FFD700"));
+        } else if(Objects.equals(QRObject.getPosition(), (long) 2)) {
+            UserPosition.setBackgroundColor(Color.parseColor("#C0C0C0"));
+        } else if(Objects.equals(QRObject.getPosition(), (long) 3)) {
+            UserPosition.setBackgroundColor(Color.parseColor("#CD7F32"));
+        } else {
+            UserPosition.setBackgroundColor(Color.TRANSPARENT); // default color
+        }
 
         qrImage.setImageBitmap(qrCodeProcessor.getBitmap(getContext()));
         return view;
