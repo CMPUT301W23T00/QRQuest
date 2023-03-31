@@ -16,6 +16,7 @@ public class leaderboardQRCode implements Parcelable {
     private Date date;
     private long position;
     private String user;
+    private String userId;
 
     /**
      * Constructs a QR code based on input
@@ -47,12 +48,21 @@ public class leaderboardQRCode implements Parcelable {
         }
     };
 
-    public leaderboardQRCode(String userName, String qrCodeData, long score, Date dateScanned, int position) {
+    public leaderboardQRCode(String userId, String userName, String qrCodeData, long score, Date dateScanned, int position) {
         this.data = qrCodeData;
         this.score = score;
         this.date = dateScanned;
         this.position = position;
         this.user = userName;
+        this.userId = userId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public long getPosition() {
@@ -138,5 +148,20 @@ public class leaderboardQRCode implements Parcelable {
         parcel.writeString(data);
         parcel.writeInt((int) score);
         parcel.writeLong(date.getTime());
+    }
+
+    /**
+     * Compares QR codes based on their score
+     * @param anotherQRCode QR code to compare to
+     * @return -1, 0, or 1 depending on the score comparison
+     */
+    public int compareTo(leaderboardQRCode anotherQRCode) {
+        if (this.score < anotherQRCode.score) {
+            return 1;
+        } else if (this.score > anotherQRCode.score) {
+            return -1;
+        } else {
+            return 0;
+        }
     }
 }
