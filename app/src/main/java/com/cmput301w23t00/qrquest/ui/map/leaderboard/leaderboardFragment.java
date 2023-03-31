@@ -1,6 +1,5 @@
 package com.cmput301w23t00.qrquest.ui.map.leaderboard;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -35,7 +34,8 @@ public class leaderboardFragment extends Fragment {
 
     private FragmentLeaderboardBinding binding; // View binding for the library fragment
     private ArrayAdapter<leaderboardQRCode> QRAdapter; // Adapter for QR code list
-    private ArrayList<leaderboardQRCode> dataList; // List of QR codes to be displayed
+    private ArrayList<leaderboardQRCode> dataListTopHalf; // List of QR codes to be displayed
+    private ArrayList<leaderboardQRCode> dataListBottomHalf; // List of QR codes to be displayed
     private ArrayList<String> documentIDList; // List of documents
     FirebaseFirestore db; // Firebase Firestore database instance
 
@@ -55,16 +55,15 @@ public class leaderboardFragment extends Fragment {
         // Set adapter for QR code listview to update based on firebase data
 
         // this is only the top half for now, need to change it later
-        ListView QRListTemp = binding.leaderboardQrCodesListTopHalf;
-        dataList = new ArrayList<>();
+        ListView QRListTopHalf = binding.leaderboardQrCodesListTopHalf;
+        ListView QRListBottomHalf = binding.leaderboardQrCodesListBottomHalf;
+        dataListTopHalf = new ArrayList<>();
         documentIDList = new ArrayList<>();
         QRAdapter = new leaderboardQRCodeAdapter(getActivity(), dataList);
-        QRListTemp.setAdapter(QRAdapter);
+        QRListTopHalf.setAdapter(QRAdapter);
+        QRListBottomHalf.setAdapter(QRAdapter);
         documentIDList = new ArrayList<>();
         String CurrentUserID = UserProfile.getUserId();
-        final String[] currentUserName = {null};
-
-        ArrayList<String> userIdList = new ArrayList<>();
 
         // loop through all users and get their highest scoring QR code
         usersCollectionReference.get().addOnCompleteListener(new OnCompleteListener<>() {
@@ -75,9 +74,6 @@ public class leaderboardFragment extends Fragment {
 
                         String userId = (String) document.getData().get("identifierId");
                         String userName = (String) document.getData().get("name");
-                        if (userId == CurrentUserID) {
-                            currentUserName[0] = userName;
-                        }
 
                         // Find all QR codes scanned by current user with unique identifier ID
                         usersQRCodesCollectionReference.whereEqualTo("identifierId", userId)
@@ -119,14 +115,6 @@ public class leaderboardFragment extends Fragment {
                                                 for (int i = 0; i < dataList.size(); i++) {
                                                     leaderboardQRCode qrCode = dataList.get(i);
                                                     qrCode.setPosition(i + 1);
-                                                    View listItem = QRListTemp.getChildAt(i);
-                                                    if (listItem != null) {
-                                                        if (qrCode.getUser().equals(String.valueOf(CurrentUserID))) {
-                                                            listItem.setBackgroundColor(Color.BLUE);
-                                                        } else {
-                                                            //listItem.setBackgroundColor(Color.TRANSPARENT);
-                                                        }
-                                                    }
                                                 }
 
                                                 QRAdapter.notifyDataSetChanged();
@@ -140,7 +128,7 @@ public class leaderboardFragment extends Fragment {
             }
         });
 
-        QRListTemp.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        QRListTopHalf.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
                 leaderboardQRCode qrCode = dataList.get(index);
