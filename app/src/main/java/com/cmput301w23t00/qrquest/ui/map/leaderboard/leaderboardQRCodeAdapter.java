@@ -1,6 +1,7 @@
 package com.cmput301w23t00.qrquest.ui.map.leaderboard;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +14,12 @@ import androidx.annotation.Nullable;
 
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
+import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * This class represents an ArrayAdapter for LibraryQRCodes
@@ -49,8 +52,21 @@ public class leaderboardQRCodeAdapter extends ArrayAdapter<leaderboardQRCode> {
         } else {
             view = convertView;
         }
+
         // Get QR code
         leaderboardQRCode QRObject = getItem(position);
+
+        String userID = UserProfile.getUserId();
+
+        if(Objects.equals(QRObject.getUserId(), userID))
+        {
+            view.setBackgroundColor(Color.parseColor("#9DD0FF"));
+        }
+        else
+        {
+            view.setBackgroundColor (Color.TRANSPARENT); // default color
+        }
+
         // Get textviews for QR code information
         TextView userName = view.findViewById(R.id.leaderboard_user_name);
         TextView QRDate = view.findViewById(R.id.leaderboard_qr_code_date);

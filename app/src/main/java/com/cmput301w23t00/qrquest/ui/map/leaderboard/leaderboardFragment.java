@@ -1,5 +1,6 @@
 package com.cmput301w23t00.qrquest.ui.map.leaderboard;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -26,6 +27,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 public class leaderboardFragment extends Fragment {
@@ -58,7 +61,8 @@ public class leaderboardFragment extends Fragment {
         QRAdapter = new leaderboardQRCodeAdapter(getActivity(), dataList);
         QRListTemp.setAdapter(QRAdapter);
         documentIDList = new ArrayList<>();
-        String userID = UserProfile.getUserId();
+        String CurrentUserID = UserProfile.getUserId();
+        final String[] currentUserName = {null};
 
         ArrayList<String> userIdList = new ArrayList<>();
 
@@ -71,6 +75,9 @@ public class leaderboardFragment extends Fragment {
 
                         String userId = (String) document.getData().get("identifierId");
                         String userName = (String) document.getData().get("name");
+                        if (userId == CurrentUserID) {
+                            currentUserName[0] = userName;
+                        }
 
                         // Find all QR codes scanned by current user with unique identifier ID
                         usersQRCodesCollectionReference.whereEqualTo("identifierId", userId)
@@ -100,7 +107,28 @@ public class leaderboardFragment extends Fragment {
                                             }
                                             try {
                                                 documentIDList.add(final_document.getId());
-                                                dataList.add(new leaderboardQRCode(userName, qrCodeData, score, dateScanned, 1));
+                                                dataList.add(new leaderboardQRCode(userId, userName, qrCodeData, score, dateScanned, 1));
+                                                // Sort dataList based on score in descending order
+                                                Collections.sort(dataList, new Comparator<leaderboardQRCode>() {
+                                                    @Override
+                                                    public int compare(leaderboardQRCode o1, leaderboardQRCode o2) {
+                                                        return Long.compare(o2.getScore(), o1.getScore());
+                                                    }
+                                                });
+
+                                                for (int i = 0; i < dataList.size(); i++) {
+                                                    leaderboardQRCode qrCode = dataList.get(i);
+                                                    qrCode.setPosition(i + 1);
+                                                    View listItem = QRListTemp.getChildAt(i);
+                                                    if (listItem != null) {
+                                                        if (qrCode.getUser().equals(String.valueOf(CurrentUserID))) {
+                                                            listItem.setBackgroundColor(Color.BLUE);
+                                                        } else {
+                                                            //listItem.setBackgroundColor(Color.TRANSPARENT);
+                                                        }
+                                                    }
+                                                }
+
                                                 QRAdapter.notifyDataSetChanged();
                                             } catch (NullPointerException e) {
                                             }
@@ -112,7 +140,6 @@ public class leaderboardFragment extends Fragment {
             }
         });
 
-
         QRListTemp.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
@@ -123,7 +150,7 @@ public class leaderboardFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 // Add the selected QR code object and the user ID to the bundle
                 bundle.putParcelable("selectedQRCode", qrCode);
-                bundle.putString("userID", userID);
+                bundle.putString("CurrentUserID", CurrentUserID);
                 bundle.putString("documentID", docID);
                 bundle.putBoolean("isMap", false);
                 bundle.putBoolean("isLeaderboard", true);
@@ -153,6 +180,13 @@ public class leaderboardFragment extends Fragment {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        // Creates this fragment's menu.
+        setHasOptionsMenu(true);
     }
 
     @Override
