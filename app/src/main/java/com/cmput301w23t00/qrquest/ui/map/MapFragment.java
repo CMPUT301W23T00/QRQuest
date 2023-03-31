@@ -3,6 +3,8 @@ package com.cmput301w23t00.qrquest.ui.map;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -60,10 +62,11 @@ import java.util.regex.Pattern;
  * This is a class which defines the map page.
  */
 public class MapFragment extends Fragment {
-    MapView map;
+    CustomMapView map;
     MyLocationNewOverlay myLocationNewOverlay;
     FirebaseFirestore db; // Firebase Firestore database instance
     Boolean markerIsClicked = false;
+    View loading;
 
     /**
      * onCreateView inflates the view, showing a user's collection of QR codes with a button to see
@@ -92,6 +95,24 @@ public class MapFragment extends Fragment {
             this.myLocationNewOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getActivity()), map);
             this.myLocationNewOverlay.enableFollowLocation();
             this.myLocationNewOverlay.enableMyLocation();
+            myLocationNewOverlay.runOnFirstFix(new Runnable() {
+                @Override
+                public void run() {
+                    final GeoPoint myLocation = myLocationNewOverlay.getMyLocation();
+                    if (myLocation != null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                map.getController().setZoom(19.0);
+                                map.getController().setCenter(myLocation);
+                                v.findViewById(R.id.loading_panel).setVisibility(View.INVISIBLE);
+                            }
+                        });
+                    };
+                }
+            });
+
+            Log.d("bob", "bobbers" + map.getMapCenter().toString());
 
             map.getOverlays().add(this.myLocationNewOverlay);
             map.setMultiTouchControls(true);
@@ -272,20 +293,9 @@ public class MapFragment extends Fragment {
                 public void onSearchAction(String currentQuery) {
                 }
             });
-            renderLocation();
         }
 
         return v;
-    }
-
-    /**
-     * This function when called centers the map on the users geolocation
-     */
-    private void renderLocation() {
-        GeoPoint myLocation = this.myLocationNewOverlay.getMyLocation();
-        map.getController().setCenter(myLocation);
-        map.getController().setZoom(19.0);
-        map.getController().animateTo(myLocation);
     }
 
     /**
