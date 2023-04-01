@@ -181,16 +181,6 @@ public class leaderboardFragment extends Fragment {
                                                 }
                                             }
 
-                                            int currentUserIndex2 = 0;
-                                            // remove top n users above current user
-                                            for (int i = 0; i < tempDataList.size(); i++) {
-                                                leaderboardQRCode qrcode = tempDataList.get(i);
-                                                if ((Objects.equals(qrcode.getUserId(), CurrentUserID)) && (Objects.equals(qrcode.getUser(), CurrentUserName))) {
-                                                    currentUserIndex2 = i;
-                                                    break;
-                                                }
-                                            }
-
                                             for (int i = currentUserIndex - 1; i >= 0; i--) {
                                                 bottomDataList.remove(i);
                                             }
