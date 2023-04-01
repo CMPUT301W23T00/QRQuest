@@ -80,7 +80,7 @@ public class leaderboardFragment extends Fragment {
                                         if (task.isSuccessful()) {
                                             long totalScore = 0;
 
-                                            // Iterate through each QR code and find the one with the highest score
+                                            // Iterate through each QR code and get the total score
                                             for (QueryDocumentSnapshot document : task.getResult()) {
                                                 String tempQRCodeData = (String) document.getData().get("qrCodeData");
                                                 long tempScore = new QRCodeProcessor(tempQRCodeData).getScore();
@@ -100,7 +100,7 @@ public class leaderboardFragment extends Fragment {
                                                     }
                                                 });
 
-                                                // Assign a position to each QR code on the leaderboard
+                                                // Assign a position to each user on the leaderboard
                                                 int currentRank = 1;
                                                 for (int i = 0; i < dataList.size(); i++) {
                                                     leaderboardUser currentQRCode = dataList.get(i);
@@ -132,13 +132,9 @@ public class leaderboardFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
                 leaderboardUser user = dataList.get(index);
-                String docID = documentIDList.get(index);
 
                 // Create a bundle to store data that will be passed to the other user profile fragment
                 Bundle bundle = new Bundle();
-
-                // Use the Navigation component to navigate to the other user profile fragment,
-                // and pass the bundle as an argument to the destination fragment
 
                 // we are going to change this when profile is implemented
                 //Navigation.findNavController(view).navigate(R.id.leaderboard_to_action_qrcodeinfopage, bundle);
