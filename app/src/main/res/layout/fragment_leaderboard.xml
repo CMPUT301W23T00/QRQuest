@@ -18,7 +18,7 @@
         android:orientation="vertical">
 
         <ListView
-            android:id="@+id/leaderboard_qr_codes_list_top_half"
+            android:id="@+id/leaderboard_qr_codes_list"
             android:layout_width="match_parent"
             android:layout_height="659dp"
             android:layout_weight="1"
