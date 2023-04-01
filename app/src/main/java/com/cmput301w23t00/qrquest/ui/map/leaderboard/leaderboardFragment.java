@@ -168,7 +168,7 @@ public class leaderboardFragment extends Fragment {
                                             }
 
                                             // only get top 3 users for top half
-                                            for (int i = 13; i < topDataList.size(); i++) {
+                                            for (int i = 3; i < topDataList.size(); i++) {
                                                 topDataList.remove(i);
                                             }
 
