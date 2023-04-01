@@ -47,4 +47,5 @@
     <string name="comments">Comments</string>
     <string name="comments_user">Username</string>
     <string name="comments_text">No Comment Added Yet</string>
+    <string name="avatars_for_user_display">Avatars for User Display</string>
 </resources>

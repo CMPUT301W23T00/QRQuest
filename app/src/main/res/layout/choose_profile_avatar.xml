@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/choose_profile_avatar_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <ScrollView android:layout_height="0dp"
+        android:id="@+id/updateAvatarScrollView"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:scrollbars="none"
+        android:contentDescription="@string/avatars_for_user_display">
+
+        <GridLayout
+            android:id="@+id/updateAvatarGrid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="3"
+            android:rowCount="4"
+            android:alignmentMode="alignMargins"
+            >
+
+            <FrameLayout
+                android:id="@+id/updateAvatar1"
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                >
+                
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/Avatar1"
+                    android:src="@drawable/avatar1"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="20dp">
+
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <View
+                    android:id="@+id/updateAvatar1Mask"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:background="@drawable/mask_profile_image"
+                    android:layout_gravity="center"/>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/updateAvatar2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                >
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/Avatar2"
+                    android:src="@drawable/avatar2"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="20dp">
+
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <View
+                    android:id="@+id/updateAvatar2Mask"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:background="@drawable/mask_profile_image"
+                    android:layout_gravity="center"/>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/updateAvatar3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/Avatar3"
+                    android:src="@drawable/avatar3"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="20dp">
+
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <View
+                    android:id="@+id/updateAvatar3Mask"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:background="@drawable/mask_profile_image"
+                    android:layout_gravity="center"/>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/updateAvatar4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/Avatar4"
+                    android:src="@drawable/avatar4"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="20dp">
+
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <View
+                    android:id="@+id/updateAvatar4Mask"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:background="@drawable/mask_profile_image"
+                    android:layout_gravity="center"/>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/updateAvatar5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/Avatar5"
+                    android:src="@drawable/avatar5"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="20dp">
+
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <View
+                    android:id="@+id/updateAvatar5Mask"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:background="@drawable/mask_profile_image"
+                    android:layout_gravity="center"/>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/updateAvatar6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/Avatar6"
+                    android:src="@drawable/avatar6"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="20dp">
+
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <View
+                    android:id="@+id/updateAvatar6Mask"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:background="@drawable/mask_profile_image"
+                    android:layout_gravity="center"/>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/updateAvatar7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/Avatar7"
+                    android:src="@drawable/avatar7"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="20dp">
+
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <View
+                    android:id="@+id/updateAvatar7Mask"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:background="@drawable/mask_profile_image"
+                    android:layout_gravity="center"/>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/updateAvatar8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/Avatar8"
+                    android:src="@drawable/avatar8"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="20dp">
+
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <View
+                    android:id="@+id/updateAvatar8Mask"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:background="@drawable/mask_profile_image"
+                    android:layout_gravity="center"/>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/updateAvatar9"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/Avatar9"
+                    android:src="@drawable/avatar9"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="20dp">
+
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <View
+                    android:id="@+id/updateAvatar9Mask"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:background="@drawable/mask_profile_image"
+                    android:layout_gravity="center"/>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/updateAvatar10"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/Avatar10"
+                    android:src="@drawable/avatar10"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="20dp">
+
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <View
+                    android:id="@+id/updateAvatar10Mask"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:background="@drawable/mask_profile_image"
+                    android:layout_gravity="center"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/updateAvatar11"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/Avatar11"
+                    android:src="@drawable/avatar11"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="20dp">
+
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <View
+                    android:id="@+id/updateAvatar11Mask"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:background="@drawable/mask_profile_image"
+                    android:layout_gravity="center"/>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/updateAvatar12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/Avatar12"
+                    android:src="@drawable/avatar12"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="20dp">
+
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <View
+                    android:id="@+id/updateAvatar12Mask"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:background="@drawable/mask_profile_image"
+                    android:layout_gravity="center"/>
+
+            </FrameLayout>
+
+        </GridLayout>
+        
+    </ScrollView>
+
+    <!---
+    <LinearLayout android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/updateAvatarCancelButton"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginEnd="11dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/button_shape"
+            android:fontFamily="sans-serif"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="#000000"
+            android:textSize="17sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/updateAvatarConfirmButton"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginEnd="21dp"
+            android:background="@drawable/button_shape"
+            android:backgroundTint="#000000"
+            android:fontFamily="sans-serif"
+            android:text="@string/confirm"
+            android:textAllCaps="false"
+            android:textColor="#ffffff"
+            android:textSize="17sp" />
+
+    </LinearLayout>
+    -->
+
+</LinearLayout>

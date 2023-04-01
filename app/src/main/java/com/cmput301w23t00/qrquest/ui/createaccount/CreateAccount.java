@@ -1,6 +1,11 @@
 package com.cmput301w23t00.qrquest.ui.createaccount;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -10,6 +15,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +26,8 @@ import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.cmput301w23t00.qrquest.ui.profile.UserSettings;
+import com.cmput301w23t00.qrquest.ui.updateavatar.AvatarSetter;
+import com.cmput301w23t00.qrquest.ui.updateavatar.UpdateAvatar;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -38,6 +48,17 @@ public class CreateAccount extends AppCompatActivity {
 
     private static final String TAG = "CreateAccount";
 
+    private ActivityResultLauncher<Intent> updateAvatarLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    String selectedAvatarId = data.getStringExtra("selectedAvatarId");
+                    //AvatarSetter.setImageResource(selectedAvatarId,addProfileImage);
+                }
+            });
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,15 +76,28 @@ public class CreateAccount extends AppCompatActivity {
         addCreateButton = findViewById(R.id.addCreateButton);
         addProfileImage = findViewById(R.id.addProfileImage);
 
+
+
         // TODO
         addProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // pop up upload option
                 // store photo to send to db
+                /* AlertDialog.Builder builder = new AlertDialog.Builder(CreateAccount.this);
+                builder.setPositiveButton("Choose Avatar", (dialogInterface, i) -> {
+                    Intent intentForUpdateAvatar = new Intent(CreateAccount.this, UpdateAvatar.class);
+                    startActivity(intentForUpdateAvatar);
+                });
 
-                // update profile image view
-                //addProfileImage.setImageResource();
+                builder.setNegativeButton("Remove Avatar", (dialogInterface, i) -> addProfileImage.setImageResource(R.drawable.avatar2));
+
+                AlertDialog dialog = builder.create();
+                dialog.show(); */
+
+                Intent intentForUpdateAvatar = new Intent(CreateAccount.this, UpdateAvatar.class);
+                updateAvatarLauncher.launch(intentForUpdateAvatar);
+
             }
         });
 

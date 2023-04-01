@@ -30,6 +30,7 @@ public class UserProfile {
     private static String userId;
     private static Boolean firstInstantiation = true;
     private static Boolean created = false;
+    private static String avatarId;
 
     public UserProfile(Boolean test) {
         userId = null;
@@ -58,6 +59,7 @@ public class UserProfile {
                         phoneNumber = task.getResult().getDocuments().get(0).getString("phoneNumber");
                         email = task.getResult().getDocuments().get(0).getString("email");
                         name = task.getResult().getDocuments().get(0).getString("name");
+                        avatarId = task.getResult().getDocuments().get(0).getString("avatarID");
                         firstInstantiation = false;
                         created = true;
                     }
@@ -118,6 +120,14 @@ public class UserProfile {
      */
     public static Boolean getCreated() {
         return created;
+    }
+
+    /**
+     * avatarId getter
+     * @return  returns avatarId string
+     */
+    public static String getAvatarId() {
+        return avatarId;
     }
 
     /**
@@ -216,4 +226,25 @@ public class UserProfile {
     public static void setCreated(Boolean created) {
         UserProfile.created = created;
     }
+
+    /**
+     * avatarId setter that additionally updates aboutMe string on the server
+     * value, is stored and updated later if connection cannot be established
+     * @param avatarId changes class aboutMe value to parameter value
+     */
+    public static void setAvatarId(String avatarId) {
+        UserProfile.avatarId = avatarId;
+
+        if (userId != null) {
+            FirebaseFirestore.getInstance().collection("users").whereEqualTo("identifierId", avatarId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                    DocumentReference documentReference = documentSnapshot.getReference();
+                    documentReference.update("avatarId", avatarId);
+                }
+            });
+        }
+    }
+
 }
