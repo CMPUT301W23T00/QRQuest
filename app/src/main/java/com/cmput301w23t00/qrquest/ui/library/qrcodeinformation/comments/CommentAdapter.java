@@ -52,7 +52,7 @@ public class CommentAdapter extends ArrayAdapter<CommentData> {
 
         AppCompatImageView imageView = listItemView.findViewById(R.id.comment_user_picture);
         Drawable currentImage = mData.get(position).getProfile();
-        imageView.setImageDrawable(currentImage);
+        imageView.setBackgroundDrawable(currentImage);
 
         return listItemView;
     }

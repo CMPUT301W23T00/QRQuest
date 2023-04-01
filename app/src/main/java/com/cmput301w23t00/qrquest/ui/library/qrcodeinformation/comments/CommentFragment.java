@@ -96,6 +96,7 @@ public class CommentFragment extends Fragment {
                             }
 
                             System.out.println("Final User: " + User);
+                            System.out.println("Final Comment: " + Comment);
                             CommentData NewComment = new CommentData(User,Comment,Profile);
                             NewAdapter.add(NewComment);
                             NewAdapter.notifyDataSetChanged();
