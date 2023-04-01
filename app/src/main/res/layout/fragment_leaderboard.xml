@@ -20,14 +20,14 @@
             android:id="@+id/leaderboard_title1"
             android:layout_width="match_parent"
             android:layout_height="10dp"
-            android:layout_weight="0.3"
+            android:layout_weight="0.4"
             android:text="@string/top_3_players"
-            android:textSize="35sp" />
+            android:textSize="15sp" />
 
         <ListView
             android:id="@+id/leaderboard_qr_codes_list_top_half"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="130dp"
             android:layout_weight="1"
             android:headerDividersEnabled="true" />
 
@@ -49,9 +49,9 @@
             android:id="@+id/leaderboard_title2"
             android:layout_width="match_parent"
             android:layout_height="10dp"
-            android:layout_weight="0.3"
+            android:layout_weight="0.4"
             android:text="@string/your_ranking"
-            android:textSize="35sp" />
+            android:textSize="15sp" />
 
         <ListView
             android:id="@+id/leaderboard_qr_codes_list_bottom_half"

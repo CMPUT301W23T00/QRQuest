@@ -88,7 +88,7 @@ public class leaderboardQRCodeAdapter extends ArrayAdapter<leaderboardQRCode> {
         } else if(Objects.equals(QRObject.getPosition(), (long) 3)) {
             UserPosition.setBackgroundColor(Color.parseColor("#CD7F32"));
         } else {
-            UserPosition.setBackgroundColor(Color.TRANSPARENT); // default color
+            UserPosition.setBackgroundColor(Color.parseColor("#CC333333")); // default color
         }
 
         qrImage.setImageBitmap(qrCodeProcessor.getBitmap(getContext()));
