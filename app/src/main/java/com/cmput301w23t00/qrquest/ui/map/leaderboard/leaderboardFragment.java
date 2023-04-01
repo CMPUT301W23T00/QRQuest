@@ -115,15 +115,20 @@ public class leaderboardFragment extends Fragment {
                                                     @Override
                                                     public int compare(leaderboardQRCode o1, leaderboardQRCode o2) {
                                                         int scoreComparison = Long.compare(o2.getScore(), o1.getScore());
-                                                        if (scoreComparison == 0) {
-                                                            return o1.getUser().compareTo(o2.getUser());
-                                                        }
                                                         return scoreComparison;
                                                     }
                                                 });
 
+                                                int currentRank = 1;
                                                 for (int i = 0; i < dataList.size(); i++) {
-                                                    dataList.get(i).setPosition(i + 1);
+                                                    leaderboardQRCode currentQRCode = dataList.get(i);
+                                                    if (i > 0) {
+                                                        leaderboardQRCode previousQRCode = dataList.get(i - 1);
+                                                        if (currentQRCode.getScore() != previousQRCode.getScore()) {
+                                                            currentRank = currentRank + 1;
+                                                        }
+                                                    }
+                                                    currentQRCode.setPosition(currentRank);
                                                 }
 
                                             } catch (NullPointerException e) {
