@@ -55,7 +55,9 @@ public class QRCodeInformationFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
+        if (libraryQRCode != null) {
+            //Log.d("Test","Random Chars" + libraryQRCode.toString());
+        }
         // Create a QRCodeInformationViewModel to display the information about the QR code.
         QRCodeInformationViewModel qrCodeInformationViewModel =
                 new ViewModelProvider(this).get(QRCodeInformationViewModel.class);
@@ -87,16 +89,34 @@ public class QRCodeInformationFragment extends Fragment {
         return root;
     }
 
+
+    /**
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("isMap", isMap);
+        outState.putString("userID", userID);
+        outState.putString("docID", docID);
+        outState.putParcelable("libraryQRCode", libraryQRCode);
+    } **/
+
     /**
      * onCreate is called to do initial creation of the fragment.
      *
      * @param savedInstanceState the previously saved instance state
      */
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         // Creates this fragment's menu.
         setHasOptionsMenu(true);
+
+        /**
+        if (savedInstanceState != null) {
+            isMap = savedInstanceState.getBoolean("isMap");
+            userID = savedInstanceState.getString("userID");
+            docID = savedInstanceState.getString("docID");
+            libraryQRCode = savedInstanceState.getParcelable("libraryQRCode");
+        } **/
     }
 
     /**
@@ -123,8 +143,16 @@ public class QRCodeInformationFragment extends Fragment {
         int id = item.getItemId();
 
         if (id == R.id.qr_comments) {
+            // Create a bundle to store data that will be passed to the QR code information fragment
+            Bundle bundle = new Bundle();
+            // Add the selected QR code object and the user ID to the bundle
+            bundle.putParcelable("selectedQRCode", libraryQRCode);
+            bundle.putString("userID", userID);
+            bundle.putString("documentID", docID);
+            bundle.putBoolean("isMap", isMap);
+
             // Start a new activity to see comments on this QR code
-            NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_commentFragment);
+            NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_commentFragment, bundle);
             return true;
         }
 //

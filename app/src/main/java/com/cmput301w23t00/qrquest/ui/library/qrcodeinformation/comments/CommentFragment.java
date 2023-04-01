@@ -1,40 +1,30 @@
 package com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.comments;
 
-import static androidx.fragment.app.FragmentManager.TAG;
-
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.cmput301w23t00.qrquest.R;
-import com.cmput301w23t00.qrquest.databinding.FragmentQrcodeinformationBinding;
-import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
+import com.cmput301w23t00.qrquest.databinding.FragmentCommentsBinding;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
-import com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.QRCodeInformationViewModel;
-import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * The class  QR code information fragment extends fragment
@@ -43,12 +33,16 @@ import com.google.firebase.firestore.QuerySnapshot;
  */
 public class CommentFragment extends Fragment {
 
-    private FragmentQrcodeinformationBinding binding; // view binding object for the fragment
+    private FragmentCommentsBinding binding; // view binding object for the fragment
     String userID; // a string to hold the current user's ID
     String docID; // the qr code document id
     Boolean isMap; // determines which page to return to
     FirebaseFirestore db; // Firestore database instance
     LibraryQRCode libraryQRCode;
+    Bundle qrCodeInformationBundle;
+
+
+    String User;
 
     /**
      * onCreateView is called when the view is first created.
@@ -63,25 +57,54 @@ public class CommentFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        // Create a QRCodeInformationViewModel to display the information about the QR code.
-        QRCodeInformationViewModel qrCodeInformationViewModel =
-                new ViewModelProvider(this).get(QRCodeInformationViewModel.class);
+        qrCodeInformationBundle = getArguments();
+        LibraryQRCode qrCodeData = qrCodeInformationBundle.getParcelable("selectedQRCode");
+        System.out.println("Ran Comment Fragment");
 
         // Inflate the fragment_qrcodeinformation.xml layout for this fragment.
-        binding = FragmentQrcodeinformationBinding.inflate(inflater, container, false);
+
+        binding = FragmentCommentsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        binding.setViewModel(qrCodeInformationViewModel);
+        ArrayList<CommentData> list = new ArrayList<CommentData>();
+        CommentAdapter NewAdapter = new CommentAdapter(getContext(),list);
+        binding.commentList.setAdapter(NewAdapter);
 
-        FirebaseFirestore.getInstance().collection("usersQRCodes").whereEqualTo("identifierId", "1234");.get().addOnCompleteListener(task1 -> {
-            if (task1.isSuccessful()) {
-                FirebaseFirestore.getInstance().collection("users").getDocuments().addOnCompleteListener(task2 -> {
-                    if (task2.isSuccessful()) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("usersQRCodes").whereEqualTo("qrCodeData", qrCodeData.getData()).whereNotEqualTo("comment","").get().addOnCompleteListener(new OnCompleteListener<>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    System.out.println("Task1");
+                    for (QueryDocumentSnapshot doc1 : task.getResult()) {
+                        System.out.println("Ran Task 1");
+                        String ID = doc1.getString("identifierId");
 
+                        db.collection("users").whereEqualTo("identifierId", ID).get().addOnCompleteListener(task2 -> {
+                            User = "Anonymous User";
+                            String Comment = doc1.getString("comment");
+                            @SuppressLint("UseCompatLoadingForDrawables") Drawable Profile = getResources().getDrawable(R.drawable.default_avatar);
+
+                            if (task2.isSuccessful()) {
+                                for (QueryDocumentSnapshot doc2 : task2.getResult()) {
+                                    User = doc2.getString("name");
+                                    System.out.println(User);
+                                    System.out.println("Ran Task 2: " + User);
+                                    // Waiting for someone to actually store PFP's for this part...
+                                    break;
+                                }
+                            }
+
+                            System.out.println("Final User: " + User);
+                            CommentData NewComment = new CommentData(User,Comment,Profile);
+                            NewAdapter.add(NewComment);
+                            NewAdapter.notifyDataSetChanged();
+                        });
                     }
-                });
-            };
+                };
+            }
         });
+
 
         return root;
     }
@@ -100,18 +123,6 @@ public class CommentFragment extends Fragment {
         
     }
 
-    /**
-     * onCreateOptionsMenu initializes the contents of the Activity's standard options menu.
-     * @param menu the options menu in which you place your items
-     * @param inflater the MenuInflater object that can be used to inflate any views in the menu
-     */
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
-
-        // adds buttons to the top navigation bar for navigation and to delete the QR Code
-        inflater.inflate(R.menu.qr_code_information_top_nav_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
 
     /**
      * onOptionsItemSelected is called when a menu item is selected.
@@ -126,7 +137,7 @@ public class CommentFragment extends Fragment {
         // Back arrow
         if (item.getItemId() == android.R.id.home) {
             // Navigate back to the previous fragment
-            NavHostFragment.findNavController(CommentFragment.this).navigate(R.id.commentFragment_to_action_qrCodeInformationFragment);
+            NavHostFragment.findNavController(CommentFragment.this).navigate(R.id.commentFragment_to_action_qrCodeInformationFragment, qrCodeInformationBundle);
             return true;
         }
 

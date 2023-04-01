@@ -20,7 +20,7 @@ public class CommentData {
     }
 
     String getText() {
-        return mUser;
+        return mText;
     }
 
     Drawable getProfile() {

@@ -16,6 +16,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import com.cmput301w23t00.qrquest.R;
 import com.google.api.Distribution;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CommentAdapter extends ArrayAdapter<CommentData> {
@@ -24,11 +25,10 @@ public class CommentAdapter extends ArrayAdapter<CommentData> {
     private List<CommentData> mData;
     private LinearLayout mlayout;
 
-    public CommentAdapter(@NonNull Context context, List<CommentData> Data, LinearLayout layout) {
+    public CommentAdapter(@NonNull Context context, ArrayList<CommentData> Data) {
         super(context, 0, Data);
         this.mContext = context;
         this.mData = Data;
-        this.mlayout = layout;
     }
 
     @Override
