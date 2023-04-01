@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 /**
- * This class defines a QR code
+ * This class defines a User for leaderboard
  */
 public class leaderboardUser implements Parcelable {
     private long score;
@@ -15,14 +15,7 @@ public class leaderboardUser implements Parcelable {
     private String userId;
 
     /**
-     * Constructs a QR code based on input
-     * @param data data of QR code
-     * @param score score of QR code
-     * @param position position of user based on qr code
-     */
-
-    /**
-     * Constructs a QR code based on a parcel input
+     * Constructs a User based on a parcel input
      * @param in parcel containing data, score, and date scanned
      */
     protected leaderboardUser(Parcel in) {
@@ -75,15 +68,15 @@ public class leaderboardUser implements Parcelable {
     }
 
     /**
-     * Gets score of QR code
-     * @return score of QR code
+     * Gets score of User
+     * @return score of User
      */
     public long getScore() {
         return score;
     }
 
     /**
-     * Sets score of QR code
+     * Sets score of User
      * @param score
      */
     public void setScore(long score) {
@@ -92,7 +85,7 @@ public class leaderboardUser implements Parcelable {
 
 
     /**
-     * Describes contents of QR code
+     * Describes contents of User
      * @return 0
      */
     @Override
@@ -102,7 +95,7 @@ public class leaderboardUser implements Parcelable {
 
     /**
      * Writes to a parcel
-     * @param parcel parcel containing information about QR code
+     * @param parcel parcel containing information about User
      * @param i flags
      */
     @Override
@@ -111,8 +104,8 @@ public class leaderboardUser implements Parcelable {
     }
 
     /**
-     * Compares QR codes based on their score
-     * @param anotherUser QR code to compare to
+     * Compares Users based on their score
+     * @param anotherUser User to compare to
      * @return -1, 0, or 1 depending on the score comparison
      */
     public int compareTo(leaderboardUser anotherUser) {

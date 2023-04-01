@@ -21,23 +21,23 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * This class represents an ArrayAdapter for LibraryQRCodes
+ * This class represents an ArrayAdapter for LibraryUsers
  */
 public class leaderboardUserAdapter extends ArrayAdapter<leaderboardUser> {
     /**
      * Constructor for LibraryQRCodeAdapter
      * @param context information about the application environment
-     * @param QRCodes list of QR codes
+     * @param Users list of Users
      */
-    public leaderboardUserAdapter(Context context, ArrayList<leaderboardUser> QRCodes) {
-        super(context, 0,QRCodes);
+    public leaderboardUserAdapter(Context context, ArrayList<leaderboardUser> Users) {
+        super(context, 0,Users);
     }
 
     /**
-     * getView inflates the view, showing a user's collection of QR codes
+     * getView inflates the view, showing all the users
      * and returns the modified view
-     * @param position position of the QR code in the list
-     * @param convertView view to be converted to display QR code item
+     * @param position position of the User in the list
+     * @param convertView view to be converted to display User item
      * @param parent parent view containing group of views
      * @return view of the new QR code item
      */
@@ -52,7 +52,7 @@ public class leaderboardUserAdapter extends ArrayAdapter<leaderboardUser> {
             view = convertView;
         }
 
-        // Get QR code
+        // Get User
         leaderboardUser UserObject = getItem(position);
         String CurrentUserID = UserProfile.getUserId();
         String CurrentUserName = UserProfile.getName();
@@ -63,7 +63,7 @@ public class leaderboardUserAdapter extends ArrayAdapter<leaderboardUser> {
             view.setBackgroundColor (Color.TRANSPARENT); // default color
         }
 
-        // Get textviews for QR code information
+        // Get textviews for User information
         TextView userName = view.findViewById(R.id.leaderboard_user_name);
         TextView UserPosition = view.findViewById(R.id.leaderboard_qr_code_position);
         TextView QRScore = view.findViewById(R.id.leaderboard_total_score);
@@ -87,7 +87,8 @@ public class leaderboardUserAdapter extends ArrayAdapter<leaderboardUser> {
             UserPosition.setBackgroundColor(Color.parseColor("#CC333333")); // default color
         }
 
-        //qrImage.setImageBitmap(qrCodeProcessor.getBitmap(getContext()));
+        // set the UserProfileImage to the correct image after implemented
+        //UserProfileImage.setImageBitmap();
         return view;
     }
 }
