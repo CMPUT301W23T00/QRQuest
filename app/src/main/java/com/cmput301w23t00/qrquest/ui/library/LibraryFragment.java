@@ -42,7 +42,8 @@ import java.util.stream.Collectors;
  */
 public class LibraryFragment extends Fragment {
     // Summary Statistics
-    private long highestScore, lowestScore, highestIndex, lowestIndex, highestUniqueRank, sumOfScores, totalScanned;
+    private long highestScore, lowestScore, sumOfScores, totalScanned;
+    private int highestIndex, lowestIndex, highestUniqueRank;
     private FragmentLibraryBinding binding; // View binding for the library fragment
     private ArrayAdapter<LibraryQRCode> QRAdapter; // Adapter for QR code list
     private ArrayList<LibraryQRCode> dataList; // List of QR codes to be displayed
@@ -124,13 +125,20 @@ public class LibraryFragment extends Fragment {
         viewQrStats.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                LibraryQRCode highestQRCode = dataList.get(highestIndex);
+                LibraryQRCode lowestQRCode = dataList.get(lowestIndex);
+                String highestDocID = documentIDList.get(highestIndex);
+                String lowestDocID = documentIDList.get(lowestIndex);
                 // Create a bundle and store data that will be passed to the QR code summary statistics fragment
                 Bundle bundle = new Bundle();
-                bundle.putLong("highestScore", highestScore);
-                bundle.putLong("lowestScore", lowestScore);
+                bundle.putParcelable("highestQRCode", highestQRCode);
+                bundle.putParcelable("lowestQRCode", lowestQRCode);
+                bundle.putString("highestDocID", highestDocID);
+                bundle.putString("lowestDocID", lowestDocID);
                 bundle.putLong("sumOfScores", sumOfScores);
                 bundle.putLong("totalScanned", totalScanned);
-                bundle.putLong("highestUniqueRank", highestUniqueRank);
+                bundle.putInt("highestUniqueRank", highestUniqueRank);
+                bundle.putString("userID", userID);
                 // Use the Navigation component to navigate to the QR code summary statistics fragment,
                 // and pass the bundle as an argument to the destination fragment
                 Navigation.findNavController(view).navigate(R.id.action_navigation_qrcode_library_to_qrCodeSummaryStatisticsFragment2, bundle);
@@ -168,7 +176,7 @@ public class LibraryFragment extends Fragment {
                     .sorted(Comparator.comparing(LibraryQRCode::getScore))
                     .map(LibraryQRCode::getData)
                     .collect(Collectors.toList());
-            highestUniqueRank = sortedList.size() - sortedList.indexOf(dataList.get((int)highestIndex).getData());
+            highestUniqueRank = sortedList.size() - sortedList.indexOf(dataList.get(highestIndex).getData());
         }
         else {
             highestIndex = 0;

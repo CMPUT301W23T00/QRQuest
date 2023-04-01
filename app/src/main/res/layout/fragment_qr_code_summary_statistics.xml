@@ -31,6 +31,7 @@
                 android:padding="15dp">
 
                 <ImageView
+                    android:id="@+id/summary_highest_score_image"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     app:layout_constraintDimensionRatio="H,1:1"
@@ -73,6 +74,7 @@
                 android:padding="15dp">
 
                 <ImageView
+                    android:id="@+id/summary_lowest_score_image"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:src="@drawable/baseline_qr_code_2_24"
