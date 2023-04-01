@@ -118,40 +118,31 @@ public class leaderboardFragment extends Fragment {
                                                 Collections.sort(topDataList, new Comparator<leaderboardQRCode>() {
                                                     @Override
                                                     public int compare(leaderboardQRCode o1, leaderboardQRCode o2) {
-                                                        return Long.compare(o2.getScore(), o1.getScore());
+                                                        int scoreComparison = Long.compare(o2.getScore(), o1.getScore());
+                                                        if (scoreComparison == 0) {
+                                                            return o1.getUser().compareTo(o2.getUser());
+                                                        }
+                                                        return scoreComparison;
                                                     }
                                                 });
                                                 Collections.sort(bottomDataList, new Comparator<leaderboardQRCode>() {
                                                     @Override
                                                     public int compare(leaderboardQRCode o1, leaderboardQRCode o2) {
-                                                        return Long.compare(o2.getScore(), o1.getScore());
+                                                        int scoreComparison = Long.compare(o2.getScore(), o1.getScore());
+                                                        if (scoreComparison == 0) {
+                                                            return o1.getUser().compareTo(o2.getUser());
+                                                        }
+                                                        return scoreComparison;
                                                     }
                                                 });
                                                 Collections.sort(tempDataList, new Comparator<leaderboardQRCode>() {
                                                     @Override
                                                     public int compare(leaderboardQRCode o1, leaderboardQRCode o2) {
-                                                        return Long.compare(o2.getScore(), o1.getScore());
-                                                    }
-                                                });
-
-                                                // Then sort by userName
-                                                Collections.sort(topDataList, new Comparator<leaderboardQRCode>() {
-                                                    @Override
-                                                    public int compare(leaderboardQRCode qr1, leaderboardQRCode qr2) {
-                                                        return qr1.getUser().compareTo(qr2.getUser());
-                                                    }
-                                                });
-                                                // Then sort by userName
-                                                Collections.sort(bottomDataList, new Comparator<leaderboardQRCode>() {
-                                                    @Override
-                                                    public int compare(leaderboardQRCode qr1, leaderboardQRCode qr2) {
-                                                        return qr1.getUser().compareTo(qr2.getUser());
-                                                    }
-                                                });
-                                                Collections.sort(tempDataList, new Comparator<leaderboardQRCode>() {
-                                                    @Override
-                                                    public int compare(leaderboardQRCode qr1, leaderboardQRCode qr2) {
-                                                        return qr1.getUser().compareTo(qr2.getUser());
+                                                        int scoreComparison = Long.compare(o2.getScore(), o1.getScore());
+                                                        if (scoreComparison == 0) {
+                                                            return o1.getUser().compareTo(o2.getUser());
+                                                        }
+                                                        return scoreComparison;
                                                     }
                                                 });
 
@@ -196,7 +187,6 @@ public class leaderboardFragment extends Fragment {
 
                                             topQRAdapter.notifyDataSetChanged();
                                             bottomQRAdapter.notifyDataSetChanged();
-
                                         }
                                     }
                                 });
