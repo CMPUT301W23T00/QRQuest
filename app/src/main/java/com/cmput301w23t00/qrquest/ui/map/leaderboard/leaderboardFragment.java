@@ -16,7 +16,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentLeaderboardBinding;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
-import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -132,20 +131,13 @@ public class leaderboardFragment extends Fragment {
         QRList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
-                leaderboardUser qrCode = dataList.get(index);
+                leaderboardUser user = dataList.get(index);
                 String docID = documentIDList.get(index);
 
-                // Create a bundle to store data that will be passed to the QR code information fragment
+                // Create a bundle to store data that will be passed to the other user profile fragment
                 Bundle bundle = new Bundle();
-                String CurrentUserID = UserProfile.getUserId();
-                // Add the selected QR code object and the user ID to the bundle
-                bundle.putParcelable("selectedQRCode", qrCode);
-                bundle.putString("CurrentUserID", CurrentUserID);
-                bundle.putString("documentID", docID);
-                bundle.putBoolean("isMap", false);
-                bundle.putBoolean("isLeaderboard", true);
 
-                // Use the Navigation component to navigate to the QR code information fragment,
+                // Use the Navigation component to navigate to the other user profile fragment,
                 // and pass the bundle as an argument to the destination fragment
 
                 // we are going to change this when profile is implemented
