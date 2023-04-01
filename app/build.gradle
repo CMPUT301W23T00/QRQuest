@@ -45,7 +45,6 @@ android {
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.6.0'
-    implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
@@ -62,6 +61,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:20.0.4'
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.github.yuriy-budiyev:code-scanner:2.3.2'
+    implementation 'com.google.android.material:material:1.8.0'
 
     // Camera
     def cameraxVersion = "1.1.0"
