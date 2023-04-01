@@ -24,7 +24,7 @@ import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentQrcodeinformationBinding;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
-import com.cmput301w23t00.qrquest.ui.map.leaderboard.leaderboardQRCode;
+import com.cmput301w23t00.qrquest.ui.map.leaderboard.leaderboardUser;
 import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -46,7 +46,7 @@ public class QRCodeInformationFragment extends Fragment {
     Boolean isLeaderboard;
     FirebaseFirestore db; // Firestore database instance
     LibraryQRCode libraryQRCode;
-    leaderboardQRCode _leaderboardQRCode;
+    leaderboardUser _leaderboardUser;
 
     /**
      * onCreateView is called when the view is first created.
@@ -72,39 +72,19 @@ public class QRCodeInformationFragment extends Fragment {
         // Retrieve data passed in from the previous fragment
         Bundle bundle = getArguments();
         if (bundle != null) {
-            try {
-                LibraryQRCode qrCode = bundle.getParcelable("selectedQRCode");
-                userID = bundle.getString("userID");
-                docID = bundle.getString("documentID");
-                isMap = bundle.getBoolean("isMap");
-                isLeaderboard = bundle.getBoolean("isLeaderboard");
-                if (qrCode != null) {
-                    // Update the ViewModel with the information of the selected QR code
-                    libraryQRCode = qrCode;
-                    QRCodeProcessor qrCodeProcessor = new QRCodeProcessor(qrCode.getData());
-                    qrCodeInformationViewModel.setQRCodeInfo(qrCodeProcessor.getName(), "test description");
-                    Bitmap Image = qrCodeProcessor.getBitmap(getActivity());
-                    ImageView TempImage = root.findViewById(R.id.qr_code_image);
-                    TempImage.setImageBitmap(Image);
-                }
-            } catch (ClassCastException e) {
-                leaderboardQRCode qrCode = bundle.getParcelable("selectedQRCode");
-                userID = bundle.getString("userID");
-                docID = bundle.getString("documentID");
-                isMap = bundle.getBoolean("isMap");
-                isLeaderboard = bundle.getBoolean("isLeaderboard");
-                if (qrCode != null) {
-                    // Update the ViewModel with the information of the selected QR code
-                    _leaderboardQRCode = qrCode;
-                    QRCodeProcessor qrCodeProcessor = new QRCodeProcessor(qrCode.getData());
-                    qrCodeInformationViewModel.setQRCodeInfo(qrCodeProcessor.getName(), "test description");
-                    Bitmap Image = qrCodeProcessor.getBitmap(getActivity());
-                    ImageView TempImage = root.findViewById(R.id.qr_code_image);
-                    TempImage.setImageBitmap(Image);
-                }
+            LibraryQRCode qrCode = bundle.getParcelable("selectedQRCode");
+            userID = bundle.getString("userID");
+            docID = bundle.getString("documentID");
+            isMap = bundle.getBoolean("isMap");
+            if (qrCode != null) {
+                // Update the ViewModel with the information of the selected QR code
+                libraryQRCode = qrCode;
+                QRCodeProcessor qrCodeProcessor = new QRCodeProcessor(qrCode.getData());
+                qrCodeInformationViewModel.setQRCodeInfo(qrCodeProcessor.getName(), "test description");
+                Bitmap Image = qrCodeProcessor.getBitmap(getActivity());
+                ImageView TempImage = root.findViewById(R.id.qr_code_image);
+                TempImage.setImageBitmap(Image);
             }
-
-
         }
 
         binding.setViewModel(qrCodeInformationViewModel);
