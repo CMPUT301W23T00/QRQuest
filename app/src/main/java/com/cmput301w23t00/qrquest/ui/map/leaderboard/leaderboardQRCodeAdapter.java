@@ -60,7 +60,7 @@ public class leaderboardQRCodeAdapter extends ArrayAdapter<leaderboardQRCode> {
         String CurrentUserName = UserProfile.getName();
 
         if (Objects.equals(QRObject.getUserId(), CurrentUserID) && Objects.equals(QRObject.getUser(), CurrentUserName)) {
-            view.setBackgroundColor(Color.parseColor("#9DD0FF"));
+            view.setBackgroundResource(R.drawable.leaderboard_current_user);
         } else {
             view.setBackgroundColor (Color.TRANSPARENT); // default color
         }
