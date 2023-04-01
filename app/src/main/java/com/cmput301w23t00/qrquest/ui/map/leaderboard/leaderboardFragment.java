@@ -30,8 +30,8 @@ import java.util.Comparator;
 public class leaderboardFragment extends Fragment {
 
     private FragmentLeaderboardBinding binding; // View binding for the library fragment
-    private ArrayAdapter<leaderboardUser> UserAdapter; // Adapter for QR code list
-    private ArrayList<leaderboardUser> dataList; // List of QR codes to be displayed
+    private ArrayAdapter<leaderboardUser> UserAdapter; // Adapter for User list
+    private ArrayList<leaderboardUser> dataList; // List of Users to be displayed
     private ArrayList<String> documentIDList; // List of documents
     FirebaseFirestore db; // Firebase Firestore database instance
 
@@ -55,7 +55,7 @@ public class leaderboardFragment extends Fragment {
         final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
         final CollectionReference usersCollectionReference = db.collection("users");
 
-        // Set adapter for QR code listview to update based on firebase data.
+        // Set adapter for User listview to update based on firebase data.
         ListView QRList = binding.leaderboardUsersList;
         dataList = new ArrayList<>();
         UserAdapter = new leaderboardUserAdapter(getActivity(), dataList);
