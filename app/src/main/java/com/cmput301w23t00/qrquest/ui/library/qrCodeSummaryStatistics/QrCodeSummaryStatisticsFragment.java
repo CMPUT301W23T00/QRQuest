@@ -53,18 +53,19 @@ public class QrCodeSummaryStatisticsFragment extends Fragment {
         TextView lowestScoreText = binding.summaryLowestScore;
         TextView sumOfScoresText = binding.summarySumOfScores;
         TextView totalScannedText = binding.summaryTotalScanned;
-
+        TextView highestUniqueRankText = binding.summaryHighestScoreRank;
         // Get summary statistics from bundle
         long highestScore = getArguments().getLong("highestScore");
         long lowestScore = getArguments().getLong("lowestScore");
         long sumOfScores = getArguments().getLong("sumOfScores");
         long totalScanned = getArguments().getLong("totalScanned");
-
+        long highestUniqueRank = getArguments().getLong("highestUniqueRank");
         // Set textview texts with summary statistics from library fragment bundle
         highestScoreText.setText(String.format(Locale.CANADA,"%d", highestScore));
         lowestScoreText.setText(String.format(Locale.CANADA,"%d", lowestScore));
         sumOfScoresText.setText(String.format(Locale.CANADA,"%d", sumOfScores));
         totalScannedText.setText(String.format(Locale.CANADA,"%d", totalScanned));
+        highestUniqueRankText.setText(String.format(Locale.CANADA,"%d", highestUniqueRank));
         return root;
     }
 
