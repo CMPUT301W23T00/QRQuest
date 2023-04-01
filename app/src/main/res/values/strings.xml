@@ -44,6 +44,7 @@
     <string name="external_user_screen_name">Player\'s Profile</string>
     <string name="zero">0</string>
     <string name="crown">Crown</string>
+    <string name="summary_unique_highest_scoring_rank">Unique Highest Scoring Rank</string>
     <string name="comments">Comments</string>
     <string name="comments_user">Username</string>
     <string name="comments_text">No Comment Added Yet</string>
