@@ -41,9 +41,5 @@
     <string name="record_geo_location">Record Geo-Location</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="zero">0</string>
-    <string name="ellipsis">ellipsis</string>
     <string name="crown">Crown</string>
-    <string name="top_3_players">Top 3 Players:</string>
-    <string name="your_ranking">Your Ranking:</string>
-    <string name="button">button</string>
 </resources>
