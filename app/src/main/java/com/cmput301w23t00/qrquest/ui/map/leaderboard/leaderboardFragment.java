@@ -11,7 +11,6 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.cmput301w23t00.qrquest.R;
@@ -28,13 +27,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 
 public class leaderboardFragment extends Fragment {
 
     private FragmentLeaderboardBinding binding; // View binding for the library fragment
-    private ArrayAdapter<leaderboardQRCode> QRAdapter; // Adapter for QR code list
-    private ArrayList<leaderboardQRCode> dataList; // List of QR codes to be displayed
+    private ArrayAdapter<leaderboardUser> UserAdapter; // Adapter for QR code list
+    private ArrayList<leaderboardUser> dataList; // List of QR codes to be displayed
     private ArrayList<String> documentIDList; // List of documents
     FirebaseFirestore db; // Firebase Firestore database instance
 
@@ -59,10 +57,10 @@ public class leaderboardFragment extends Fragment {
         final CollectionReference usersCollectionReference = db.collection("users");
 
         // Set adapter for QR code listview to update based on firebase data.
-        ListView QRList = binding.leaderboardQrCodesList;
+        ListView QRList = binding.leaderboardUsersList;
         dataList = new ArrayList<>();
-        QRAdapter = new leaderboardQRCodeAdapter(getActivity(), dataList);
-        QRList.setAdapter(QRAdapter);
+        UserAdapter = new leaderboardUserAdapter(getActivity(), dataList);
+        QRList.setAdapter(UserAdapter);
         documentIDList = new ArrayList<>();
 
         // Loop through all users fill the listviews with the correct values
@@ -81,34 +79,23 @@ public class leaderboardFragment extends Fragment {
                                     @Override
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                         if (task.isSuccessful()) {
-                                            QueryDocumentSnapshot final_document = null;
-                                            String qrCodeData = null;
-                                            Date dateScanned = null;
-                                            long score = 0;
+                                            long totalScore = 0;
 
                                             // Iterate through each QR code and find the one with the highest score
                                             for (QueryDocumentSnapshot document : task.getResult()) {
                                                 String tempQRCodeData = (String) document.getData().get("qrCodeData");
                                                 long tempScore = new QRCodeProcessor(tempQRCodeData).getScore();
-
-                                                if (tempScore > score) {
-                                                    qrCodeData = tempQRCodeData;
-                                                    score = tempScore;
-                                                    com.google.firebase.Timestamp timestamp = (com.google.firebase.Timestamp) document.getData().get("dateScanned");
-                                                    dateScanned = timestamp.toDate();
-                                                    final_document = document;
-                                                }
+                                                totalScore += tempScore;
                                             }
 
                                             try {
                                                 // Add the QR code with the highest score to the leaderboard list
-                                                documentIDList.add(final_document.getId());
-                                                dataList.add(new leaderboardQRCode(userId, userName, qrCodeData, score, dateScanned, 1));
+                                                dataList.add(new leaderboardUser(userId, userName, totalScore, 1));
 
                                                 // Sort the leaderboard list based on score in descending order
-                                                Collections.sort(dataList, new Comparator<leaderboardQRCode>() {
+                                                Collections.sort(dataList, new Comparator<leaderboardUser>() {
                                                     @Override
-                                                    public int compare(leaderboardQRCode o1, leaderboardQRCode o2) {
+                                                    public int compare(leaderboardUser o1, leaderboardUser o2) {
                                                         int scoreComparison = Long.compare(o2.getScore(), o1.getScore());
                                                         return scoreComparison;
                                                     }
@@ -117,9 +104,9 @@ public class leaderboardFragment extends Fragment {
                                                 // Assign a position to each QR code on the leaderboard
                                                 int currentRank = 1;
                                                 for (int i = 0; i < dataList.size(); i++) {
-                                                    leaderboardQRCode currentQRCode = dataList.get(i);
+                                                    leaderboardUser currentQRCode = dataList.get(i);
                                                     if (i > 0) {
-                                                        leaderboardQRCode previousQRCode = dataList.get(i - 1);
+                                                        leaderboardUser previousQRCode = dataList.get(i - 1);
                                                         if (currentQRCode.getScore() != previousQRCode.getScore()) {
                                                             currentRank = currentRank + 1;
                                                         }
@@ -132,7 +119,7 @@ public class leaderboardFragment extends Fragment {
                                             }
 
                                             // Notify the adapter that the data has changed
-                                            QRAdapter.notifyDataSetChanged();
+                                            UserAdapter.notifyDataSetChanged();
                                         }
                                     }
                                 });
@@ -145,7 +132,7 @@ public class leaderboardFragment extends Fragment {
         QRList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
-                leaderboardQRCode qrCode = dataList.get(index);
+                leaderboardUser qrCode = dataList.get(index);
                 String docID = documentIDList.get(index);
 
                 // Create a bundle to store data that will be passed to the QR code information fragment
@@ -160,7 +147,9 @@ public class leaderboardFragment extends Fragment {
 
                 // Use the Navigation component to navigate to the QR code information fragment,
                 // and pass the bundle as an argument to the destination fragment
-                Navigation.findNavController(view).navigate(R.id.leaderboard_to_action_qrcodeinfopage, bundle);
+
+                // we are going to change this when profile is implemented
+                //Navigation.findNavController(view).navigate(R.id.leaderboard_to_action_qrcodeinfopage, bundle);
             }
         });
 
