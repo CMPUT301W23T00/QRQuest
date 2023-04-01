@@ -59,16 +59,11 @@ public class leaderboardFragment extends Fragment {
         final CollectionReference usersCollectionReference = db.collection("users");
 
         // Set adapter for QR code listview to update based on firebase data.
-        ListView QRListTopHalf = binding.leaderboardQrCodesListTopHalf;
-        ArrayList<leaderboardQRCode> tempDataList = new ArrayList<>();
+        ListView QRList = binding.leaderboardQrCodesList;
         dataList = new ArrayList<>();
-        leaderboardQRCodeAdapter QRAdapter = new leaderboardQRCodeAdapter(getActivity(), dataList);
-        QRListTopHalf.setAdapter(QRAdapter);
+        QRAdapter = new leaderboardQRCodeAdapter(getActivity(), dataList);
+        QRList.setAdapter(QRAdapter);
         documentIDList = new ArrayList<>();
-
-        // Get current user ID and name.
-        String CurrentUserID = UserProfile.getUserId();
-        String CurrentUserName = UserProfile.getName();
 
         // Loop through all users fill the listviews with the correct values
         usersCollectionReference.get().addOnCompleteListener(new OnCompleteListener<>() {
@@ -80,18 +75,18 @@ public class leaderboardFragment extends Fragment {
                         String userId = (String) document.getData().get("identifierId");
                         String userName = (String) document.getData().get("name");
 
-                        // Find all QR codes scanned by current user with unique identifier ID
+                        // Find all QR codes scanned by the current user
                         usersQRCodesCollectionReference.whereEqualTo("identifierId", userId)
-                                .get().addOnCompleteListener(new OnCompleteListener<>() {
+                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if (task.isSuccessful()) { // If found iterate through all user QR codes
-
+                                        if (task.isSuccessful()) {
                                             QueryDocumentSnapshot final_document = null;
                                             String qrCodeData = null;
                                             Date dateScanned = null;
                                             long score = 0;
 
+                                            // Iterate through each QR code and find the one with the highest score
                                             for (QueryDocumentSnapshot document : task.getResult()) {
                                                 String tempQRCodeData = (String) document.getData().get("qrCodeData");
                                                 long tempScore = new QRCodeProcessor(tempQRCodeData).getScore();
@@ -106,11 +101,11 @@ public class leaderboardFragment extends Fragment {
                                             }
 
                                             try {
+                                                // Add the QR code with the highest score to the leaderboard list
                                                 documentIDList.add(final_document.getId());
                                                 dataList.add(new leaderboardQRCode(userId, userName, qrCodeData, score, dateScanned, 1));
-                                                tempDataList.add(new leaderboardQRCode(userId, userName, qrCodeData, score, dateScanned, 1));
 
-                                                // Sort dataList based on score in descending order
+                                                // Sort the leaderboard list based on score in descending order
                                                 Collections.sort(dataList, new Comparator<leaderboardQRCode>() {
                                                     @Override
                                                     public int compare(leaderboardQRCode o1, leaderboardQRCode o2) {
@@ -119,6 +114,7 @@ public class leaderboardFragment extends Fragment {
                                                     }
                                                 });
 
+                                                // Assign a position to each QR code on the leaderboard
                                                 int currentRank = 1;
                                                 for (int i = 0; i < dataList.size(); i++) {
                                                     leaderboardQRCode currentQRCode = dataList.get(i);
@@ -132,8 +128,10 @@ public class leaderboardFragment extends Fragment {
                                                 }
 
                                             } catch (NullPointerException e) {
+                                                // Do nothing if there are no QR codes for the user
                                             }
 
+                                            // Notify the adapter that the data has changed
                                             QRAdapter.notifyDataSetChanged();
                                         }
                                     }
@@ -141,9 +139,10 @@ public class leaderboardFragment extends Fragment {
                     }
                 }
             }
+
         });
 
-        QRListTopHalf.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        QRList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
                 leaderboardQRCode qrCode = dataList.get(index);
@@ -151,6 +150,7 @@ public class leaderboardFragment extends Fragment {
 
                 // Create a bundle to store data that will be passed to the QR code information fragment
                 Bundle bundle = new Bundle();
+                String CurrentUserID = UserProfile.getUserId();
                 // Add the selected QR code object and the user ID to the bundle
                 bundle.putParcelable("selectedQRCode", qrCode);
                 bundle.putString("CurrentUserID", CurrentUserID);
@@ -185,13 +185,19 @@ public class leaderboardFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * This method is called when the fragment is created. It sets up the fragment's menu by calling setHasOptionsMenu(true).
+     * @param savedInstanceState the saved instance state bundle
+     */
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         // Creates this fragment's menu.
         setHasOptionsMenu(true);
     }
 
+    /**
+     * This method is called when the view hierarchy associated with this fragment is being destroyed. It sets the binding variable to null to prevent memory leaks.
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
