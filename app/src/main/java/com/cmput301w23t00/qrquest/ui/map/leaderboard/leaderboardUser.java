@@ -5,15 +5,11 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import java.util.Date;
-
 /**
  * This class defines a QR code
  */
-public class leaderboardQRCode implements Parcelable {
-    private String data;
+public class leaderboardUser implements Parcelable {
     private long score;
-    private Date date;
     private long position;
     private String user;
     private String userId;
@@ -22,7 +18,6 @@ public class leaderboardQRCode implements Parcelable {
      * Constructs a QR code based on input
      * @param data data of QR code
      * @param score score of QR code
-     * @param date date QR code was scanned
      * @param position position of user based on qr code
      */
 
@@ -30,28 +25,26 @@ public class leaderboardQRCode implements Parcelable {
      * Constructs a QR code based on a parcel input
      * @param in parcel containing data, score, and date scanned
      */
-    protected leaderboardQRCode(Parcel in) {
-        this.data = in.readString();
+    protected leaderboardUser(Parcel in) {
         this.score = in.readLong();
-        date = new Date(in.readLong());
+        this.user = in.readString();
+        this.userId = in.readString();
     }
 
-    public static final Creator<leaderboardQRCode> CREATOR = new Creator<leaderboardQRCode>() {
+    public static final Creator<leaderboardUser> CREATOR = new Creator<leaderboardUser>() {
         @Override
-        public leaderboardQRCode createFromParcel(Parcel in) {
-            return new leaderboardQRCode(in);
+        public leaderboardUser createFromParcel(Parcel in) {
+            return new leaderboardUser(in);
         }
 
         @Override
-        public leaderboardQRCode[] newArray(int size) {
-            return new leaderboardQRCode[size];
+        public leaderboardUser[] newArray(int size) {
+            return new leaderboardUser[size];
         }
     };
 
-    public leaderboardQRCode(String userId, String userName, String qrCodeData, long score, Date dateScanned, int position) {
-        this.data = qrCodeData;
+    public leaderboardUser(String userId, String userName, long score, int position) {
         this.score = score;
-        this.date = dateScanned;
         this.position = position;
         this.user = userName;
         this.userId = userId;
@@ -82,22 +75,6 @@ public class leaderboardQRCode implements Parcelable {
     }
 
     /**
-     * Gets QR code data
-     * @return data of QR code
-     */
-    public String getData() {
-        return data;
-    }
-
-    /**
-     * Sets data of QR code
-     * @param data new QR code data
-     */
-    public void setData(String data) {
-        this.data = data;
-    }
-
-    /**
      * Gets score of QR code
      * @return score of QR code
      */
@@ -113,21 +90,6 @@ public class leaderboardQRCode implements Parcelable {
         this.score = score;
     }
 
-    /**
-     * Gets date QR code was scanned
-     * @return date QR code was scanned
-     */
-    public Date getDate() {
-        return date;
-    }
-
-    /**
-     * Sets date QR code was scanned
-     * @param date new date when QR code was scanned
-     */
-    public void setDate(Date date) {
-        this.date = date;
-    }
 
     /**
      * Describes contents of QR code
@@ -145,20 +107,18 @@ public class leaderboardQRCode implements Parcelable {
      */
     @Override
     public void writeToParcel(@NonNull Parcel parcel, int i) {
-        parcel.writeString(data);
         parcel.writeInt((int) score);
-        parcel.writeLong(date.getTime());
     }
 
     /**
      * Compares QR codes based on their score
-     * @param anotherQRCode QR code to compare to
+     * @param anotherUser QR code to compare to
      * @return -1, 0, or 1 depending on the score comparison
      */
-    public int compareTo(leaderboardQRCode anotherQRCode) {
-        if (this.score < anotherQRCode.score) {
+    public int compareTo(leaderboardUser anotherUser) {
+        if (this.score < anotherUser.score) {
             return 1;
-        } else if (this.score > anotherQRCode.score) {
+        } else if (this.score > anotherUser.score) {
             return -1;
         } else {
             return 0;

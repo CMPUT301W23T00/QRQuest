@@ -10,7 +10,7 @@
     tools:ignore="RtlSymmetry">
 
     <ImageView
-        android:id="@+id/leaderboard_qr_code_image"
+        android:id="@+id/leaderboard_user_profile_image"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.3"
@@ -43,7 +43,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/leaderboard_qr_code_score"
+            android:id="@+id/leaderboard_total_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/qr_code_name" />
@@ -57,26 +57,6 @@
 
         <TextView
             android:id="@+id/leaderboard_qr_code_position"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/leaderboard_date_background"
-            android:padding="5dp"
-            android:text="@string/qr_code_name"
-            android:theme="@style/Theme.QRQuest"
-            android:layout_marginEnd="10dp">
-
-        </TextView>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.6"
-        android:gravity="end|center_vertical">
-
-        <TextView
-            android:id="@+id/leaderboard_qr_code_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/leaderboard_date_background"
