@@ -157,7 +157,7 @@ public class leaderboardFragment extends Fragment {
                                                 }
 
                                                 for (int i = 0; i < bottomDataList.size(); i++) {
-                                                    bottomDataList.get(i).setPosition(i + 1 + currentUserIndex);
+                                                    bottomDataList.get(i).setPosition(i + currentUserIndex);
                                                 }
 
                                                 for (int i = 0; i < topDataList.size(); i++) {
@@ -168,7 +168,7 @@ public class leaderboardFragment extends Fragment {
                                             }
 
                                             // only get top 3 users for top half
-                                            for (int i = 3; i < topDataList.size(); i++) {
+                                            for (int i = 13; i < topDataList.size(); i++) {
                                                 topDataList.remove(i);
                                             }
 
@@ -177,6 +177,16 @@ public class leaderboardFragment extends Fragment {
                                                 leaderboardQRCode qrcode = bottomDataList.get(i);
                                                 if ((Objects.equals(qrcode.getUserId(), CurrentUserID)) && (Objects.equals(qrcode.getUser(), CurrentUserName))) {
                                                     currentUserIndex = i;
+                                                    break;
+                                                }
+                                            }
+
+                                            int currentUserIndex2 = 0;
+                                            // remove top n users above current user
+                                            for (int i = 0; i < tempDataList.size(); i++) {
+                                                leaderboardQRCode qrcode = tempDataList.get(i);
+                                                if ((Objects.equals(qrcode.getUserId(), CurrentUserID)) && (Objects.equals(qrcode.getUser(), CurrentUserName))) {
+                                                    currentUserIndex2 = i;
                                                     break;
                                                 }
                                             }
