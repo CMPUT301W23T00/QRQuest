@@ -29,14 +29,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.Objects;
 
 public class leaderboardFragment extends Fragment {
 
     private FragmentLeaderboardBinding binding; // View binding for the library fragment
     private ArrayAdapter<leaderboardQRCode> QRAdapter; // Adapter for QR code list
-    private ArrayList<leaderboardQRCode> topDataList; // List of QR codes to be displayed
-    private ArrayList<leaderboardQRCode> bottomDataList; // List of QR codes to be displayed
+    private ArrayList<leaderboardQRCode> dataList; // List of QR codes to be displayed
     private ArrayList<String> documentIDList; // List of documents
     FirebaseFirestore db; // Firebase Firestore database instance
 
@@ -62,14 +60,10 @@ public class leaderboardFragment extends Fragment {
 
         // Set adapter for QR code listview to update based on firebase data.
         ListView QRListTopHalf = binding.leaderboardQrCodesListTopHalf;
-        ListView QRListBottomHalf = binding.leaderboardQrCodesListBottomHalf;
         ArrayList<leaderboardQRCode> tempDataList = new ArrayList<>();
-        topDataList = new ArrayList<>();
-        bottomDataList = new ArrayList<>();
-        leaderboardQRCodeAdapter topQRAdapter = new leaderboardQRCodeAdapter(getActivity(), topDataList);
-        leaderboardQRCodeAdapter bottomQRAdapter = new leaderboardQRCodeAdapter(getActivity(), bottomDataList);
-        QRListTopHalf.setAdapter(topQRAdapter);
-        QRListBottomHalf.setAdapter(bottomQRAdapter);
+        dataList = new ArrayList<>();
+        leaderboardQRCodeAdapter QRAdapter = new leaderboardQRCodeAdapter(getActivity(), dataList);
+        QRListTopHalf.setAdapter(QRAdapter);
         documentIDList = new ArrayList<>();
 
         // Get current user ID and name.
@@ -113,32 +107,11 @@ public class leaderboardFragment extends Fragment {
 
                                             try {
                                                 documentIDList.add(final_document.getId());
-                                                topDataList.add(new leaderboardQRCode(userId, userName, qrCodeData, score, dateScanned, 1));
-                                                bottomDataList.add(new leaderboardQRCode(userId, userName, qrCodeData, score, dateScanned, 1));
+                                                dataList.add(new leaderboardQRCode(userId, userName, qrCodeData, score, dateScanned, 1));
                                                 tempDataList.add(new leaderboardQRCode(userId, userName, qrCodeData, score, dateScanned, 1));
 
                                                 // Sort dataList based on score in descending order
-                                                Collections.sort(topDataList, new Comparator<leaderboardQRCode>() {
-                                                    @Override
-                                                    public int compare(leaderboardQRCode o1, leaderboardQRCode o2) {
-                                                        int scoreComparison = Long.compare(o2.getScore(), o1.getScore());
-                                                        if (scoreComparison == 0) {
-                                                            return o1.getUser().compareTo(o2.getUser());
-                                                        }
-                                                        return scoreComparison;
-                                                    }
-                                                });
-                                                Collections.sort(bottomDataList, new Comparator<leaderboardQRCode>() {
-                                                    @Override
-                                                    public int compare(leaderboardQRCode o1, leaderboardQRCode o2) {
-                                                        int scoreComparison = Long.compare(o2.getScore(), o1.getScore());
-                                                        if (scoreComparison == 0) {
-                                                            return o1.getUser().compareTo(o2.getUser());
-                                                        }
-                                                        return scoreComparison;
-                                                    }
-                                                });
-                                                Collections.sort(tempDataList, new Comparator<leaderboardQRCode>() {
+                                                Collections.sort(dataList, new Comparator<leaderboardQRCode>() {
                                                     @Override
                                                     public int compare(leaderboardQRCode o1, leaderboardQRCode o2) {
                                                         int scoreComparison = Long.compare(o2.getScore(), o1.getScore());
@@ -149,47 +122,14 @@ public class leaderboardFragment extends Fragment {
                                                     }
                                                 });
 
-                                                int currentUserIndex = 0;
-                                                // remove top n users above current user
-                                                for (int i = 0; i < tempDataList.size(); i++) {
-                                                    leaderboardQRCode qrcode = tempDataList.get(i);
-                                                    if ((Objects.equals(qrcode.getUserId(), CurrentUserID)) && (Objects.equals(qrcode.getUser(), CurrentUserName))) {
-                                                        currentUserIndex = i;
-                                                        break;
-                                                    }
-                                                }
-
-                                                for (int i = 0; i < bottomDataList.size(); i++) {
-                                                    bottomDataList.get(i).setPosition(i + currentUserIndex);
-                                                }
-
-                                                for (int i = 0; i < topDataList.size(); i++) {
-                                                    topDataList.get(i).setPosition(i + 1);
+                                                for (int i = 0; i < dataList.size(); i++) {
+                                                    dataList.get(i).setPosition(i + 1);
                                                 }
 
                                             } catch (NullPointerException e) {
                                             }
 
-                                            // only get top 3 users for top half
-                                            for (int i = 3; i < topDataList.size(); i++) {
-                                                topDataList.remove(i);
-                                            }
-
-                                            int currentUserIndex = 0;
-                                            for (int i = 0; i < bottomDataList.size(); i++) {
-                                                leaderboardQRCode qrcode = bottomDataList.get(i);
-                                                if ((Objects.equals(qrcode.getUserId(), CurrentUserID)) && (Objects.equals(qrcode.getUser(), CurrentUserName))) {
-                                                    currentUserIndex = i;
-                                                    break;
-                                                }
-                                            }
-
-                                            for (int i = currentUserIndex - 1; i >= 0; i--) {
-                                                bottomDataList.remove(i);
-                                            }
-
-                                            topQRAdapter.notifyDataSetChanged();
-                                            bottomQRAdapter.notifyDataSetChanged();
+                                            QRAdapter.notifyDataSetChanged();
                                         }
                                     }
                                 });
@@ -201,28 +141,7 @@ public class leaderboardFragment extends Fragment {
         QRListTopHalf.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
-                leaderboardQRCode qrCode = topDataList.get(index);
-                String docID = documentIDList.get(index);
-
-                // Create a bundle to store data that will be passed to the QR code information fragment
-                Bundle bundle = new Bundle();
-                // Add the selected QR code object and the user ID to the bundle
-                bundle.putParcelable("selectedQRCode", qrCode);
-                bundle.putString("CurrentUserID", CurrentUserID);
-                bundle.putString("documentID", docID);
-                bundle.putBoolean("isMap", false);
-                bundle.putBoolean("isLeaderboard", true);
-
-                // Use the Navigation component to navigate to the QR code information fragment,
-                // and pass the bundle as an argument to the destination fragment
-                Navigation.findNavController(view).navigate(R.id.leaderboard_to_action_qrcodeinfopage, bundle);
-            }
-        });
-
-        QRListBottomHalf.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
-                leaderboardQRCode qrCode = bottomDataList.get(index);
+                leaderboardQRCode qrCode = dataList.get(index);
                 String docID = documentIDList.get(index);
 
                 // Create a bundle to store data that will be passed to the QR code information fragment
