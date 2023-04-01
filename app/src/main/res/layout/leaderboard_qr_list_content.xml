@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:paddingStart="8dp"
+    android:orientation="horizontal"
+    android:padding="2dp"
+    tools:ignore="RtlSymmetry">
 
     <ImageView
         android:id="@+id/leaderboard_qr_code_image"
@@ -56,7 +59,7 @@
             android:id="@+id/leaderboard_qr_code_position"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_qr_library_date"
+            android:background="@drawable/leaderboard_date_background"
             android:padding="5dp"
             android:text="@string/qr_code_name"
             android:theme="@style/Theme.QRQuest"
@@ -76,7 +79,7 @@
             android:id="@+id/leaderboard_qr_code_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_qr_library_date"
+            android:background="@drawable/leaderboard_date_background"
             android:padding="5dp"
             android:text="@string/qr_code_name"
             android:theme="@style/Theme.QRQuest"
