@@ -40,40 +40,43 @@ public class leaderboardFragment extends Fragment {
     private ArrayList<String> documentIDList; // List of documents
     FirebaseFirestore db; // Firebase Firestore database instance
 
-
+    /**
+     * This method creates the fragment view and initializes firebase collections and adapters.
+     *
+     * @param inflater LayoutInflater object used to inflate the layout.
+     * @param container ViewGroup object that contains the fragment.
+     * @param savedInstanceState Bundle object containing saved state information.
+     * @return The View object that is created.
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
+        // Inflate the fragment layout and get the root View object.
         binding = FragmentLeaderboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // Connect to firebase instance and get collection references for database querying
+        // Connect to Firebase instance and get collection references for database querying.
         db = FirebaseFirestore.getInstance();
         final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
-
         final CollectionReference usersCollectionReference = db.collection("users");
 
-        // Set adapter for QR code listview to update based on firebase data
-
-        // this is only the top half for now, need to change it later
+        // Set adapter for QR code listview to update based on firebase data.
         ListView QRListTopHalf = binding.leaderboardQrCodesListTopHalf;
         ListView QRListBottomHalf = binding.leaderboardQrCodesListBottomHalf;
-
         ArrayList<leaderboardQRCode> tempDataList = new ArrayList<>();
         topDataList = new ArrayList<>();
         bottomDataList = new ArrayList<>();
-
         leaderboardQRCodeAdapter topQRAdapter = new leaderboardQRCodeAdapter(getActivity(), topDataList);
         leaderboardQRCodeAdapter bottomQRAdapter = new leaderboardQRCodeAdapter(getActivity(), bottomDataList);
-
         QRListTopHalf.setAdapter(topQRAdapter);
         QRListBottomHalf.setAdapter(bottomQRAdapter);
-
         documentIDList = new ArrayList<>();
+
+        // Get current user ID and name.
         String CurrentUserID = UserProfile.getUserId();
         String CurrentUserName = UserProfile.getName();
 
-        // loop through all users and get their highest scoring QR code
+        // Loop through all users fill the listviews with the correct values
         usersCollectionReference.get().addOnCompleteListener(new OnCompleteListener<>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
