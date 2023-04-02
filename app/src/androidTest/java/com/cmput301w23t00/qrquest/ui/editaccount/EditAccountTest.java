@@ -44,7 +44,7 @@ public class EditAccountTest {
     public void setUp() {
         ActivityScenario<EditAccount> activityScenario = ActivityScenario.launch(EditAccount.class);
         Intents.init();
-        UserProfile userProfile = new UserProfile(true);
+        UserProfile userProfile = new UserProfile(false);
     }
 
     @Test
