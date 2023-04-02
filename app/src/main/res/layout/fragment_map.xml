@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
     <com.cmput301w23t00.qrquest.ui.map.CustomMapView
         android:id="@+id/mapview"
         android:layout_width="match_parent"
@@ -16,11 +15,9 @@
 
     </com.cmput301w23t00.qrquest.ui.map.CustomMapView>
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <com.arlib.floatingsearchview.FloatingSearchView
             android:id="@+id/floating_search_view"
             android:layout_width="match_parent"
@@ -33,6 +30,40 @@
             app:floatingSearch_searchHint="Search..."
             app:floatingSearch_showSearchKey="false"
             app:floatingSearch_suggestionsListAnimDuration="250" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_marginTop="70dp"
+            android:layout_marginStart="10dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/floating_search_view"
+            tools:ignore="MissingConstraints,RtlSymmetry" >
+            <FrameLayout
+                android:id="@+id/circle_button_frame"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/round_button_black_stroke"
+                tools:ignore="MissingConstraints,UselessParent">
+
+                <Button
+                    android:id="@+id/circle_button"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="" />
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="35dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/crown"
+                    app:srcCompat="@drawable/crown" />
+
+            </FrameLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 
     <RelativeLayout
