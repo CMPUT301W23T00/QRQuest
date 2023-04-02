@@ -71,7 +71,6 @@ public class LibraryFragment extends Fragment {
         documentIDList = new ArrayList<>();
         QRAdapter = new LibraryQRCodeAdapter(getActivity(), dataList);
         QRList.setAdapter(QRAdapter);
-        documentIDList = new ArrayList<>();
         String userID = UserProfile.getUserId();
         // Find all QR codes scanned by current user with unique identifier ID
         usersQRCodesCollectionReference.whereEqualTo("identifierId", userID)
