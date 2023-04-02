@@ -11,20 +11,35 @@
     <FrameLayout
         android:id="@+id/comment_user_picture_container"
         android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_weight="0.3">
+        android:layout_height="60dp">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/comment_user_picture"
+        <androidx.cardview.widget.CardView
             android:layout_width="45dp"
             android:layout_height="45dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            app:cardCornerRadius="250dp"
             android:layout_gravity="center"
-            android:alpha="1"
-            android:background="@drawable/default_avatar"
-            android:scaleType="centerCrop"
-            android:layout_margin="4dp"
-            android:elevation="0dp"
-            android:src="@drawable/mask_profile_image" />
+            app:cardBackgroundColor="@color/white">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                app:cardCornerRadius="250dp"
+                android:layout_gravity="center">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/comment_user_picture"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center"
+                    android:alpha="1"
+                    android:scaleType="centerCrop"
+                    android:layout_margin="4dp"
+                    android:elevation="0dp"
+                    android:src="@drawable/default_avatar" />
+            </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/comment_ring"
@@ -36,12 +51,11 @@
             android:layout_margin="0dp"
             android:elevation="0dp"
             android:src="@drawable/ring" />
-
     </FrameLayout>
 
 
     <LinearLayout
-        android:layout_width="344dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
