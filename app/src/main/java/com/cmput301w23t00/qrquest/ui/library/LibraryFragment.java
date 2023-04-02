@@ -125,10 +125,16 @@ public class LibraryFragment extends Fragment {
         viewQrStats.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LibraryQRCode highestQRCode = dataList.get(highestIndex);
-                LibraryQRCode lowestQRCode = dataList.get(lowestIndex);
-                String highestDocID = documentIDList.get(highestIndex);
-                String lowestDocID = documentIDList.get(lowestIndex);
+                LibraryQRCode highestQRCode = null;
+                LibraryQRCode lowestQRCode = null;
+                String highestDocID = null;
+                String lowestDocID = null;
+                if (dataList.size() > 0) {
+                    highestQRCode = dataList.get(highestIndex);
+                    lowestQRCode = dataList.get(lowestIndex);
+                    highestDocID = documentIDList.get(highestIndex);
+                    lowestDocID = documentIDList.get(lowestIndex);
+                }
                 // Create a bundle and store data that will be passed to the QR code summary statistics fragment
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("highestQRCode", highestQRCode);
