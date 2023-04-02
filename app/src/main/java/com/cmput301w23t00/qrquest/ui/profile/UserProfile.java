@@ -33,12 +33,14 @@ public class UserProfile {
 
     public UserProfile(Boolean test) {
         userId = null;
-        aboutMe = null;
-        phoneNumber = null;
-        email = null;
-        name = null;
-        firstInstantiation = true;
-        created = false;
+        if (!test) {
+            aboutMe = null;
+            phoneNumber = null;
+            email = null;
+            name = null;
+            firstInstantiation = true;
+            created = false;
+        }
     }
     /**
      * UserProfile constructor, on firstInstantiation of the class the user information is
