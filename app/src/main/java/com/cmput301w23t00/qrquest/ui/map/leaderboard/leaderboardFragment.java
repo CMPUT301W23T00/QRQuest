@@ -125,7 +125,6 @@ public class leaderboardFragment extends Fragment {
                     }
                 }
             }
-
         });
 
         QRList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
