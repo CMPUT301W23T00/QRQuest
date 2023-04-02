@@ -57,7 +57,7 @@ import java.util.regex.Pattern;
  * This is a class which defines the map page.
  */
 public class MapFragment extends Fragment {
-    MapView map;
+    CustomMapView map;
     MyLocationNewOverlay myLocationNewOverlay;
     FirebaseFirestore db; // Firebase Firestore database instance
     Boolean markerIsClicked = false;
@@ -73,12 +73,11 @@ public class MapFragment extends Fragment {
      */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        //View v = inflater.inflate(R.layout.fragment_map, null);
+        binding = FragmentMapBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
 
         // Connect to firebase instance and get collection references for database querying
         db = FirebaseFirestore.getInstance();
-        binding = FragmentMapBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
         final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
 
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -92,6 +91,22 @@ public class MapFragment extends Fragment {
             this.myLocationNewOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getActivity()), map);
             this.myLocationNewOverlay.enableFollowLocation();
             this.myLocationNewOverlay.enableMyLocation();
+            myLocationNewOverlay.runOnFirstFix(new Runnable() {
+                @Override
+                public void run() {
+                    final GeoPoint myLocation = myLocationNewOverlay.getMyLocation();
+                    if (myLocation != null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                map.getController().setZoom(19.0);
+                                map.getController().setCenter(myLocation);
+                                root.findViewById(R.id.loading_panel).setVisibility(View.INVISIBLE);
+                            }
+                        });
+                    };
+                }
+            });
 
             map.getOverlays().add(this.myLocationNewOverlay);
             map.setMultiTouchControls(true);
@@ -272,7 +287,6 @@ public class MapFragment extends Fragment {
                 public void onSearchAction(String currentQuery) {
                 }
             });
-            renderLocation();
         }
 
         Button leaderboardButton = binding.circleButton;
@@ -284,16 +298,6 @@ public class MapFragment extends Fragment {
         });
 
         return root;
-    }
-
-    /**
-     * This function when called centers the map on the users geolocation
-     */
-    private void renderLocation() {
-        GeoPoint myLocation = this.myLocationNewOverlay.getMyLocation();
-        map.getController().setCenter(myLocation);
-        map.getController().setZoom(19.0);
-        map.getController().animateTo(myLocation);
     }
 
     /**
