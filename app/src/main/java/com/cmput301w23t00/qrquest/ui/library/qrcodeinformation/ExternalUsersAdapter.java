@@ -34,7 +34,6 @@ public class ExternalUsersAdapter extends ArrayAdapter<ExternalUserProfile> {
         }
 
         ExternalUserProfile externalUser = getItem(position);
-        ShapeableImageView profilePicture = view.findViewById(R.id.externaluser_list_profile_picture);
         TextView userName = view.findViewById(R.id.externaluser_list_name);
         TextView userAboutMe = view.findViewById(R.id.externaluser_list_aboutme);
 
