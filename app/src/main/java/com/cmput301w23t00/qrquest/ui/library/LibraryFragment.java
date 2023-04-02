@@ -25,6 +25,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 /**
@@ -104,6 +106,9 @@ public class LibraryFragment extends Fragment {
                                 // Update view to include newly added QR codes
                                 QRAdapter.notifyDataSetChanged();
                             }
+                            dataList.sort(Comparator.comparing(LibraryQRCode::getDate));
+                            Collections.reverse(dataList);
+                            QRAdapter.notifyDataSetChanged();
                         }
                         if (lowestScore == -1) {
                             lowestScore = 0;

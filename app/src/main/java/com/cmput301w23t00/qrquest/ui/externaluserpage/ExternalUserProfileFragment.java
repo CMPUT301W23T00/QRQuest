@@ -1,27 +1,29 @@
-package com.cmput301w23t00.qrquest.ui.profile;
-
-import androidx.navigation.fragment.NavHostFragment;
+package com.cmput301w23t00.qrquest.ui.externaluserpage;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
+import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCodeAdapter;
+import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -33,13 +35,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.stream.Collectors;
 
-/**
- * This class models the fragment used to display the user profile
- */
-public class ProfileFragment extends Fragment {
-
+public class ExternalUserProfileFragment extends Fragment {
     private TextView name;
     private TextView aboutMe;
     private TextView phoneNumber;
@@ -51,17 +48,9 @@ public class ProfileFragment extends Fragment {
     private ArrayAdapter<LibraryQRCode> QRAdapter;
     private ArrayList<LibraryQRCode> dataList;
 
-    /**
-     * onCreateView inflates the view, showing a user's collection of recent QR codes as well as
-     * their profile information
-     * @param inflater the LayoutInflater object that can be used to inflate any views in the fragment
-     * @param container the parent view that the fragment's UI should be attached to
-     * @param savedInstanceState the previously saved instance state
-     * @return the view for the fragment's UI
-     */
-    @SuppressLint("DefaultLocale")
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
 
@@ -74,7 +63,8 @@ public class ProfileFragment extends Fragment {
         lowestScoreText = (TextView) root.findViewById(R.id.profile_lowest_score_count);
         QRlist = (ListView) root.findViewById(R.id.recent_list);
 
-        UserProfile userProfile = new UserProfile();
+        Bundle bundle = getArguments();
+        ExternalUserProfile userProfile = bundle.getParcelable("selectedUser");
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
@@ -84,14 +74,14 @@ public class ProfileFragment extends Fragment {
         final long[] totalScanned = {0};
         final long[] lowestScore = {-1};
 
-
         dataList = new ArrayList<>();
-        String userID = /*"com.google.android.gms.tasks.zzw@9bae679"*/ UserProfile.getUserId();
+        String userID = userProfile.getUserId();
         QRAdapter = new LibraryQRCodeAdapter(getActivity(), dataList);
         QRlist.setAdapter(QRAdapter);
 
         usersQRCodesCollectionReference.whereEqualTo("identifierId", userID)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @SuppressLint("DefaultLocale")
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
@@ -117,52 +107,29 @@ public class ProfileFragment extends Fragment {
                             else lowestScoreText.setText(String.format("%d", (int) lowestScore[0]));
                             dataList.sort(Comparator.comparing(LibraryQRCode::getDate));
                             Collections.reverse(dataList);
-                            while (dataList.size() > 5) dataList.remove(dataList.size() - 1);
                             QRlist.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, dataList.size()*150 + 200));
                             QRAdapter.notifyDataSetChanged();
                         }
                     }
                 });
 
-        name.setText(UserProfile.getName());
-        aboutMe.setText(UserProfile.getAboutMe());
-        phoneNumber.setText(String.format("Phone: %s", UserProfile.getPhoneNumber()));
-        email.setText(String.format("Email: %s", UserProfile.getEmail()));
+        name.setText(userProfile.getName());
+        aboutMe.setText(userProfile.getAboutMe());
+        phoneNumber.setText(String.format("Phone: %s", userProfile.getPhoneNumber()));
+        email.setText(String.format("Email: %s", userProfile.getEmail()));
 
-        setHasOptionsMenu(true);
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                restoreActionBar();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);
 
         return root;
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.profile_settings_menu, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.settings_button) {
-            NavHostFragment.findNavController(this).navigate(R.id.action_navigation_profile_to_navigation_settings);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * onPause is called when the view is temporarily left by the user
-     */
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    /**
-     * onDestroyView is called when the view is destroyed.
-     * It cleans up any references to the binding to prevent memory leaks.
-     */
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    private void restoreActionBar() {
+        NavHostFragment.findNavController(this).navigate(R.id.action_navigation_externaluserprofile_to_externalusersfragment);
     }
 }

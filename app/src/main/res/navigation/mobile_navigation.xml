@@ -112,6 +112,9 @@
             app:popUpTo="@+id/mobile_navigation"
             app:popUpToInclusive="true"/>
 
+        <action
+            android:id="@+id/action_qrCodeInformationFragment_to_externalusersfragment"
+            app:destination="@+id/navigation_externalusers"/>
 
         <action
             android:id="@+id/qrCodeInformationFragment_to_action_leaderboard"
@@ -132,6 +135,36 @@
         <action
             android:id="@+id/leaderboard_to_action_qrcodeinfopage"
             app:destination="@id/qrCodeInformationFragment" />
+
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_externalusers"
+        android:name="com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.ExternalUsersFragment"
+        android:label="@string/external_users"
+        tools:layout="@layout/fragment_externalusers">
+
+        <action
+            android:id="@+id/action_navigation_externalusersfragment_to_qrCodeInformationFragment"
+            app:destination="@+id/qrCodeInformationFragment"
+            app:popUpTo="@id/qrCodeInformationFragment"/>
+
+        <action
+            android:id="@+id/action_navigation_externalusersfragment_to_externaluserprofile"
+            app:destination="@+id/externaluser_profile"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/externaluser_profile"
+        android:name="com.cmput301w23t00.qrquest.ui.externaluserpage.ExternalUserProfileFragment"
+        android:label="@string/external_user_screen_name"
+        tools:layout="@layout/fragment_profile">
+
+        <action
+            android:id="@+id/action_navigation_externaluserprofile_to_externalusersfragment"
+            app:destination="@+id/navigation_externalusers"/>
 
     </fragment>
 

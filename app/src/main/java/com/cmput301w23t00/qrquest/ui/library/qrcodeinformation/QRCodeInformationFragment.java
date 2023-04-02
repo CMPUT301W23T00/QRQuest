@@ -39,6 +39,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
  */
 public class QRCodeInformationFragment extends Fragment {
 
+    private LibraryQRCode qrCode;
     private FragmentQrcodeinformationBinding binding; // view binding object for the fragment
     String userID; // a string to hold the current user's ID
     String docID; // the qr code document id
@@ -46,7 +47,11 @@ public class QRCodeInformationFragment extends Fragment {
     Boolean isLeaderboard;
     FirebaseFirestore db; // Firestore database instance
     LibraryQRCode libraryQRCode;
+
     leaderboardUser _leaderboardUser;
+
+    Bundle bundle;
+
 
     /**
      * onCreateView is called when the view is first created.
@@ -74,10 +79,12 @@ public class QRCodeInformationFragment extends Fragment {
         // Retrieve data passed in from the previous fragment
         Bundle bundle = getArguments();
         if (bundle != null) {
-            LibraryQRCode qrCode = bundle.getParcelable("selectedQRCode");
+            this.bundle = bundle;
+            qrCode = bundle.getParcelable("selectedQRCode");
             userID = bundle.getString("userID");
             docID = bundle.getString("documentID");
             isMap = bundle.getBoolean("isMap");
+            isLeaderboard = bundle.getBoolean("isLeaderboard");
             if (qrCode != null) {
                 // Update the ViewModel with the information of the selected QR code
                 libraryQRCode = qrCode;
@@ -112,6 +119,14 @@ public class QRCodeInformationFragment extends Fragment {
      */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            this.bundle = savedInstanceState;
+            qrCode = bundle.getParcelable("selectedQRCode");
+            userID = bundle.getString("userID");
+            docID = bundle.getString("documentID");
+            isMap = bundle.getBoolean("isMap");
+            isLeaderboard = bundle.getBoolean("isLeaderboard");
+        }
         // Creates this fragment's menu.
         setHasOptionsMenu(true);
 
@@ -155,25 +170,24 @@ public class QRCodeInformationFragment extends Fragment {
             bundle.putString("userID", userID);
             bundle.putString("documentID", docID);
             bundle.putBoolean("isMap", isMap);
+            bundle.putBoolean("isLeaderboard", isLeaderboard);
 
             // Start a new activity to see comments on this QR code
             NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_commentFragment, bundle);
             return true;
         }
 //
-//        if (id == R.id.qr_same_code) {
-//            // Start a new activity to see other players with the same QR code
-//            Intent intent1 = new Intent(this,MyActivity.class);
-//            this.startActivity(intent1);
-//            return true;
-//        }
+        if (id == R.id.qr_same_code) {
+            NavHostFragment.findNavController(this).navigate(R.id.action_qrCodeInformationFragment_to_externalusersfragment, this.bundle);
+            return true;
+        }
 
         // Back arrow
         if (id == android.R.id.home) {
             // Navigate back to the previous fragment
             if (isMap) {
                 NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_mapFragment);
-            } if (isLeaderboard) {
+            } else if (isLeaderboard) {
                 NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_leaderboard);
             } else {
                 NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_libraryFragment);
@@ -241,6 +255,15 @@ public class QRCodeInformationFragment extends Fragment {
         return true;
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("selectedQRCode", qrCode);
+        outState.putString("userID", userID);
+        outState.putString("documentID", docID);
+        outState.putBoolean("isMap", false);
+    }
+
     /**
      * onDestroyView is called when the view is destroyed.
      * It cleans up any references to the binding to prevent memory leaks.
@@ -249,7 +272,7 @@ public class QRCodeInformationFragment extends Fragment {
     public void onDestroyView() {
 
         super.onDestroyView();
-        binding = null;
+        onSaveInstanceState(new Bundle());
     }
 
     @Override

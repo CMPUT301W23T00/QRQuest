@@ -143,6 +143,7 @@ public class MapFragment extends Fragment {
                                                     bundle.putString("userID", identifierId);
                                                     bundle.putString("documentID", document.getId());
                                                     bundle.putBoolean("isMap", true);
+                                                    bundle.putBoolean("isLeaderboard", false);
 
                                                     // Use the Navigation component to navigate to the QR code information fragment,
                                                     // and pass the bundle as an argument to the destination fragment

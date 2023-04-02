@@ -11,32 +11,23 @@
     tools:layout_editor_absoluteY="76dp"
     android:id="@+id/edit_account_parent">
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/editProfileImage"
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:layout_marginTop="50dp"
         android:layout_marginBottom="50dp"
+        android:padding="3dp"
         android:src="@drawable/grug"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/editNameField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:id="@+id/editProfileImageMask"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_alignStart="@+id/editProfileImage"
-        android:layout_alignTop="@+id/editProfileImage"
-        android:layout_margin="00dp"
-        android:background="@drawable/mask_profile_image"
-        app:layout_constraintBottom_toBottomOf="@+id/editProfileImage"
-        app:layout_constraintEnd_toEndOf="@+id/editProfileImage"
-        app:layout_constraintStart_toStartOf="@+id/editProfileImage"
-        app:layout_constraintTop_toTopOf="@+id/editProfileImage"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/Circular"
+        app:strokeWidth="1dp"
+        app:strokeColor="?attr/colorOnPrimary"/>
 
     <TextView
         android:id="@+id/editNameText"
@@ -87,6 +78,7 @@
         android:layout_marginEnd="21dp"
         android:autofillHints=""
         android:background="@drawable/text_input"
+        android:maxLength="250"
         android:ems="10"
         android:hint="@string/exampleName"
         android:inputType="textMultiLine"
