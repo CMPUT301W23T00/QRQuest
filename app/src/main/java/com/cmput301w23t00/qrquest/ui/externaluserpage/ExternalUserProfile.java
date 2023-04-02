@@ -31,6 +31,14 @@ public class ExternalUserProfile implements Parcelable {
         email = "bob@bob.bob";
         userId = "1010110";
     }
+    public ExternalUserProfile(String name, String aboutMe, String userId, String phoneNumber, String email) {
+        this.name = name;
+        this.aboutMe = aboutMe;
+        this.userId = userId;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }
+
     public ExternalUserProfile(String userId) {
         this.userId = userId;
         FirebaseFirestore.getInstance().collection("users").whereEqualTo("identifierId", userId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
