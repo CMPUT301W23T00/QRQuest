@@ -26,6 +26,8 @@ import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.externaluserpage.ExternalUserProfile;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -37,7 +39,7 @@ public class ExternalUsersFragment extends Fragment {
     //Used for returning to previous page
     Bundle bundle;
     String docID;
-    LibraryQRCode libraryQRCode;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
     @Nullable
@@ -98,6 +100,13 @@ public class ExternalUsersFragment extends Fragment {
             restoreActionBar();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void getUsers() {
+        CollectionReference databaseUsers = db.collection("users");
+        CollectionReference databaseCodes = db.collection("usersQRcodes");
+
+
     }
 
     private void restoreActionBar() {

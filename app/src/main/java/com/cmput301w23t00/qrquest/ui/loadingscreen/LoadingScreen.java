@@ -43,6 +43,10 @@ public class LoadingScreen extends AppCompatActivity {
             fid[0] = UUID.randomUUID().toString();
             UserProfile.setUserId(fid[0]);
         }
+        else if (profile.getString("userId", "").equals("")) {
+            fid[0] = UUID.randomUUID().toString();
+            UserProfile.setUserId(fid[0]);
+        }
         else {
             fid[0] = profile.getString("userId", "");
             UserProfile.setCreated(true);
