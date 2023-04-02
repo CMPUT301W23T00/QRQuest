@@ -51,6 +51,26 @@ public class ExternalUserProfile implements Parcelable {
         });
     }
 
+    protected ExternalUserProfile(Parcel in) {
+        name = in.readString();
+        aboutMe = in.readString();
+        userId = in.readString();
+        phoneNumber = in.readString();
+        email = in.readString();
+    }
+
+    public static final Creator<ExternalUserProfile> CREATOR = new Creator<ExternalUserProfile>() {
+        @Override
+        public ExternalUserProfile createFromParcel(Parcel in) {
+            return new ExternalUserProfile(in);
+        }
+
+        @Override
+        public ExternalUserProfile[] newArray(int size) {
+            return new ExternalUserProfile[size];
+        }
+    };
+
     public String getName() {
         return name;
     }
@@ -78,6 +98,10 @@ public class ExternalUserProfile implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel parcel, int i) {
-
+        parcel.writeString(name);
+        parcel.writeString(aboutMe);
+        parcel.writeString(userId);
+        parcel.writeString(phoneNumber);
+        parcel.writeString(email);
     }
 }
