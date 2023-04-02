@@ -84,6 +84,7 @@ public class QRCodeInformationFragment extends Fragment {
             userID = bundle.getString("userID");
             docID = bundle.getString("documentID");
             isMap = bundle.getBoolean("isMap");
+            isLeaderboard = bundle.getBoolean("isLeaderboard");
             if (qrCode != null) {
                 // Update the ViewModel with the information of the selected QR code
                 libraryQRCode = qrCode;
@@ -124,6 +125,7 @@ public class QRCodeInformationFragment extends Fragment {
             userID = bundle.getString("userID");
             docID = bundle.getString("documentID");
             isMap = bundle.getBoolean("isMap");
+            isLeaderboard = bundle.getBoolean("isLeaderboard");
         }
         // Creates this fragment's menu.
         setHasOptionsMenu(true);
@@ -168,6 +170,7 @@ public class QRCodeInformationFragment extends Fragment {
             bundle.putString("userID", userID);
             bundle.putString("documentID", docID);
             bundle.putBoolean("isMap", isMap);
+            bundle.putBoolean("isLeaderboard", isLeaderboard);
 
             // Start a new activity to see comments on this QR code
             NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_commentFragment, bundle);
@@ -184,7 +187,7 @@ public class QRCodeInformationFragment extends Fragment {
             // Navigate back to the previous fragment
             if (isMap) {
                 NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_mapFragment);
-            } if (isLeaderboard) {
+            } else if (isLeaderboard) {
                 NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_leaderboard);
             } else {
                 NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_libraryFragment);
