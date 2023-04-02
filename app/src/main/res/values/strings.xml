@@ -42,4 +42,7 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="zero">0</string>
     <string name="crown">Crown</string>
+    <string name="comments">Comments</string>
+    <string name="comments_user">Username</string>
+    <string name="comments_text">No Comment Added Yet</string>
 </resources>
