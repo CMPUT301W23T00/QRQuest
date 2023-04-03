@@ -11,13 +11,11 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentLeaderboardBinding;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
-import com.cmput301w23t00.qrquest.ui.externaluserpage.ExternalUserProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -58,10 +56,10 @@ public class leaderboardFragment extends Fragment {
         final CollectionReference usersCollectionReference = db.collection("users");
 
         // Set adapter for User listview to update based on firebase data.
-        ListView UserList = binding.leaderboardUsersList;
+        ListView QRList = binding.leaderboardUsersList;
         dataList = new ArrayList<>();
         UserAdapter = new leaderboardUserAdapter(getActivity(), dataList);
-        UserList.setAdapter(UserAdapter);
+        QRList.setAdapter(UserAdapter);
         documentIDList = new ArrayList<>();
 
         // Loop through all users fill the listviews with the correct values
@@ -129,26 +127,17 @@ public class leaderboardFragment extends Fragment {
             }
         });
 
-        UserList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        QRList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
                 leaderboardUser user = dataList.get(index);
 
-                String userId = user.getUserId();
-                System.out.println(userId);
-
-                ExternalUserProfile userProfile = new ExternalUserProfile(userId);
-
-                System.out.println(userProfile.getEmail());
-                System.out.println(userProfile.getPhoneNumber());
-                System.out.println(userProfile.getName());
-
                 // Create a bundle to store data that will be passed to the other user profile fragment
                 Bundle bundle = new Bundle();
 
-                bundle.putParcelable("selectedUser", userProfile);
 
-                Navigation.findNavController(view).navigate(R.id.leaderboard_to_action_externaluserprofilefragment, bundle);
+                // we are going to change this when profile is implemented
+                //Navigation.findNavController(view).navigate(R.id.leaderboard_to_action_qrcodeinfopage, bundle);
             }
         });
 
