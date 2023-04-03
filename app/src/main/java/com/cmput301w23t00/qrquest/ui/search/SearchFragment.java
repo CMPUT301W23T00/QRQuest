@@ -26,6 +26,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
@@ -93,7 +94,7 @@ public class SearchFragment extends Fragment {
                 Log.println(Log.INFO,"searched", s);
                 filteredUsers.clear();
                 ArrayList<ExternalUserProfile> tempArray = allUsers.stream().filter((data) ->
-                        data.getName().toLowerCase().contains(s.toLowerCase()))
+                        data.getName().toLowerCase(Locale.CANADA).contains(s.toLowerCase(Locale.CANADA)))
                         .sorted(Comparator.comparing(ExternalUserProfile::getName))
                         .sorted(Comparator.comparingInt(a -> a.getName().length()))
                         .collect(Collectors.toCollection(ArrayList::new));
