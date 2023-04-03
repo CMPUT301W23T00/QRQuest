@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -49,7 +50,7 @@ public class ExternalUserProfileFragment extends Fragment {
     private TextView highestScoreText;
     private TextView lowestScoreText;
     private ListView QRlist;
-    private ShapeableImageView profileImage;
+    private ImageView profileImage;
     private ArrayAdapter<LibraryQRCode> QRAdapter;
     private ArrayList<LibraryQRCode> dataList;
     private Bundle bundle;
@@ -71,7 +72,7 @@ public class ExternalUserProfileFragment extends Fragment {
         highestScoreText = (TextView) root.findViewById(R.id.profile_highest_score_count);
         lowestScoreText = (TextView) root.findViewById(R.id.profile_lowest_score_count);
         QRlist = (ListView) root.findViewById(R.id.recent_list);
-        profileImage = (ShapeableImageView) root.findViewById(R.id.imageView);
+        profileImage = (ImageView) root.findViewById(R.id.profile_icon);
 
         if (getArguments() == null) this.bundle = ViewCycleStack.pop();
         else this.bundle = getArguments();

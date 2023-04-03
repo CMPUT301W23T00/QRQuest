@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCodeAdapter;
 import com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.ViewCycleStack;
+import com.cmput301w23t00.qrquest.ui.updateavatar.AvatarUtility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -130,6 +132,11 @@ public class ProfileFragment extends Fragment {
         aboutMe.setText(UserProfile.getAboutMe());
         phoneNumber.setText(String.format("Phone: %s", UserProfile.getPhoneNumber()));
         email.setText(String.format("Email: %s", UserProfile.getEmail()));
+
+        ImageView imageView = root.findViewById(R.id.profile_icon);
+        String iconId = (UserProfile.getAvatarId() == null) ? "0" :  UserProfile.getAvatarId();
+        imageView.setImageResource(AvatarUtility.getAvatarImageResource(Integer.parseInt(iconId)));
+
 
         setHasOptionsMenu(true);
 
