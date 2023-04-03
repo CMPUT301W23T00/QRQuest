@@ -123,7 +123,7 @@ public class CommentFragment extends Fragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                NavHostFragment.findNavController(CommentFragment.this).navigate(R.id.commentFragment_to_action_qrCodeInformationFragment, qrCodeInformationBundle);
+                NavHostFragment.findNavController(CommentFragment.this).navigate(R.id.commentFragment_to_action_qrCodeInformationFragment);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
@@ -159,7 +159,7 @@ public class CommentFragment extends Fragment {
         // Back arrow
         if (item.getItemId() == android.R.id.home) {
             // Navigate back to the previous fragment
-            NavHostFragment.findNavController(CommentFragment.this).navigate(R.id.commentFragment_to_action_qrCodeInformationFragment, qrCodeInformationBundle);
+            NavHostFragment.findNavController(CommentFragment.this).navigate(R.id.commentFragment_to_action_qrCodeInformationFragment);
             return true;
         }
 
