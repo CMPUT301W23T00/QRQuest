@@ -94,7 +94,6 @@ public class QRCodeInformationFragment extends Fragment {
                 // Update the ViewModel with the information of the selected QR code
                 libraryQRCode = qrCode;
                 QRCodeProcessor qrCodeProcessor = new QRCodeProcessor(qrCode.getData());
-                qrCodeInformationViewModel.setQRCodeInfo(qrCodeProcessor.getName(), "test description");
                 Bitmap Image = qrCodeProcessor.getBitmap(getActivity());
                 ImageView TempImage = root.findViewById(R.id.qr_code_image);
                 TempImage.setImageBitmap(Image);

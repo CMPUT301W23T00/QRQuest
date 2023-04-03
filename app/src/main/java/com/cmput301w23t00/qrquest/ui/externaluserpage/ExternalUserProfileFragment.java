@@ -156,7 +156,7 @@ public class ExternalUserProfileFragment extends Fragment {
                 //bundle.putString("documentID", docID);
                 bundle.putBoolean("isMap", false);
                 bundle.putBoolean("isLeaderboard", false);
-                bundle.putBoolean("isExternalProfile", true);
+                bundle.putBoolean("isExternalUserProfile", true);
                 // Use the Navigation component to navigate to the QR code information fragment,
                 // and pass the bundle as an argument to the destination fragment
                 Navigation.findNavController(view).navigate(R.id.externaluser_profile_to_qrcodeinformation_fragment, bundle);
