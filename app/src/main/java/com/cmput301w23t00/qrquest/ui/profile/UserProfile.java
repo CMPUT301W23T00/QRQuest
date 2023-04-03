@@ -16,6 +16,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Objects;
+
 /**
  * UserProfile class is used to temporarily store user information for the
  * duration of the app to reduce server accesses and act as an
@@ -60,7 +62,7 @@ public class UserProfile {
                         email = task.getResult().getDocuments().get(0).getString("email");
                         name = task.getResult().getDocuments().get(0).getString("name");
                         avatarId = task.getResult().getDocuments().get(0).getString("avatarId");
-                        if (avatarId == "") {
+                        if (Objects.equals(avatarId, "")) {
                             avatarId = "0";
                         }
                         firstInstantiation = false;
