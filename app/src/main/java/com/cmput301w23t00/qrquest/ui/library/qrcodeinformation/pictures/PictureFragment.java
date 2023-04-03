@@ -1,12 +1,18 @@
 package com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Picture;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -14,15 +20,22 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentCommentsBinding;
+import com.cmput301w23t00.qrquest.databinding.FragmentPicturesBinding;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
 import com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures.PictureAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * The class  QR code information fragment extends fragment
@@ -31,16 +44,17 @@ import java.util.ArrayList;
  */
 public class PictureFragment extends Fragment {
 
-    private FragmentCommentsBinding binding; // view binding object for the fragment
+    private @NonNull FragmentPicturesBinding binding; // view binding object for the fragment
     String userID; // a string to hold the current user's ID
     String docID; // the qr code document id
-    Boolean isMap; // determines which page to return to
-    FirebaseFirestore db; // Firestore database instance
     LibraryQRCode libraryQRCode;
     Bundle qrCodeInformationBundle;
 
-
     String User;
+    int Profile;
+    Uri Picture;
+    private static final String TAG = "PictureFragment";
+
 
     /**
      * onCreateView is called when the view is first created.
@@ -57,46 +71,55 @@ public class PictureFragment extends Fragment {
 
         qrCodeInformationBundle = getArguments();
         LibraryQRCode qrCodeData = qrCodeInformationBundle.getParcelable("selectedQRCode");
-        System.out.println("Ran Comment Fragment");
+        System.out.println("Ran Picture Fragment");
 
         // Inflate the fragment_qrcodeinformation.xml layout for this fragment.
 
-        binding = FragmentCommentsBinding.inflate(inflater, container, false);
+        binding = FragmentPicturesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         ArrayList<com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures.PictureData> list = new ArrayList<com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures.PictureData>();
         PictureAdapter NewAdapter = new PictureAdapter(getContext(),list);
-        binding.commentList.setAdapter(NewAdapter);
+        binding.picturesList.setAdapter(NewAdapter);
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference imageRef = storage.getReference().child("images");
+
+        String suffix = qrCodeData.getData();
+
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("usersQRCodes").whereEqualTo("qrCodeData", qrCodeData.getData()).whereNotEqualTo("comment","").get().addOnCompleteListener(new OnCompleteListener<>() {
+        db.collection("usersQRCodes").whereEqualTo("qrCodeData", suffix).get().addOnCompleteListener(new OnCompleteListener<>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    System.out.println("Task1");
                     for (QueryDocumentSnapshot doc1 : task.getResult()) {
                         System.out.println("Ran Task 1");
                         String ID = doc1.getString("identifierId");
 
                         db.collection("users").whereEqualTo("identifierId", ID).get().addOnCompleteListener(task2 -> {
-                            User = "Anonymous User";
-                            String Comment = doc1.getString("comment");
-                            @SuppressLint("UseCompatLoadingForDrawables") Drawable Profile = getResources().getDrawable(R.drawable.default_avatar);
+                            if (task2.isSuccessful()){
+                                User = doc1.getString("name");
+                                Profile = Integer.parseInt(doc1.getString("avatarId"));
+                            };
 
-                            if (task2.isSuccessful()) {
-                                for (QueryDocumentSnapshot doc2 : task2.getResult()) {
-                                    User = doc2.getString("name");
-                                    System.out.println(User);
-                                    System.out.println("Ran Task 2: " + User);
-                                    // Waiting for someone to actually store PFP's for this part...
-                                    break;
+                            imageRef.child(ID + '-' + suffix).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    Picture = uri;
+
                                 }
-                            }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    Log.e(TAG, "onFailure: Feed image failed to load", exception);
+                                }
+                            });
 
-                            System.out.println("Final User: " + User);
-                            System.out.println("Final Comment: " + Comment);
-                            com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures.PictureData NewComment = new com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures.PictureData(User,Comment,Profile);
-                            NewAdapter.add(NewComment);
+                            Date DateCreated = qrCodeData.getDate();
+
+                            com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures.PictureData NewPicture = new com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures.PictureData(User,DateCreated,Profile,Picture);
+                            NewAdapter.add(NewPicture);
                             NewAdapter.notifyDataSetChanged();
                         });
                     }
@@ -136,7 +159,7 @@ public class PictureFragment extends Fragment {
         // Back arrow
         if (item.getItemId() == android.R.id.home) {
             // Navigate back to the previous fragment
-            NavHostFragment.findNavController(PictureFragment.this).navigate(R.id.commentFragment_to_action_qrCodeInformationFragment, qrCodeInformationBundle);
+            NavHostFragment.findNavController(PictureFragment.this).navigate(R.id.pictureFragment_to_action_qrCodeInformationFragment, qrCodeInformationBundle);
             return true;
         }
 

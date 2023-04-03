@@ -1,16 +1,18 @@
 package com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
+
+import android.net.Uri;
+
+import java.util.Date;
 
 public class PictureData {
 
     private String mUsername;
-    private String mDate;
-    private Drawable mProfile;
-    private Bitmap mPicture;
+    private Date mDate;
+    private int mProfile;
+    private Uri mPicture;
 
-    PictureData(String User, String Text, Drawable Profile, Bitmap Picture) {
+    PictureData(String User, Date Text, int Profile, Uri Picture) {
         this.mUsername = User;
         this.mDate = Text;
         this.mProfile = Profile;
@@ -21,15 +23,15 @@ public class PictureData {
         return mUsername;
     }
 
-    String getDate() {
+    Date getDate() {
         return mDate;
     }
 
-    Drawable getProfile() {
+    int getProfile() {
         return mProfile;
     }
 
-    Bitmap getPicture() {
+    Uri getPicture() {
         return mPicture;
     }
 }

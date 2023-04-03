@@ -3,6 +3,7 @@ package com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import com.cmput301w23t00.qrquest.R;
+import com.cmput301w23t00.qrquest.ui.updateavatar.AvatarUtility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +44,7 @@ public class PictureAdapter extends ArrayAdapter<com.cmput301w23t00.qrquest.ui.l
 
         // Set the text of the TextView in the layout to the current string in the list
         TextView textView1 = listItemView.findViewById(R.id.picture_date);
-        String currentString = mData.get(position).getDate();
+        String currentString = String.valueOf(mData.get(position).getDate());
         textView1.setText(currentString);
 
         TextView textView2 = listItemView.findViewById(R.id.picture_username);
@@ -50,12 +52,13 @@ public class PictureAdapter extends ArrayAdapter<com.cmput301w23t00.qrquest.ui.l
         textView2.setText(currentString);
 
         AppCompatImageView imageView1 = listItemView.findViewById(R.id.pictures_user_picture);
-        Drawable profileImg = mData.get(position).getProfile();
-        imageView1.setBackgroundDrawable(profileImg);
+        int profileImg = mData.get(position).getProfile();
+        //imageView1.setBackgroundDrawable(profileImg);
+        imageView1.setImageResource(AvatarUtility.getAvatarImageResource(profileImg));
 
         AppCompatImageView imageView2 = listItemView.findViewById(R.id.pictures_location_img);
-        Bitmap FeedImg = mData.get(position).getPicture();
-        imageView2.setImageBitmap(FeedImg);
+        Uri FeedImg = mData.get(position).getPicture();
+        imageView2.setImageURI(FeedImg);
 
         return listItemView;
     }

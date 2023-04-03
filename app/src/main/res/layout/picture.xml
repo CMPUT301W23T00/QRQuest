@@ -8,50 +8,7 @@
     android:orientation="horizontal"
     android:baselineAligned="true">
 
-    <FrameLayout
-        android:id="@+id/pictures_user_picture_container"
-        android:layout_width="60dp"
-        android:layout_height="60dp">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            app:cardCornerRadius="250dp"
-            android:layout_gravity="center"
-            app:cardBackgroundColor="@color/white">
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                app:cardCornerRadius="250dp"
-                android:layout_gravity="center">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/pictures_user_picture"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_gravity="center"
-                    android:alpha="1"
-                    android:scaleType="centerCrop"
-                    android:layout_margin="4dp"
-                    android:elevation="0dp"
-                    android:src="@drawable/default_avatar" />
-            </androidx.cardview.widget.CardView>
-        </androidx.cardview.widget.CardView>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/pictures_ring"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center"
-            android:alpha="1"
-            android:scaleType="centerCrop"
-            android:layout_margin="0dp"
-            android:elevation="0dp"
-            android:src="@drawable/ring" />
-    </FrameLayout>
 
 
     <LinearLayout
@@ -69,26 +26,72 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <FrameLayout
+                android:id="@+id/pictures_user_picture_container"
+                android:layout_width="60dp"
+                android:layout_height="60dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    app:cardCornerRadius="250dp"
+                    android:layout_gravity="center"
+                    app:cardBackgroundColor="@color/white">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        app:cardCornerRadius="250dp"
+                        android:layout_gravity="center">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/pictures_user_picture"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center"
+                            android:alpha="1"
+                            android:scaleType="centerCrop"
+                            android:layout_margin="4dp"
+                            android:elevation="0dp"
+                            android:src="@drawable/default_avatar" />
+                    </androidx.cardview.widget.CardView>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/pictures_ring"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:alpha="1"
+                    android:scaleType="centerCrop"
+                    android:layout_margin="0dp"
+                    android:elevation="0dp"
+                    android:src="@drawable/ring" />
+            </FrameLayout>
+
             <TextView
                 android:id="@+id/picture_username"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:gravity="start|center"
+                android:paddingStart="5dp"
                 android:text="@string/comments_user"
                 android:textColor="@color/black"
-                android:textStyle="bold"
-                android:gravity="start"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/picture_date"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:gravity="end|center"
+                android:paddingEnd="5dp"
                 android:text="@string/about"
                 android:textColor="@color/black"
-                android:textStyle="bold"
-                android:gravity="end"
-                android:paddingEnd="5dp"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
 
