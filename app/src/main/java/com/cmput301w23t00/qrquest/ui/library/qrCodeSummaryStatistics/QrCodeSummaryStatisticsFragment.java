@@ -97,7 +97,7 @@ public class QrCodeSummaryStatisticsFragment extends Fragment {
                 NavHostFragment.findNavController(QrCodeSummaryStatisticsFragment.this).navigate(R.id.action_qrCodeSummaryStatisticsFragment2_to_navigation_qrcode_library2);
             }
         };
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         return root;
     }

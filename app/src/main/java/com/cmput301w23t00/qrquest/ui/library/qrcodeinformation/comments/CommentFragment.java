@@ -126,7 +126,7 @@ public class CommentFragment extends Fragment {
                 NavHostFragment.findNavController(CommentFragment.this).navigate(R.id.commentFragment_to_action_qrCodeInformationFragment);
             }
         };
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         return root;
     }
