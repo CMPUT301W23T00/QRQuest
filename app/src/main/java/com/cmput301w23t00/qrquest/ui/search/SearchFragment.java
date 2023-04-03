@@ -1,33 +1,22 @@
 package com.cmput301w23t00.qrquest.ui.search;
 
-import static android.content.ContentValues.TAG;
-
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import com.arlib.floatingsearchview.FloatingSearchView;
-import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentSearchBinding;
-import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.externaluserpage.ExternalUserProfile;
 import com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.ExternalUsersAdapter;
-import com.cmput301w23t00.qrquest.ui.map.QRCodeSuggestions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -35,15 +24,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.checkerframework.checker.units.qual.A;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -111,12 +93,11 @@ public class SearchFragment extends Fragment {
                 Log.println(Log.INFO,"searched", s);
                 filteredUsers.clear();
                 ArrayList<ExternalUserProfile> tempArray = allUsers.stream().filter((data) ->
-                        data.getName().toLowerCase().contains(s.toLowerCase())).collect(Collectors.toCollection(ArrayList::new));
-                tempArray.sort(Comparator.comparing(ExternalUserProfile::getName));
-                tempArray.sort(Comparator.comparingInt(a -> a.getName().length()));
-                for (ExternalUserProfile profile: tempArray) {
-                    filteredUsers.add(profile);
-                }
+                        data.getName().toLowerCase().contains(s.toLowerCase()))
+                        .sorted(Comparator.comparing(ExternalUserProfile::getName))
+                        .sorted(Comparator.comparingInt(a -> a.getName().length()))
+                        .collect(Collectors.toCollection(ArrayList::new));
+                filteredUsers.addAll(tempArray);
                 usersAdapter.notifyDataSetChanged();
                 return true;
             }
