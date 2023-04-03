@@ -175,6 +175,7 @@
         <action
             android:id="@+id/action_navigation_externaluserprofile_to_externalusersfragment"
             app:destination="@+id/navigation_externalusers"/>
+
         <action
             android:id="@+id/action_externaluser_profile_to_navigation_search"
             app:destination="@id/navigation_search" />
