@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.externaluserpage.ExternalUserProfile;
+import com.cmput301w23t00.qrquest.ui.updateavatar.AvatarUtility;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
@@ -36,7 +38,9 @@ public class ExternalUsersAdapter extends ArrayAdapter<ExternalUserProfile> {
         ExternalUserProfile externalUser = getItem(position);
         TextView userName = view.findViewById(R.id.externaluser_list_name);
         TextView userAboutMe = view.findViewById(R.id.externaluser_list_aboutme);
+        ImageView userImage = view.findViewById(R.id.externaluser_profile_image);
 
+        userImage.setImageResource(AvatarUtility.getAvatarImageResource(Integer.parseInt(externalUser.getAvatarId())));
         userName.setText(externalUser.getName());
         userAboutMe.setText(externalUser.getAboutMe());
         return view;

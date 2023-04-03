@@ -22,7 +22,7 @@ public class ExternalUserProfile implements Parcelable {
     private String userId;
     private String phoneNumber;
     private String email;
-    private String avatarId;
+    private String avatarId = "0";
 
     public ExternalUserProfile() {
         name = "Bob";
