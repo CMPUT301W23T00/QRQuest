@@ -89,32 +89,30 @@ public class PictureFragment extends Fragment {
                         String ID = doc1.getString("identifierId");
                         db.collection("users").whereEqualTo("identifierId", ID).get().addOnCompleteListener(task2 -> {
                             int Profile = 0;
-                            Uri Picture;
                             if (task2.isSuccessful()){
-                                User = doc1.getString("name");
-                                String iconId = (doc1.getString("avatarId") == null) ? "0" :  doc1.getString("avatarId");
+                                String iconId = (task2.getResult().getDocuments().get(0).getString("avatarId") == null) ? "0" :  task2.getResult().getDocuments().get(0).getString("avatarId");
                                 Profile = Integer.parseInt(iconId);
-                            };
 
-                            imageRef.child(ID + '-' + qrCodeData.getData()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    Uri Picture = uri;
-                                    Date DateCreated = qrCodeData.getDate();
+                                int finalProfile = Profile;
+                                imageRef.child(ID + '-' + qrCodeData.getData()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        Date DateCreated = qrCodeData.getDate();
 
-                                    PictureData NewPicture = new com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures.PictureData(User, DateCreated, Profile, Picture);
-                                    NewAdapter.add(NewPicture);
-                                    NewAdapter.notifyDataSetChanged();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception exception) {
-                                    Log.e(TAG, "onFailure: Feed image failed to load", exception);
-                                }
-                            });
+                                        final PictureData NewPicture = new PictureData(task2.getResult().getDocuments().get(0).getString("name"), DateCreated, finalProfile, uri);
+                                        NewAdapter.add(NewPicture);
+                                        NewAdapter.notifyDataSetChanged();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception exception) {
+                                        Log.e(TAG, "onFailure: Feed image failed to load", exception);
+                                    }
+                                });
+                            }
                         });
                     }
-                };
+                }
             }
         });
 

@@ -78,4 +78,23 @@
             android:layout_height="wrap_content"
             android:text="@string/comments_text" />
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.6"
+        android:gravity="end|center_vertical">
+
+        <TextView
+            android:id="@+id/comment_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_qr_library_date"
+            android:padding="5dp"
+            android:text="@string/qr_code_name"
+            android:textColor="@color/white"
+            android:theme="@style/Theme.QRQuest"
+            android:layout_marginEnd="10dp">
+
+        </TextView>
+    </LinearLayout>
 </LinearLayout>
