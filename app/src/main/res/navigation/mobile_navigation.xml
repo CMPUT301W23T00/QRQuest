@@ -55,7 +55,9 @@
         tools:layout="@layout/fragment_search" >
         <action
             android:id="@+id/action_navigation_search_to_externaluser_profile"
-            app:destination="@id/externaluser_profile" />
+            app:destination="@id/externaluser_profile"
+            app:popUpTo="@id/mobile_navigation"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -169,6 +171,9 @@
         <action
             android:id="@+id/action_navigation_externaluserprofile_to_externalusersfragment"
             app:destination="@+id/navigation_externalusers"/>
+        <action
+            android:id="@+id/action_externaluser_profile_to_navigation_search"
+            app:destination="@id/navigation_search" />
 
     </fragment>
 

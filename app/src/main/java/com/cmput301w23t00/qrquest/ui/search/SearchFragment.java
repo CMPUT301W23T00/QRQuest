@@ -111,7 +111,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Bundle bundle = new Bundle();
-
+                bundle.putBoolean("isSearch", true);
                 bundle.putParcelable("selectedUser", filteredUsers.get(i));
                 Navigation.findNavController(view).navigate(R.id.action_navigation_search_to_externaluser_profile, bundle);
             }

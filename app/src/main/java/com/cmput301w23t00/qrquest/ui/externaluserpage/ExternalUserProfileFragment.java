@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -23,6 +24,7 @@ import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCodeAdapter;
+import com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.QRCodeInformationFragment;
 import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -47,6 +49,7 @@ public class ExternalUserProfileFragment extends Fragment {
     private ListView QRlist;
     private ArrayAdapter<LibraryQRCode> QRAdapter;
     private ArrayList<LibraryQRCode> dataList;
+    private Boolean isSearch;
 
     @Nullable
     @Override
@@ -65,6 +68,7 @@ public class ExternalUserProfileFragment extends Fragment {
 
         Bundle bundle = getArguments();
         ExternalUserProfile userProfile = bundle.getParcelable("selectedUser");
+        isSearch = bundle.getBoolean("isSearch");
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
@@ -127,6 +131,28 @@ public class ExternalUserProfileFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);
 
         return root;
+    }
+    /**
+     * onCreate is called to do initial creation of the fragment.
+     * @param savedInstanceState the previously saved instance state
+     */
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        // Creates this fragment's menu.
+        setHasOptionsMenu(true);
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            // Navigate back to the previous fragment
+            if (isSearch) {
+                NavHostFragment.findNavController(ExternalUserProfileFragment.this).navigate(R.id.action_externaluser_profile_to_navigation_search);
+            }
+
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void restoreActionBar() {
