@@ -3,6 +3,7 @@ package com.cmput301w23t00.qrquest.ui.library.qrCodeSummaryStatistics;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -20,6 +21,7 @@ import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentQrCodeSummaryStatisticsBinding;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
+import com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.comments.CommentFragment;
 
 
 import java.util.Locale;
@@ -88,6 +90,14 @@ public class QrCodeSummaryStatisticsFragment extends Fragment {
         sumOfScoresText.setText(String.format(Locale.CANADA,"%d", sumOfScores));
         totalScannedText.setText(String.format(Locale.CANADA,"%d", totalScanned));
         highestUniqueRankText.setText(String.format(Locale.CANADA,"%d", highestUniqueRank));
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                NavHostFragment.findNavController(QrCodeSummaryStatisticsFragment.this).navigate(R.id.action_qrCodeSummaryStatisticsFragment2_to_navigation_qrcode_library2);
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         return root;
     }

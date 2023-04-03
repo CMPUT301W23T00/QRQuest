@@ -19,6 +19,7 @@ import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentLeaderboardBinding;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.externaluserpage.ExternalUserProfile;
+import com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.ViewCycleStack;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -47,6 +48,7 @@ public class leaderboardFragment extends Fragment {
      */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        ViewCycleStack.reset();
 
         // Inflate the fragment layout and get the root View object.
         binding = FragmentLeaderboardBinding.inflate(inflater, container, false);

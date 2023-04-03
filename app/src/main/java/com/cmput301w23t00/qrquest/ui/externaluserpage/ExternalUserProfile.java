@@ -16,6 +16,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Timer;
 
+/**
+ * used to store and give information for a given external user
+ */
 public class ExternalUserProfile implements Parcelable {
     private String name;
     private String aboutMe;
@@ -32,6 +35,7 @@ public class ExternalUserProfile implements Parcelable {
         userId = "1010110";
         avatarId = "0";
     }
+
     public ExternalUserProfile(String name, String aboutMe, String userId, String phoneNumber, String email, String avatarId) {
         this.name = name;
         this.aboutMe = aboutMe;
@@ -66,51 +70,108 @@ public class ExternalUserProfile implements Parcelable {
         }
     };
 
+    /**
+     * name getter
+     * @return name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * aboutMe getter
+     * @return aboutMe
+     */
     public String getAboutMe() {
         return aboutMe;
     }
 
+    /**
+     * phoneNumber getter
+     * @return phoneNumber
+     */
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
+    /**
+     * email getter
+     * @return email
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * userId getter
+     * @return userId
+     */
     public String getUserId() {
         return userId;
     }
 
+    /**
+     * name setter
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * aboutMe setter
+     * @param aboutMe
+     */
     public void setAboutMe(String aboutMe) {
         this.aboutMe = aboutMe;
     }
 
+    /**
+     * phoneNumber setter
+     * @param phoneNumber
+     */
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
+    /**
+     * email setter
+     * @param email
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * avatarId getter
+     * @return avatarId
+     */
     public String getAvatarId() {
         return avatarId;
     }
 
+    /**
+     * avatarId setter
+     * @param avatarId
+     */
+    public void setAvatarId(String avatarId) {
+        this.avatarId = avatarId;
+    }
+
+    /**
+     * parcelable
+     * @return
+     */
     @Override
     public int describeContents() {
         return 0;
     }
 
+    /**
+     * parcelable implementation
+     * @param parcel
+     * @param i
+     */
     @Override
     public void writeToParcel(@NonNull Parcel parcel, int i) {
         parcel.writeString(name);
