@@ -26,8 +26,11 @@ import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.externaluserpage.ExternalUserProfile;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -40,6 +43,7 @@ public class ExternalUsersFragment extends Fragment {
     Bundle bundle;
     String docID;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    LibraryQRCode qrCode;
 
 
     @Nullable
@@ -102,12 +106,20 @@ public class ExternalUsersFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    /*
     private void getUsers() {
         CollectionReference databaseUsers = db.collection("users");
         CollectionReference databaseCodes = db.collection("usersQRcodes");
-
+        databaseCodes.whereEqualTo("qrCodeData", qrCode.getData())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful());
+                    }
+                })
 
     }
+    */
 
     private void restoreActionBar() {
         NavHostFragment.findNavController(this).navigate(R.id.action_navigation_externalusersfragment_to_qrCodeInformationFragment, this.bundle);
