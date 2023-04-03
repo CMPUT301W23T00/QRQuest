@@ -1,52 +1,54 @@
-package com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.comments;
+package com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Picture;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentCommentsBinding;
+import com.cmput301w23t00.qrquest.databinding.FragmentPicturesBinding;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
-import com.cmput301w23t00.qrquest.ui.updateavatar.AvatarUtility;
+import com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures.PictureAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * The class  QR code information fragment extends fragment
  *
  * The QRCodeInformationFragment class extends the Fragment class and provides a fragment that displays information about a QR code.
  */
-public class CommentFragment extends Fragment {
+public class PictureFragment extends Fragment {
 
-    private FragmentCommentsBinding binding; // view binding object for the fragment
-    String userID; // a string to hold the current user's ID
-    String docID; // the qr code document id
-    Boolean isMap; // determines which page to return to
-    FirebaseFirestore db; // Firestore database instance
-    LibraryQRCode libraryQRCode;
-    Drawable Profile;
+    private @NonNull FragmentPicturesBinding binding; // view binding object for the fragment
     Bundle qrCodeInformationBundle;
-
-
     String User;
+    private static final String TAG = "PictureFragment";
+
 
     /**
      * onCreateView is called when the view is first created.
@@ -63,57 +65,54 @@ public class CommentFragment extends Fragment {
 
         qrCodeInformationBundle = getArguments();
         LibraryQRCode qrCodeData = qrCodeInformationBundle.getParcelable("selectedQRCode");
+        String userID = qrCodeInformationBundle.getString("userID");
+        System.out.println("Ran Picture Fragment");
 
         // Inflate the fragment_qrcodeinformation.xml layout for this fragment.
 
-        binding = FragmentCommentsBinding.inflate(inflater, container, false);
+        binding = FragmentPicturesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        ArrayList<CommentData> list = new ArrayList<CommentData>();
-        CommentAdapter NewAdapter = new CommentAdapter(getContext(),list);
-        binding.commentList.setAdapter(NewAdapter);
+        ArrayList<com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures.PictureData> list = new ArrayList<com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures.PictureData>();
+        PictureAdapter NewAdapter = new PictureAdapter(getContext(),list);
+        binding.picturesList.setAdapter(NewAdapter);
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference imageRef = storage.getReference().child("images");
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("usersQRCodes").whereEqualTo("qrCodeData", qrCodeData.getData()).whereNotEqualTo("comment","").get().addOnCompleteListener(new OnCompleteListener<>() {
-            @SuppressLint("UseCompatLoadingForDrawables")
+        db.collection("usersQRCodes").whereEqualTo("qrCodeData", qrCodeData.getData()).get().addOnCompleteListener(new OnCompleteListener<>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot doc1 : task.getResult()) {
                         String ID = doc1.getString("identifierId");
-
                         db.collection("users").whereEqualTo("identifierId", ID).get().addOnCompleteListener(task2 -> {
-                            User = "Anonymous User";
-                            String Comment = doc1.getString("comment");
-                            Date dateScanned = doc1.getDate("dateScanned");
-                            Integer Inp = -1;
+                            int Profile = 0;
+                            if (task2.isSuccessful()){
+                                String iconId = (task2.getResult().getDocuments().get(0).getString("avatarId") == null) ? "0" :  task2.getResult().getDocuments().get(0).getString("avatarId");
+                                Profile = Integer.parseInt(iconId);
 
-                            if (task2.isSuccessful()) {
-                                    User = task2.getResult().getDocuments().get(0).getString("name");
-                                    // PFP processing
+                                int finalProfile = Profile;
+                                imageRef.child(ID + '-' + qrCodeData.getData()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        Date DateCreated = qrCodeData.getDate();
 
-                                    String Avatar = (String) task2.getResult().getDocuments().get(0).get("avatarId");
-                                    if (Avatar != "" && Avatar != null) {
-                                        AvatarUtility AvatarIDGetter = new AvatarUtility();
-                                        int InputId = Integer.parseInt(Avatar);
-                                        Inp = AvatarIDGetter.getAvatarImageResource(InputId);
+                                        final PictureData NewPicture = new PictureData(task2.getResult().getDocuments().get(0).getString("name"), DateCreated, finalProfile, uri);
+                                        NewAdapter.add(NewPicture);
+                                        NewAdapter.notifyDataSetChanged();
                                     }
-
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception exception) {
+                                        Log.e(TAG, "onFailure: Feed image failed to load", exception);
+                                    }
+                                });
                             }
-
-
-                            if (Inp != -1) {
-                                Profile = getResources().getDrawable(Inp);
-                            } else {
-                                Profile = getResources().getDrawable(R.drawable.default_avatar);
-                            }
-
-                            CommentData NewComment = new CommentData(User, dateScanned, Comment, Profile);
-                            NewAdapter.add(NewComment);
-                            NewAdapter.notifyDataSetChanged();
                         });
                     }
-                };
+                }
             }
         });
 
@@ -149,7 +148,7 @@ public class CommentFragment extends Fragment {
         // Back arrow
         if (item.getItemId() == android.R.id.home) {
             // Navigate back to the previous fragment
-            NavHostFragment.findNavController(CommentFragment.this).navigate(R.id.commentFragment_to_action_qrCodeInformationFragment, qrCodeInformationBundle);
+            NavHostFragment.findNavController(PictureFragment.this).navigate(R.id.pictureFragment_to_action_qrCodeInformationFragment, qrCodeInformationBundle);
             return true;
         }
 

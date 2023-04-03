@@ -3,14 +3,18 @@ package com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.comments;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 
+import java.util.Date;
+
 public class CommentData {
 
     private String mUser;
     private String mText;
+    private Date mDate;
     private Drawable mProfile;
 
-    CommentData(String User, String Text, Drawable Profile) {
+    CommentData(String User, Date date, String Text, Drawable Profile) {
         this.mUser = User;
+        this.mDate = date;
         this.mText = Text;
         this.mProfile = Profile;
     }
@@ -21,6 +25,9 @@ public class CommentData {
 
     String getText() {
         return mText;
+    }
+    Date getDate() {
+        return mDate;
     }
 
     Drawable getProfile() {

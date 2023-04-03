@@ -163,7 +163,13 @@ public class QRCodeInformationFragment extends Fragment {
             NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_commentFragment, this.bundle);
             return true;
         }
-//
+
+        if (id == R.id.qr_feed) {
+            // Start a new activity to see comments on this QR code
+            NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_pictureFragment, this.bundle);
+            return true;
+        }
+
         if (id == R.id.qr_same_code) {
             NavHostFragment.findNavController(this).navigate(R.id.action_qrCodeInformationFragment_to_externalusersfragment, this.bundle);
             return true;

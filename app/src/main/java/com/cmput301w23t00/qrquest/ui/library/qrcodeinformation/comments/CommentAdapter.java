@@ -16,8 +16,10 @@ import androidx.appcompat.widget.AppCompatImageView;
 import com.cmput301w23t00.qrquest.R;
 import com.google.api.Distribution;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class CommentAdapter extends ArrayAdapter<CommentData> {
 
@@ -42,9 +44,16 @@ public class CommentAdapter extends ArrayAdapter<CommentData> {
         }
 
         // Set the text of the TextView in the layout to the current string in the list
-        TextView textView1 = listItemView.findViewById(R.id.comment_text);
+        TextView textView1 = listItemView.findViewById(R.id.comment_date);
+        // Format date
+        SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
+        textView1.setText(formatter.format(mData.get(position).getDate()));
+
+
+        // Set the text of the TextView in the layout to the current string in the list
+        TextView textView5 = listItemView.findViewById(R.id.comment_text);
         String currentString = mData.get(position).getText();
-        textView1.setText(currentString);
+        textView5.setText(currentString);
 
         TextView textView2 = listItemView.findViewById(R.id.comment_username);
         currentString = mData.get(position).getUser();
