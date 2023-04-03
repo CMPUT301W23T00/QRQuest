@@ -146,7 +146,8 @@ public class ExternalUserProfileFragment extends Fragment {
                     }
                 });
 
-        recent.setText("QR Codes");
+        String change = "QR Codes";
+        recent.setText(change);
         name.setText(userProfile.getName());
         aboutMe.setText(userProfile.getAboutMe());
         phoneNumber.setText(String.format("Phone: %s", userProfile.getPhoneNumber()));
