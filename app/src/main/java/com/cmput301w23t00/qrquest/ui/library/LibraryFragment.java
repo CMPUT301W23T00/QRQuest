@@ -16,6 +16,7 @@ import androidx.navigation.Navigation;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentLibraryBinding;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
+import com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.ViewCycleStack;
 import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -61,6 +62,7 @@ public class LibraryFragment extends Fragment {
      */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        ViewCycleStack.reset();
 
         binding = FragmentLibraryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -166,6 +168,8 @@ public class LibraryFragment extends Fragment {
                 bundle.putString("userID", userID);
                 bundle.putString("documentID", docID);
                 bundle.putBoolean("isMap", false);
+                bundle.putBoolean("isLeaderboard", false);
+                bundle.putBoolean("isExternalUserProfile", false);
 
                 // Use the Navigation component to navigate to the QR code information fragment,
                 // and pass the bundle as an argument to the destination fragment

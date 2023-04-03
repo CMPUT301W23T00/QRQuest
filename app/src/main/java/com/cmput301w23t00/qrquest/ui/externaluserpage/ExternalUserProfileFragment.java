@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -15,12 +16,14 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCodeAdapter;
+import com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.ViewCycleStack;
 import com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.QRCodeInformationFragment;
 import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.cmput301w23t00.qrquest.ui.updateavatar.AvatarUtility;
@@ -49,8 +52,10 @@ public class ExternalUserProfileFragment extends Fragment {
     private ShapeableImageView profileImage;
     private ArrayAdapter<LibraryQRCode> QRAdapter;
     private ArrayList<LibraryQRCode> dataList;
+    private Bundle bundle;
     private Boolean isSearch;
     private Boolean isLeaderboard;
+    private Boolean isExternalProfile;
 
     @Nullable
     @Override
@@ -68,10 +73,12 @@ public class ExternalUserProfileFragment extends Fragment {
         QRlist = (ListView) root.findViewById(R.id.recent_list);
         profileImage = (ShapeableImageView) root.findViewById(R.id.imageView);
 
-        Bundle bundle = getArguments();
+        if (getArguments() == null) this.bundle = ViewCycleStack.pop();
+        else this.bundle = getArguments();
         ExternalUserProfile userProfile = bundle.getParcelable("selectedUser");
         isSearch = bundle.getBoolean("isSearch");
         isLeaderboard = bundle.getBoolean("isLeaderboard");
+        isExternalProfile = bundle.getBoolean("isExternalProfile");
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
@@ -131,13 +138,28 @@ public class ExternalUserProfileFragment extends Fragment {
             profileImage.setImageResource(AvatarUtility.getAvatarImageResource(0));
         }
 
-        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+        setHasOptionsMenu(true);
+
+        QRlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void handleOnBackPressed() {
-                restoreActionBar();
+            public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
+                LibraryQRCode qrCode = dataList.get(index);
+                //String docID = documentIDList.get(index);
+
+                // Create a bundle to store data that will be passed to the QR code information fragment
+                Bundle bundle = new Bundle();
+                // Add the selected QR code object and the user ID to the bundle
+                bundle.putParcelable("selectedQRCode", qrCode);
+                bundle.putString("userID", userID);
+                //bundle.putString("documentID", docID);
+                bundle.putBoolean("isMap", false);
+                bundle.putBoolean("isLeaderboard", false);
+                bundle.putBoolean("isExternalProfile", true);
+                // Use the Navigation component to navigate to the QR code information fragment,
+                // and pass the bundle as an argument to the destination fragment
+                Navigation.findNavController(view).navigate(R.id.externaluser_profile_to_qrcodeinformation_fragment, bundle);
             }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);
+        });
 
         return root;
     }
@@ -169,8 +191,10 @@ public class ExternalUserProfileFragment extends Fragment {
                 NavHostFragment.findNavController(ExternalUserProfileFragment.this).navigate(R.id.action_navigation_externaluserprofilefragment_to_leaderboard);
             } else if (isSearch) {
                 NavHostFragment.findNavController(ExternalUserProfileFragment.this).navigate(R.id.action_externaluser_profile_to_navigation_search);
+            } else if (isExternalProfile) {
+                NavHostFragment.findNavController(ExternalUserProfileFragment.this).navigate(R.id.action_navigation_externaluserprofile_to_externalusersfragment);
             } else {
-                NavHostFragment.findNavController(this).navigate(R.id.action_navigation_externaluserprofile_to_externalusersfragment);
+                NavHostFragment.findNavController(ExternalUserProfileFragment.this).navigate(R.id.action_navigation_externaluserprofile_to_externalusersfragment);
             }
 
             return true;
@@ -179,7 +203,8 @@ public class ExternalUserProfileFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void restoreActionBar() {
-        NavHostFragment.findNavController(this).navigate(R.id.action_navigation_externaluserprofile_to_externalusersfragment);
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 }

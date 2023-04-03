@@ -32,6 +32,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Objects;
+
 /**
  * The class  QR code information fragment extends fragment
  *
@@ -45,12 +47,14 @@ public class QRCodeInformationFragment extends Fragment {
     String docID; // the qr code document id
     Boolean isMap; // determines which page to return to
     Boolean isLeaderboard;
+    Boolean isExternalUserProfile;
     FirebaseFirestore db; // Firestore database instance
     LibraryQRCode libraryQRCode;
 
     leaderboardUser _leaderboardUser;
 
     Bundle bundle;
+    Boolean back = false;
 
 
     /**
@@ -77,14 +81,15 @@ public class QRCodeInformationFragment extends Fragment {
         View root = binding.getRoot();
 
         // Retrieve data passed in from the previous fragment
-        Bundle bundle = getArguments();
+        if (getArguments() == null) this.bundle = ViewCycleStack.pop();
+        else this.bundle = getArguments();
         if (bundle != null) {
-            this.bundle = bundle;
             qrCode = bundle.getParcelable("selectedQRCode");
             userID = bundle.getString("userID");
             docID = bundle.getString("documentID");
             isMap = bundle.getBoolean("isMap");
             isLeaderboard = bundle.getBoolean("isLeaderboard");
+            isExternalUserProfile = bundle.getBoolean("isExternalUserProfile");
             if (qrCode != null) {
                 // Update the ViewModel with the information of the selected QR code
                 libraryQRCode = qrCode;
@@ -119,14 +124,6 @@ public class QRCodeInformationFragment extends Fragment {
      */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            this.bundle = savedInstanceState;
-            qrCode = bundle.getParcelable("selectedQRCode");
-            userID = bundle.getString("userID");
-            docID = bundle.getString("documentID");
-            isMap = bundle.getBoolean("isMap");
-            isLeaderboard = bundle.getBoolean("isLeaderboard");
-        }
         // Creates this fragment's menu.
         setHasOptionsMenu(true);
 
@@ -163,17 +160,8 @@ public class QRCodeInformationFragment extends Fragment {
         int id = item.getItemId();
 
         if (id == R.id.qr_comments) {
-            // Create a bundle to store data that will be passed to the QR code information fragment
-            Bundle bundle = new Bundle();
-            // Add the selected QR code object and the user ID to the bundle
-            bundle.putParcelable("selectedQRCode", libraryQRCode);
-            bundle.putString("userID", userID);
-            bundle.putString("documentID", docID);
-            bundle.putBoolean("isMap", isMap);
-            bundle.putBoolean("isLeaderboard", isLeaderboard);
-
             // Start a new activity to see comments on this QR code
-            NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_commentFragment, bundle);
+            NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_commentFragment, this.bundle);
             return true;
         }
 //
@@ -185,10 +173,13 @@ public class QRCodeInformationFragment extends Fragment {
         // Back arrow
         if (id == android.R.id.home) {
             // Navigate back to the previous fragment
+            this.back = true;
             if (isMap) {
                 NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_mapFragment);
             } else if (isLeaderboard) {
                 NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_leaderboard);
+            } else if (isExternalUserProfile) {
+                NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_externaluserprofile);
             } else {
                 NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_libraryFragment);
             }
@@ -227,7 +218,9 @@ public class QRCodeInformationFragment extends Fragment {
                             public void onSuccess(Void aVoid) {
                                 if (isMap) {
                                     NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_mapFragment);
-                                } else {
+                                } else if (isExternalUserProfile) {
+                                    NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_externaluserprofile);
+                                }else {
                                     NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_libraryFragment);
                                 }
                                 dialog.dismiss();
@@ -255,14 +248,6 @@ public class QRCodeInformationFragment extends Fragment {
         return true;
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable("selectedQRCode", qrCode);
-        outState.putString("userID", userID);
-        outState.putString("documentID", docID);
-        outState.putBoolean("isMap", false);
-    }
 
     /**
      * onDestroyView is called when the view is destroyed.
@@ -270,9 +255,13 @@ public class QRCodeInformationFragment extends Fragment {
      */
     @Override
     public void onDestroyView() {
-
         super.onDestroyView();
-        onSaveInstanceState(new Bundle());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (!back) ViewCycleStack.push(bundle);
     }
 
     @Override
@@ -282,9 +271,12 @@ public class QRCodeInformationFragment extends Fragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
+                back = true;
                 if (isMap) {
                     NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_mapFragment);
-                } else {
+                } else if (isExternalUserProfile) {
+                    NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_externaluserprofile);
+                }else {
                     NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_libraryFragment);
                 }
             }

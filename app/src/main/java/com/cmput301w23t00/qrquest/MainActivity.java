@@ -70,23 +70,30 @@ public class MainActivity extends AppCompatActivity {
         UserSettings userSettings = new UserSettings();
         SharedPreferences settings = getSharedPreferences(SETTINGS_PREFS_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editorSettings = settings.edit();
-        if (!UserSettings.getCreated()) { UserSettings.setCreated(true); }
+        if (!UserSettings.getCreated()) {
+            UserSettings.setCreated(true);
+        }
         editorSettings.putBoolean("PushNotifications", userSettings.getPushNotifications());
         editorSettings.putBoolean("GeoLocation", userSettings.getGeoLocation());
         editorSettings.putBoolean("existingAccount", UserSettings.getCreated());
         editorSettings.commit();
 
-        UserProfile userProfile = new UserProfile();
-        SharedPreferences profile = getSharedPreferences(USER_PROFILE_INFORMATION, MODE_PRIVATE);
-        SharedPreferences.Editor editorProfile = profile.edit();
-        if (!UserProfile.getCreated()) { UserProfile.setCreated(true); }
-        editorProfile.putString("aboutMe", /*"I <3 big rock"*/UserProfile.getAboutMe());
-        editorProfile.putString("phoneNumber", /*"780-333-2344"*/UserProfile.getPhoneNumber());
-        editorProfile.putString("email", /*"grug@gmail.com" */UserProfile.getEmail());
-        editorProfile.putString("name", /*"Grug"*/UserProfile.getName());
-        editorProfile.putBoolean("existingAccount", UserProfile.getCreated());
-        editorProfile.putString("userId", UserProfile.getUserId());
-        editorProfile.putString("avatarId", UserProfile.getAvatarId());
-        editorProfile.commit();
+        if (!UserProfile.getUserId().equals("")) {
+            UserProfile userProfile = new UserProfile();
+            SharedPreferences profile = getSharedPreferences(USER_PROFILE_INFORMATION, MODE_PRIVATE);
+            SharedPreferences.Editor editorProfile = profile.edit();
+            if (!UserProfile.getCreated()) {
+                UserProfile.setCreated(true);
+            }
+            editorProfile.putString("aboutMe", /*"I <3 big rock"*/UserProfile.getAboutMe());
+            editorProfile.putString("phoneNumber", /*"780-333-2344"*/UserProfile.getPhoneNumber());
+            editorProfile.putString("email", /*"grug@gmail.com" */UserProfile.getEmail());
+            editorProfile.putString("name", /*"Grug"*/UserProfile.getName());
+            editorProfile.putBoolean("existingAccount", UserProfile.getCreated());
+            editorProfile.putString("userId", UserProfile.getUserId());
+            editorProfile.putString("avatarId", UserProfile.getAvatarId());
+            editorProfile.commit();
+        }
+
     }
 }

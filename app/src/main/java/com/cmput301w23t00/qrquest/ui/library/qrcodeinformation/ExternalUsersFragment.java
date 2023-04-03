@@ -1,8 +1,9 @@
 package com.cmput301w23t00.qrquest.ui.library.qrcodeinformation;
 
-import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
+import static android.content.ContentValues.TAG;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,9 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -23,11 +24,20 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
-import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.externaluserpage.ExternalUserProfile;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
+import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class ExternalUsersFragment extends Fragment {
 
@@ -37,7 +47,9 @@ public class ExternalUsersFragment extends Fragment {
     //Used for returning to previous page
     Bundle bundle;
     String docID;
-    LibraryQRCode libraryQRCode;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    LibraryQRCode qrCode;
+    Boolean back = false;
 
 
     @Nullable
@@ -49,12 +61,11 @@ public class ExternalUsersFragment extends Fragment {
         usersList = (ListView) root.findViewById(R.id.other_users_list);
         usersList.setAdapter(usersAdapter);
 
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            this.bundle = bundle;
-            LibraryQRCode qrCode = bundle.getParcelable("selectedQRCode");
-            docID = bundle.getString("documentID");
-        }
+
+        if (getArguments() == null) this.bundle = ViewCycleStack.pop();
+        else this.bundle = getArguments();
+        qrCode = bundle.getParcelable("selectedQRCode");
+        docID = bundle.getString("documentID");
 
         setHasOptionsMenu(true);
 
@@ -67,10 +78,61 @@ public class ExternalUsersFragment extends Fragment {
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);
 
-        for (int i = 0; i < 15; i++) users.add(new ExternalUserProfile());
-        users.add(new ExternalUserProfile());
-        usersList.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, users.size()*239 + 200));
-        usersAdapter.notifyDataSetChanged();
+        final int[] total_users = {0};
+        final int[] updated_users = {0};
+
+        CollectionReference databaseCodes = db.collection("usersQRCodes");
+        databaseCodes.whereEqualTo("qrCodeData", qrCode.getData())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) ;
+                        {
+                            int count = task.getResult().getDocuments().size();
+                            for (int i = 0; i < count; i++) {
+                                DocumentSnapshot document = task.getResult().getDocuments().get(i);
+                                if (document != null) {
+                                    String identifierId = document.getString("identifierId");
+                                    if (!identifierId.equals("") && !identifierId.equals(UserProfile.getUserId())) {
+                                        total_users[0]++;
+                                        FirebaseFirestore.getInstance().collection("users").whereEqualTo("identifierId", identifierId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                updated_users[0]++;
+                                                if (task.isSuccessful() && task.getResult().getDocuments().size() != 0) {
+                                                    ExternalUserProfile user = new ExternalUserProfile(identifierId);
+                                                    user.setName(task.getResult().getDocuments().get(0).getString("name"));
+                                                    user.setAboutMe(task.getResult().getDocuments().get(0).getString("aboutMe"));
+                                                    user.setPhoneNumber(task.getResult().getDocuments().get(0).getString("phoneNumber"));
+                                                    user.setEmail(task.getResult().getDocuments().get(0).getString("email"));
+                                                    Log.d(TAG, "onComplete: Finished Loading");
+                                                    users.add(user);
+                                                }
+                                                if (total_users[0] == updated_users[0]) {
+                                                    users.sort(Comparator.comparing(ExternalUserProfile::getName));
+                                                    Collections.reverse(users);
+                                                    usersList.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, users.size() * 239 + 200));
+                                                    usersAdapter.notifyDataSetChanged();
+                                                }
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d(TAG, "onFailure: failed to query");
+                                                updated_users[0]++;
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext(), "Unable to connect to network", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
         usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -86,10 +148,14 @@ public class ExternalUsersFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((MainActivity)getActivity()).getSupportActionBar().setTitle("Other's With This QR Code");
+        ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -101,6 +167,14 @@ public class ExternalUsersFragment extends Fragment {
     }
 
     private void restoreActionBar() {
-        NavHostFragment.findNavController(this).navigate(R.id.action_navigation_externalusersfragment_to_qrCodeInformationFragment, this.bundle);
+        NavHostFragment.findNavController(this).navigate(R.id.action_navigation_externalusersfragment_to_qrCodeInformationFragment);
+        this.back = true;
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (!back) ViewCycleStack.push(bundle);
+    }
+
 }

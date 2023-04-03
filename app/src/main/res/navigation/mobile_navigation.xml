@@ -126,6 +126,10 @@
             android:id="@+id/qrCodeInformationFragment_to_action_leaderboard"
             app:destination="@id/leaderboardFragment" />
 
+        <action
+            android:id="@+id/qrCodeInformationFragment_to_externaluserprofile"
+            app:destination="@+id/externaluser_profile"/>
+
     </fragment>
 
     <fragment
@@ -148,6 +152,7 @@
         android:id="@+id/navigation_externalusers"
         android:name="com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.ExternalUsersFragment"
         android:label="@string/external_users"
+        android:saveEnabled="true"
         tools:layout="@layout/fragment_externalusers">
 
         <action
@@ -177,6 +182,10 @@
         <action
             android:id="@+id/action_navigation_externaluserprofilefragment_to_leaderboard"
             app:destination="@id/leaderboardFragment" />
+
+        <action
+            android:id="@+id/externaluser_profile_to_qrcodeinformation_fragment"
+            app:destination="@+id/qrCodeInformationFragment"/>
 
     </fragment>
 

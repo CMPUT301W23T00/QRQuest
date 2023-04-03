@@ -14,6 +14,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Timer;
+
 public class ExternalUserProfile implements Parcelable {
     private String name;
     private String aboutMe;
@@ -39,23 +41,6 @@ public class ExternalUserProfile implements Parcelable {
 
     public ExternalUserProfile(String userId) {
         this.userId = userId;
-        FirebaseFirestore.getInstance().collection("users").whereEqualTo("identifierId", userId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    name = task.getResult().getDocuments().get(0).getString("name");
-                    aboutMe = task.getResult().getDocuments().get(0).getString("aboutMe");
-                    phoneNumber = task.getResult().getDocuments().get(0).getString("phoneNumber");
-                    email = task.getResult().getDocuments().get(0).getString("email");
-                    avatarId = task.getResult().getDocuments().get(0).getString("avatarId");
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.e(TAG, "onFailure: ", e);
-            }
-        });
     }
 
     protected ExternalUserProfile(Parcel in) {
@@ -105,6 +90,22 @@ public class ExternalUserProfile implements Parcelable {
 
     public String getUserId() {
         return userId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getAvatarId() {
