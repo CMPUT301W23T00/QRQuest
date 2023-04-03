@@ -9,7 +9,7 @@
     android:baselineAligned="true">
 
     <FrameLayout
-        android:id="@+id/comment_user_picture_container"
+        android:id="@+id/pictures_user_picture_container"
         android:layout_width="60dp"
         android:layout_height="60dp">
 
@@ -29,7 +29,7 @@
                 android:layout_gravity="center">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/comment_user_picture"
+                    android:id="@+id/pictures_user_picture"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_gravity="center"
@@ -42,7 +42,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/comment_ring"
+            android:id="@+id/pictures_ring"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
@@ -93,6 +93,7 @@
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/pictures_location_img"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/grug"/>

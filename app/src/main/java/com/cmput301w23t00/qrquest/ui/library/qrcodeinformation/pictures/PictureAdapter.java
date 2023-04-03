@@ -1,6 +1,7 @@
 package com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,16 +42,20 @@ public class PictureAdapter extends ArrayAdapter<com.cmput301w23t00.qrquest.ui.l
 
         // Set the text of the TextView in the layout to the current string in the list
         TextView textView1 = listItemView.findViewById(R.id.picture_date);
-        String currentString = mData.get(position).getText();
+        String currentString = mData.get(position).getDate();
         textView1.setText(currentString);
 
         TextView textView2 = listItemView.findViewById(R.id.picture_username);
         currentString = mData.get(position).getUser();
         textView2.setText(currentString);
 
-        AppCompatImageView imageView = listItemView.findViewById(R.id.comment_user_picture);
-        Drawable currentImage = mData.get(position).getProfile();
-        imageView.setBackgroundDrawable(currentImage);
+        AppCompatImageView imageView1 = listItemView.findViewById(R.id.pictures_user_picture);
+        Drawable profileImg = mData.get(position).getProfile();
+        imageView1.setBackgroundDrawable(profileImg);
+
+        AppCompatImageView imageView2 = listItemView.findViewById(R.id.pictures_location_img);
+        Bitmap FeedImg = mData.get(position).getPicture();
+        imageView2.setImageBitmap(FeedImg);
 
         return listItemView;
     }
