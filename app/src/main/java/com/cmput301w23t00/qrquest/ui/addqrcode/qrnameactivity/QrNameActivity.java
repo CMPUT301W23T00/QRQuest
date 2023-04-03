@@ -187,10 +187,14 @@ public class QrNameActivity extends AppCompatActivity {
                         Criteria criteria = new Criteria();
                         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                         String bestProvider = locationManager.getBestProvider(criteria, true);
-                        Location location = locationManager.getLastKnownLocation(bestProvider);
-                        point = new GeoPoint(location.getLatitude(), location.getLongitude());
+                        if (bestProvider == null) {
+                            Toast.makeText(QrNameActivity.this, "Location is disabled can't record location", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Location location = locationManager.getLastKnownLocation(bestProvider);
+                            point = new GeoPoint(location.getLatitude(), location.getLongitude());
+                        }
                     } else {
-                        Toast.makeText(QrNameActivity.this, "Location is off or don't have permissions can't record location", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(QrNameActivity.this, "Don't have location permissions can't record location", Toast.LENGTH_SHORT).show();
                     }
                 }
 
