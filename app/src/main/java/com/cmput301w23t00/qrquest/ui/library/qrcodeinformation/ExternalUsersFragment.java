@@ -39,6 +39,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * fragment used to display external user list
+ */
 public class ExternalUsersFragment extends Fragment {
 
     ArrayList<ExternalUserProfile> users = new ArrayList<>();
@@ -51,7 +54,18 @@ public class ExternalUsersFragment extends Fragment {
     LibraryQRCode qrCode;
     Boolean back = false;
 
-
+    /**
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -94,6 +108,7 @@ public class ExternalUsersFragment extends Fragment {
                                 if (document != null) {
                                     String identifierId = document.getString("identifierId");
                                     if (!identifierId.equals("") && !identifierId.equals(UserProfile.getUserId())) {
+                                        //gets user with specific id and increments total
                                         total_users[0]++;
                                         FirebaseFirestore.getInstance().collection("users").whereEqualTo("identifierId", identifierId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                             @Override
@@ -105,9 +120,21 @@ public class ExternalUsersFragment extends Fragment {
                                                     user.setAboutMe(task.getResult().getDocuments().get(0).getString("aboutMe"));
                                                     user.setPhoneNumber(task.getResult().getDocuments().get(0).getString("phoneNumber"));
                                                     user.setEmail(task.getResult().getDocuments().get(0).getString("email"));
+                                                    String userAvatarNumber;
+                                                    try {
+                                                        userAvatarNumber = task.getResult().getDocuments().get(0).getString("avatarId");
+                                                    } catch (Exception e) { // catch NullPointerException explicitly
+                                                        userAvatarNumber = "0"; // use string "0" instead of String.valueOf(0)
+                                                    }
+
+                                                    if (userAvatarNumber == "") {
+                                                        userAvatarNumber = "0";
+                                                    }
+                                                    user.setAvatarId(userAvatarNumber);
                                                     Log.d(TAG, "onComplete: Finished Loading");
                                                     users.add(user);
                                                 }
+                                                //done to display everything in list all at once after being loaded
                                                 if (total_users[0] == updated_users[0]) {
                                                     users.sort(Comparator.comparing(ExternalUserProfile::getName));
                                                     Collections.reverse(users);
@@ -169,11 +196,17 @@ public class ExternalUsersFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Restores action menu to previous state
+     */
     private void restoreActionBar() {
         this.back = true;
         NavHostFragment.findNavController(this).navigate(R.id.action_navigation_externalusersfragment_to_qrCodeInformationFragment);
     }
 
+    /**
+     * When fragment pauses add save state to stack
+     */
     @Override
     public void onPause() {
         super.onPause();

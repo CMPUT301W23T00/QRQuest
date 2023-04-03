@@ -41,6 +41,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
+/**
+ * Fragment used to display an external users profile
+ */
 public class ExternalUserProfileFragment extends Fragment {
     private TextView name;
     private TextView aboutMe;
@@ -59,6 +62,18 @@ public class ExternalUserProfileFragment extends Fragment {
     private Boolean isExternalUsers;
     Boolean back = false;
 
+    /**
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -133,6 +148,7 @@ public class ExternalUserProfileFragment extends Fragment {
         aboutMe.setText(userProfile.getAboutMe());
         phoneNumber.setText(String.format("Phone: %s", userProfile.getPhoneNumber()));
         email.setText(String.format("Email: %s", userProfile.getEmail()));
+
 
         try {
             profileImage.setImageResource(AvatarUtility.getAvatarImageResource(Integer.parseInt(userProfile.getAvatarId())));
@@ -223,6 +239,9 @@ public class ExternalUserProfileFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * When fragment pauses add save state to stack
+     */
     @Override
     public void onPause() {
         super.onPause();

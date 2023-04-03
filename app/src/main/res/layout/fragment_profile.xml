@@ -263,6 +263,8 @@
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:layout_marginTop="20dp"
+            android:listSelector="@android:color/transparent"
+            android:cacheColorHint="@android:color/transparent"
             android:headerDividersEnabled="true"
             tools:ignore="NestedScrolling" />
     </LinearLayout>

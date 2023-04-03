@@ -19,6 +19,7 @@ import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentSearchBinding;
 import com.cmput301w23t00.qrquest.ui.externaluserpage.ExternalUserProfile;
 import com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.ExternalUsersAdapter;
+import com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.ViewCycleStack;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -53,6 +54,7 @@ public class SearchFragment extends Fragment {
      */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        ViewCycleStack.reset();
 
         binding = FragmentSearchBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -144,6 +146,10 @@ public class SearchFragment extends Fragment {
         return root;
     }
 
+    /**
+     * @param savedInstanceState If the fragment is being re-created from
+     * a previous saved state, this is the state.
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
