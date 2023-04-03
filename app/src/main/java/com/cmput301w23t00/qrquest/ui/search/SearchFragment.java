@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -34,12 +35,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * SearchFragment is an template class not yet with fully implemented functionality
@@ -48,7 +53,8 @@ public class SearchFragment extends Fragment {
 
     private FragmentSearchBinding binding;
     FirebaseFirestore db; // Firebase Firestore database instance
-    ArrayList<ExternalUserProfile> users = new ArrayList<>();
+    ArrayList<ExternalUserProfile> filteredUsers;
+    ArrayList<ExternalUserProfile> allUsers;
     ListView usersList;
     ExternalUsersAdapter usersAdapter;
 
@@ -67,10 +73,12 @@ public class SearchFragment extends Fragment {
 
         binding = FragmentSearchBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        //FloatingSearchView mSearchView = root.findViewById(R.id.floating_profile_search_view);
+        filteredUsers = new ArrayList<>();
+        allUsers = new ArrayList<>();
+        SearchView profileSearch = root.findViewById(R.id.search_users_profile);
         db = FirebaseFirestore.getInstance();
         final CollectionReference usersCollectionReference = db.collection("users");
-        usersAdapter = new ExternalUsersAdapter(getContext(), users);
+        usersAdapter = new ExternalUsersAdapter(getContext(), filteredUsers);
         usersList = (ListView) root.findViewById(R.id.search_users_list);
         usersList.setAdapter(usersAdapter);
         usersCollectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -83,53 +91,41 @@ public class SearchFragment extends Fragment {
                         String userId = (String) document.getData().get("identifierId");
                         String phoneNumber = (String) document.getData().get("phoneNumber");
                         String email = (String) document.getData().get("email");
-                        users.add(new ExternalUserProfile(name,aboutMe,userId,phoneNumber,email));
+                        ExternalUserProfile currentUser = new ExternalUserProfile(name,aboutMe,userId,phoneNumber,email);
+                        allUsers.add(currentUser);
+                        filteredUsers.add(currentUser);
                         usersAdapter.notifyDataSetChanged();
                         }
                 }
             }
         });
-//        mSearchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
-//            @Override
-//            public void onSearchTextChanged(String oldQuery, final String newQuery) {
-//                //this shows the top left circular progress
-//                //you can call it where ever you want, but
-//                //it makes sense to do it when loading something in
-//                //the background.
-//                mSearchView.showProgress();
-//                for (int i = 0; i < 15; i++) users.add(new ExternalUserProfile());
-//                users.add(new ExternalUserProfile());
-//                usersList.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, users.size()*239 + 200));
-//                usersAdapter.notifyDataSetChanged();
-//                mSearchView.hideProgress();
-//            }
-//        });
-//        mSearchView.setOnSearchListener(new FloatingSearchView.OnSearchListener() {
-//            @Override
-//            public void onSuggestionClicked(SearchSuggestion searchSuggestion) {
-//
-//            }
-//
-//            @Override
-//            public void onSearchAction(String currentQuery) {
-//                Log.println(Log.INFO,"Search", "Searched");
-//                mSearchView.showProgress();
-//                for (int i = 0; i < 15; i++) users.add(new ExternalUserProfile());
-//                users.add(new ExternalUserProfile());
-//                usersAdapter.notifyDataSetChanged();
-//            }
-//        });
-//        usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Bundle bundle = new Bundle();
-//
-//                bundle.putParcelable("selectedUser", users.get(i));
-//                Navigation.findNavController(view).navigate(R.id.action_navigation_externalusersfragment_to_externaluserprofile, bundle);
-//            }
-//        });
-//        final TextView textView = binding.textSearch;
-//        searchViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        profileSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                profileSearch.setIconified(false);
+            }
+        });
+        profileSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                Log.println(Log.INFO,"searched", s);
+                filteredUsers.clear();
+                ArrayList<ExternalUserProfile> tempArray = allUsers.stream().filter((data) ->
+                        data.getName().toLowerCase().contains(s.toLowerCase())).collect(Collectors.toCollection(ArrayList::new));
+                tempArray.sort(Comparator.comparing(ExternalUserProfile::getName));
+                tempArray.sort(Comparator.comparingInt(a -> a.getName().length()));
+                for (ExternalUserProfile profile: tempArray) {
+                    filteredUsers.add(profile);
+                }
+                usersAdapter.notifyDataSetChanged();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
         return root;
     }
 
