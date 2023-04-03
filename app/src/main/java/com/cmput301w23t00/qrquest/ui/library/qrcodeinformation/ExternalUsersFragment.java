@@ -156,7 +156,6 @@ public class ExternalUsersFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((MainActivity)getActivity()).getSupportActionBar().setTitle("Other's With This QR Code");
     }
 
     @Override
@@ -166,32 +165,6 @@ public class ExternalUsersFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
-    private void getUsers() {
-        CollectionReference databaseCodes = db.collection("usersQRcodes");
-        databaseCodes.whereEqualTo("qrCodeData", qrCode.getData())
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()); {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                if (document != null) {
-                                    String identifierId = document.getString("identifierId");
-                                    if (!identifierId.equals("")) users.add(new ExternalUserProfile(identifierId));
-                                }
-                            }
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getContext(), "Unable to connect to network", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-    }
-
 
     private void restoreActionBar() {
         NavHostFragment.findNavController(this).navigate(R.id.action_navigation_externalusersfragment_to_qrCodeInformationFragment, this.bundle);
