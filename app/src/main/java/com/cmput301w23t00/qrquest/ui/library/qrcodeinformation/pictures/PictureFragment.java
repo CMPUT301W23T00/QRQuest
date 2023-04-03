@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
@@ -22,6 +23,7 @@ import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentCommentsBinding;
 import com.cmput301w23t00.qrquest.databinding.FragmentPicturesBinding;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
+import com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.comments.CommentFragment;
 import com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures.PictureAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -84,39 +86,47 @@ public class PictureFragment extends Fragment {
         db.collection("usersQRCodes").whereEqualTo("qrCodeData", qrCodeData.getData()).get().addOnCompleteListener(new OnCompleteListener<>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
+                if (task.isSuccessful() && task.getResult().getDocuments().size() != 0) {
                     for (QueryDocumentSnapshot doc1 : task.getResult()) {
-                        String ID = doc1.getString("identifierId");
-                        db.collection("users").whereEqualTo("identifierId", ID).get().addOnCompleteListener(task2 -> {
-                            int Profile = 0;
-                            if (task2.isSuccessful()){
-                                String iconId = (task2.getResult().getDocuments().get(0).getString("avatarId") == null) ? "0" :  task2.getResult().getDocuments().get(0).getString("avatarId");
-                                iconId = (Objects.equals(iconId, "")) ? "0" : iconId;
-                                Profile = Integer.parseInt(iconId);
+                            String ID = doc1.getString("identifierId");
+                            db.collection("users").whereEqualTo("identifierId", ID).get().addOnCompleteListener(task2 -> {
+                                int Profile = 0;
+                                if (task2.isSuccessful() && task2.getResult().getDocuments().size() != 0) {
+                                    String iconId = (task2.getResult().getDocuments().get(0).getString("avatarId") == null) ? "0" : task2.getResult().getDocuments().get(0).getString("avatarId");
+                                    iconId = (iconId.equals("")) ? "0" : iconId;
+                                    Profile = Integer.parseInt(iconId);
 
-                                int finalProfile = Profile;
-                                imageRef.child(ID + '-' + qrCodeData.getData()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        Date DateCreated = qrCodeData.getDate();
+                                    int finalProfile = Profile;
+                                    imageRef.child(ID + '-' + qrCodeData.getData()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            Date DateCreated = qrCodeData.getDate();
 
-                                        final PictureData NewPicture = new PictureData(task2.getResult().getDocuments().get(0).getString("name"), DateCreated, finalProfile, uri);
-                                        NewAdapter.add(NewPicture);
-                                        NewAdapter.notifyDataSetChanged();
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception exception) {
-                                        Log.e(TAG, "onFailure: Feed image failed to load", exception);
-                                    }
-                                });
-                            }
-                        });
+                                            final PictureData NewPicture = new PictureData(task2.getResult().getDocuments().get(0).getString("name"), DateCreated, finalProfile, uri);
+                                            NewAdapter.add(NewPicture);
+                                            NewAdapter.notifyDataSetChanged();
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception exception) {
+                                            Log.e(TAG, "onFailure: Feed image failed to load", exception);
+                                        }
+                                    });
+                                }
+                            });
+
                     }
                 }
             }
         });
 
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                NavHostFragment.findNavController(PictureFragment.this).navigate(R.id.pictureFragment_to_action_qrCodeInformationFragment);
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         return root;
     }
@@ -148,7 +158,7 @@ public class PictureFragment extends Fragment {
         // Back arrow
         if (item.getItemId() == android.R.id.home) {
             // Navigate back to the previous fragment
-            NavHostFragment.findNavController(PictureFragment.this).navigate(R.id.pictureFragment_to_action_qrCodeInformationFragment, qrCodeInformationBundle);
+            NavHostFragment.findNavController(PictureFragment.this).navigate(R.id.pictureFragment_to_action_qrCodeInformationFragment);
             return true;
         }
 
