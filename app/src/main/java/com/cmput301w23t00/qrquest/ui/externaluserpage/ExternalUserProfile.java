@@ -20,6 +20,7 @@ public class ExternalUserProfile implements Parcelable {
     private String userId;
     private String phoneNumber;
     private String email;
+    private String avatarId;
 
     public ExternalUserProfile() {
         name = "Bob";
@@ -38,6 +39,7 @@ public class ExternalUserProfile implements Parcelable {
                     aboutMe = task.getResult().getDocuments().get(0).getString("aboutMe");
                     phoneNumber = task.getResult().getDocuments().get(0).getString("phoneNumber");
                     email = task.getResult().getDocuments().get(0).getString("email");
+                    avatarId = task.getResult().getDocuments().get(0).getString("avatarId");
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -67,6 +69,15 @@ public class ExternalUserProfile implements Parcelable {
             return new ExternalUserProfile[size];
         }
     };
+
+    public ExternalUserProfile(String userId, String userName, String userAboutMe, String userEmail, String userPhoneNumber, String userAvatarId) {
+        this.userId = userId;
+        name = userName;
+        aboutMe = userAboutMe;
+        phoneNumber = userPhoneNumber;
+        email = userEmail;
+        avatarId = userAvatarId;
+    }
 
     public String getName() {
         return name;

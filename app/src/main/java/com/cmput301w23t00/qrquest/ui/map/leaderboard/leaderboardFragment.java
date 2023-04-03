@@ -26,7 +26,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 public class leaderboardFragment extends Fragment {
@@ -76,8 +75,15 @@ public class leaderboardFragment extends Fragment {
                         String userAboutMe = (String) document.getData().get("aboutMe");
                         String userEmail = (String) document.getData().get("email");
                         String userPhoneNumber = (String) document.getData().get("phoneNumber");
+                        String userAvatarNumber;
+                        try {
+                            userAvatarNumber = (String) document.getData().get("avatarId");
+                        } catch (Exception e) { // catch NullPointerException explicitly
+                            userAvatarNumber = "0"; // use string "0" instead of String.valueOf(0)
+                        }
 
                         // Find all QR codes scanned by the current user
+                        String finalUserAvatarNumber = userAvatarNumber;
                         usersQRCodesCollectionReference.whereEqualTo("identifierId", userId)
                                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override
@@ -94,14 +100,13 @@ public class leaderboardFragment extends Fragment {
 
                                             try {
                                                 // Add the QR code with the highest score to the leaderboard list
-                                                dataList.add(new leaderboardUser(userId, userName, totalScore, 1));
+                                                dataList.add(new leaderboardUser(userId, userName, userAboutMe, userEmail, userPhoneNumber, finalUserAvatarNumber, totalScore, 1));
 
                                                 // Sort the leaderboard list based on score in descending order
-                                                Collections.sort(dataList, new Comparator<leaderboardUser>() {
+                                                dataList.sort(new Comparator<leaderboardUser>() {
                                                     @Override
                                                     public int compare(leaderboardUser o1, leaderboardUser o2) {
-                                                        int scoreComparison = Long.compare(o2.getScore(), o1.getScore());
-                                                        return scoreComparison;
+                                                        return Long.compare(o2.getScore(), o1.getScore());
                                                     }
                                                 });
 
@@ -138,9 +143,13 @@ public class leaderboardFragment extends Fragment {
                 leaderboardUser user = dataList.get(index);
 
                 String userId = user.getUserId();
-                System.out.println(userId);
+                String userName = user.getUserName();
+                String userAboutMe = user.getUserAboutMe();
+                String userEmail = user.getUserEmail();
+                String userPhoneNumber = user.getUserPhoneNumber();
+                String userAvatarId = user.getUserAvatarId();
 
-                ExternalUserProfile userProfile = new ExternalUserProfile(userId);
+                ExternalUserProfile userProfile = new ExternalUserProfile(userId, userName, userAboutMe, userEmail, userPhoneNumber, userAvatarId);
 
                 System.out.println(userProfile.getEmail());
                 System.out.println(userProfile.getPhoneNumber());

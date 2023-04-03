@@ -13,6 +13,10 @@ public class leaderboardUser implements Parcelable {
     private long position;
     private String userName;
     private String userId;
+    private String userAboutMe;
+    private String userEmail;
+    private String userPhoneNumber;
+    private String userAvatarId;
 
     /**
      * Constructs a User based on a parcel input
@@ -36,11 +40,47 @@ public class leaderboardUser implements Parcelable {
         }
     };
 
-    public leaderboardUser(String userId, String userName, long score, int position) {
-        this.score = score;
+    public leaderboardUser(String userId, String userName, String userAboutMe, String userEmail, String userPhoneNumber, String userAvatarId, long totalScore, int position) {
+        this.score = totalScore;
         this.position = position;
+        this.userAboutMe = userAboutMe;
         this.userName = userName;
+        this.userEmail = userEmail;
+        this.userPhoneNumber = userPhoneNumber;
+        this.userAvatarId = userAvatarId;
         this.userId = userId;
+    }
+
+    public String getUserAvatarId() {
+        return userAvatarId;
+    }
+
+    public void setUserAvatarId(String userAvatarId) {
+        this.userAvatarId = userAvatarId;
+    }
+
+    public String getUserAboutMe() {
+        return userAboutMe;
+    }
+
+    public void setUserAboutMe(String userAboutMe) {
+        this.userAboutMe = userAboutMe;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public String getUserPhoneNumber() {
+        return userPhoneNumber;
+    }
+
+    public void setUserPhoneNumber(String userPhoneNumber) {
+        this.userPhoneNumber = userPhoneNumber;
     }
 
     public String getUserId() {
