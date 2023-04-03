@@ -6,11 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
@@ -68,7 +68,7 @@ public class leaderboardUserAdapter extends ArrayAdapter<leaderboardUser> {
         TextView userName = view.findViewById(R.id.leaderboard_user_name);
         TextView UserPosition = view.findViewById(R.id.leaderboard_qr_code_position);
         TextView QRScore = view.findViewById(R.id.leaderboard_total_score);
-        ImageView UserProfileImage = view.findViewById(R.id.leaderboard_user_profile_image);
+        AppCompatImageView UserProfileImage = view.findViewById(R.id.leaderboard_user_picture);
 
         // Format date
         SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
