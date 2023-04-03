@@ -32,28 +32,57 @@ public class leaderboardPageNavigationTest {
     }
 
     /**
-     * This method tests the fragment navigation and cancellation of QR code deletion.
+     * This method tests the fragment navigation of the leaderboard.
      * @throws InterruptedException
      */
     @Test
-    public void testLeaderboardUI() throws InterruptedException {
+    public void testLeaderboardNavigation() throws InterruptedException {
         UserProfile.setUserId("com.google.android.gms.tasks.zzw@9bae679");
 
+        Thread.sleep(10000);
         // Navigate to libraryFragment
         onView(withId(R.id.circle_button_frame)).perform(click());
 
         // Verify that the leaderboardFragment is displayed
-        Thread.sleep(20000); // Wait for 20 seconds
+        Thread.sleep(10000); // Wait for 10 seconds
         onView(withId(R.id.fragment_leaderboard_parent)).check(matches(isDisplayed()));
 
         // Click on the first item in the User list
-        Thread.sleep(20000); // Wait for 20 seconds
+        Thread.sleep(10000); // Wait for 10 seconds
         onData(anything())
                 .inAdapterView(withId(R.id.leaderboard_users_list))
                 .atPosition(0)
                 .perform(click());
-
-        // Verify that the user profile Fragment is displayed
-        //onView(withId(R.id.)).check(matches(isDisplayed()));
     }
+
+    @Test
+    public void testLayoutParent() throws InterruptedException {
+        UserProfile.setUserId("com.google.android.gms.tasks.zzw@9bae679");
+        Thread.sleep(10000);
+        // Navigate to libraryFragment
+        onView(withId(R.id.circle_button_frame)).perform(click());
+        onView(withId(R.id.fragment_leaderboard_parent)).check(matches(isDisplayed()));
+
+    }
+
+    @Test
+    public void testLayoutUsersList() throws InterruptedException {
+        UserProfile.setUserId("com.google.android.gms.tasks.zzw@9bae679");
+        Thread.sleep(10000);
+        // Navigate to libraryFragment
+        onView(withId(R.id.circle_button_frame)).perform(click());
+        onView(withId(R.id.leaderboard_users_list)).check(matches(isDisplayed()));
+
+    }
+
+    @Test
+    public void testLayoutFiller() throws InterruptedException {
+        UserProfile.setUserId("com.google.android.gms.tasks.zzw@9bae679");
+        Thread.sleep(10000);
+        // Navigate to libraryFragment
+        onView(withId(R.id.circle_button_frame)).perform(click());
+        onView(withId(R.id.filler)).check(matches(isDisplayed()));
+
+    }
+
 }

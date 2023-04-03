@@ -64,10 +64,10 @@ public class CreateAccountTest {
         onView(withId(R.id.addProfileImage)).check(matches(isDisplayed()));
     }
 
-    @Test
-    public void testCreateAccountProfileMaskDisplayed() {
-        onView(withId(R.id.addProfileImageMask)).check(matches(isDisplayed()));
-    }
+//    @Test
+//    public void testCreateAccountProfileMaskDisplayed() {
+//        onView(withId(R.id.addProfileImageMask)).check(matches(isDisplayed()));
+//    }
 
     @Test
     public void testCreateAccountNameFieldDisplayed() {

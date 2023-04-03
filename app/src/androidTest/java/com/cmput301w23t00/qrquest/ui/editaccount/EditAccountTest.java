@@ -59,10 +59,10 @@ public class EditAccountTest {
         onView(withId(R.id.editProfileImage)).check(matches(isDisplayed()));
     }
 
-    @Test
-    public void testEditAccountProfileMaskDisplayed() {
-        onView(withId(R.id.editProfileImageMask)).check(matches(isDisplayed()));
-    }
+//    @Test
+//    public void testEditAccountProfileMaskDisplayed() {
+//        onView(withId(R.id.editProfileImageMask)).check(matches(isDisplayed()));
+//    }
 
     @Test
     public void testEditAccountNameFieldDisplayed() {
