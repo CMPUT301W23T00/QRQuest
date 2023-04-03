@@ -29,7 +29,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-// this is a dialog window where we ask the user to input a EditAvatarFragment or edit one, the design decision was done my the lab instructions in lab 3
+/**
+ * This is a dialog window where the user is prompted through a pop-up dialog to change their Avatar.
+ */
 public class EditAvatarFragment extends DialogFragment {
     private EditAvatarDialogListener listener;
     int avatarId = 0;

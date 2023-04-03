@@ -5,7 +5,16 @@ import com.cmput301w23t00.qrquest.R;
 
 import java.util.ArrayList;
 
+/**
+ * Contains methods to identify resource ID to implement the display picture of User Profiles.
+ */
 public class AvatarUtility {
+
+    /**
+     * Returns the resource ID of avatar chosen by user corresponding to the avatarId.
+     * @param avatarId associated with the UserProfile.
+     * @return  ResourceId of selected avatar.
+     */
     public static int getAvatarImageResource(int avatarId) {
         if (avatarId == 0){
             return R.drawable.grug;
@@ -35,10 +44,15 @@ public class AvatarUtility {
             return R.drawable.avatar12;
         }
 
-        // -1 means an error occured
+        // -1 means an error occurred.
         return -1;
     }
 
+    /**
+     * ArrayList of positions of all the undisplayed avatars.
+     * @param avatarId associated with the UserProfile.
+     * @return ArrayList of positions of all the undisplayed avatars.
+     */
     public static ArrayList<Integer> getNonUseAvatarIds(int avatarId) {
         ArrayList<Integer> arrayList = new ArrayList();
         if (avatarId != 0) {
