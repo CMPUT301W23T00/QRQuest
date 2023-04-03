@@ -81,7 +81,6 @@ public class QrNameActivity extends AppCompatActivity {
     public static final String REQUEST_RESULT = "REQUEST_RESULT";
     private UserSettings userSettings = new UserSettings();
 
-
     String qrCodeData;
 
     /**
@@ -100,8 +99,6 @@ public class QrNameActivity extends AppCompatActivity {
 
         Intent qrCodeIntent = getIntent();
         this.qrCodeData = QRCodeProcessor.sha256(Objects.requireNonNull(qrCodeIntent).getStringExtra("qrCodeData"));
-
-
 
         ImageView imgview = findViewById(R.id.main_backgroundImage);
         Button canButton = findViewById(R.id.take_photo_cancel_button);
@@ -201,7 +198,6 @@ public class QrNameActivity extends AppCompatActivity {
                         Toast.makeText(QrNameActivity.this, "Don't have location permissions can't record location", Toast.LENGTH_SHORT).show();
                     }
                 }
-
 
                 String fid = UserProfile.getUserId();
 
