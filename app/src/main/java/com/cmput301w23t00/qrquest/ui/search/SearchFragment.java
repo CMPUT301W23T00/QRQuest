@@ -71,7 +71,17 @@ public class SearchFragment extends Fragment {
                         String userId = (String) document.getData().get("identifierId");
                         String phoneNumber = (String) document.getData().get("phoneNumber");
                         String email = (String) document.getData().get("email");
-                        ExternalUserProfile currentUser = new ExternalUserProfile(name,aboutMe,userId,phoneNumber,email);
+                        String userAvatarNumber;
+                        try {
+                            userAvatarNumber = (String) document.getData().get("avatarId");
+                        } catch (Exception e) { // catch NullPointerException explicitly
+                            userAvatarNumber = "0"; // use string "0" instead of String.valueOf(0)
+                        }
+
+                        if (userAvatarNumber == "") {
+                            userAvatarNumber = "0";
+                        }
+                        ExternalUserProfile currentUser = new ExternalUserProfile(name, aboutMe, userId, phoneNumber, email, userAvatarNumber);
                         allUsers.add(currentUser);
                         filteredUsers.add(currentUser);
                         usersAdapter.notifyDataSetChanged();

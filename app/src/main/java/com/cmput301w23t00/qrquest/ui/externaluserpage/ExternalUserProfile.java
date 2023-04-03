@@ -30,13 +30,15 @@ public class ExternalUserProfile implements Parcelable {
         phoneNumber = "123-000-1234";
         email = "bob@bob.bob";
         userId = "1010110";
+        avatarId = "0";
     }
-    public ExternalUserProfile(String name, String aboutMe, String userId, String phoneNumber, String email) {
+    public ExternalUserProfile(String name, String aboutMe, String userId, String phoneNumber, String email, String avatarId) {
         this.name = name;
         this.aboutMe = aboutMe;
         this.userId = userId;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.avatarId = avatarId;
     }
 
     public ExternalUserProfile(String userId) {
@@ -49,6 +51,7 @@ public class ExternalUserProfile implements Parcelable {
         userId = in.readString();
         phoneNumber = in.readString();
         email = in.readString();
+        avatarId = in.readString();
     }
 
     public static final Creator<ExternalUserProfile> CREATOR = new Creator<ExternalUserProfile>() {
@@ -62,15 +65,6 @@ public class ExternalUserProfile implements Parcelable {
             return new ExternalUserProfile[size];
         }
     };
-
-    public ExternalUserProfile(String userId, String userName, String userAboutMe, String userEmail, String userPhoneNumber, String userAvatarId) {
-        this.userId = userId;
-        name = userName;
-        aboutMe = userAboutMe;
-        phoneNumber = userPhoneNumber;
-        email = userEmail;
-        avatarId = userAvatarId;
-    }
 
     public String getName() {
         return name;
@@ -124,5 +118,6 @@ public class ExternalUserProfile implements Parcelable {
         parcel.writeString(userId);
         parcel.writeString(phoneNumber);
         parcel.writeString(email);
+        parcel.writeString(avatarId);
     }
 }

@@ -154,7 +154,7 @@ public class leaderboardFragment extends Fragment {
                 String userPhoneNumber = user.getUserPhoneNumber();
                 String userAvatarId = user.getUserAvatarId();
 
-                ExternalUserProfile userProfile = new ExternalUserProfile(userId, userName, userAboutMe, userEmail, userPhoneNumber, userAvatarId);
+                ExternalUserProfile userProfile = new ExternalUserProfile(userName, userAboutMe, userId, userPhoneNumber, userEmail, userAvatarId);
 
                 // Create a bundle to store data that will be passed to the other user profile fragment
                 Bundle bundle = new Bundle();

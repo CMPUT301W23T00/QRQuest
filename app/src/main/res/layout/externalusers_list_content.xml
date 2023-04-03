@@ -32,6 +32,7 @@
                 android:layout_gravity="center">
 
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/externeal_users_list_icon"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
@@ -41,19 +42,19 @@
                     android:elevation="0dp"
                     android:src="@drawable/grug" />
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/comment_ring"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_gravity="center"
-                    android:layout_margin="0dp"
-                    android:alpha="1"
-                    android:elevation="0dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ring" />
+
             </androidx.cardview.widget.CardView>
         </androidx.cardview.widget.CardView>
-
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/comment_ring"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:layout_margin="0dp"
+            android:alpha="1"
+            android:elevation="0dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ring" />
     </FrameLayout>
 
     <LinearLayout

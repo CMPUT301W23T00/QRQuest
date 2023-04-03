@@ -13,7 +13,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.profile.ProfileFragment">
 
-    <com.google.android.material.imageview.ShapeableImageView
+    <FrameLayout
         android:id="@+id/imageView"
         android:layout_width="130dp"
         android:layout_height="130dp"
@@ -30,10 +30,49 @@
         app:layout_constraintBottom_toTopOf="@+id/profile_username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/Circular"
-        app:strokeWidth="1dp"
-        app:strokeColor="?attr/colorOnPrimary"/>
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="115dp"
+            android:layout_height="115dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            app:cardCornerRadius="250dp"
+            android:layout_gravity="center"
+            app:cardBackgroundColor="@color/white">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="115dp"
+                android:layout_height="115dp"
+                app:cardCornerRadius="250dp"
+                android:layout_gravity="center">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/profile_icon"
+                    android:layout_width="115dp"
+                    android:layout_height="115dp"
+                    android:layout_gravity="center"
+                    android:alpha="1"
+                    android:scaleType="centerCrop"
+                    android:layout_margin="4dp"
+                    android:elevation="0dp"
+                    android:src="@drawable/grug" />
+
+            </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_gravity="center"
+            android:alpha="1"
+            android:scaleType="centerCrop"
+            android:layout_margin="0dp"
+            android:elevation="0dp"
+            android:src="@drawable/ring" />
+
+    </FrameLayout>
+
 
     <TextView
         android:id="@+id/profile_username"
