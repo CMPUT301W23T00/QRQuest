@@ -32,6 +32,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Objects;
+
 /**
  * The class  QR code information fragment extends fragment
  *
@@ -77,9 +79,9 @@ public class QRCodeInformationFragment extends Fragment {
         View root = binding.getRoot();
 
         // Retrieve data passed in from the previous fragment
-        Bundle bundle = getArguments();
+        if (savedInstanceState != null) this.bundle = ViewCycleStack.pop();
+        else this.bundle = getArguments();
         if (bundle != null) {
-            this.bundle = bundle;
             qrCode = bundle.getParcelable("selectedQRCode");
             userID = bundle.getString("userID");
             docID = bundle.getString("documentID");
@@ -119,14 +121,6 @@ public class QRCodeInformationFragment extends Fragment {
      */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            this.bundle = savedInstanceState;
-            qrCode = bundle.getParcelable("selectedQRCode");
-            userID = bundle.getString("userID");
-            docID = bundle.getString("documentID");
-            isMap = bundle.getBoolean("isMap");
-            isLeaderboard = bundle.getBoolean("isLeaderboard");
-        }
         // Creates this fragment's menu.
         setHasOptionsMenu(true);
 
@@ -255,14 +249,6 @@ public class QRCodeInformationFragment extends Fragment {
         return true;
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable("selectedQRCode", qrCode);
-        outState.putString("userID", userID);
-        outState.putString("documentID", docID);
-        outState.putBoolean("isMap", false);
-    }
 
     /**
      * onDestroyView is called when the view is destroyed.
@@ -270,9 +256,13 @@ public class QRCodeInformationFragment extends Fragment {
      */
     @Override
     public void onDestroyView() {
-
         super.onDestroyView();
-        onSaveInstanceState(new Bundle());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ViewCycleStack.push(bundle);
     }
 
     @Override

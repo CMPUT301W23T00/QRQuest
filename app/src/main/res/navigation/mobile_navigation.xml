@@ -143,6 +143,7 @@
         android:id="@+id/navigation_externalusers"
         android:name="com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.ExternalUsersFragment"
         android:label="@string/external_users"
+        android:saveEnabled="true"
         tools:layout="@layout/fragment_externalusers">
 
         <action

@@ -2,8 +2,6 @@ package com.cmput301w23t00.qrquest.ui.library.qrcodeinformation;
 
 import static android.content.ContentValues.TAG;
 
-import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -27,7 +24,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
-import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.externaluserpage.ExternalUserProfile;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
 import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
@@ -37,9 +33,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.model.Document;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -66,12 +60,11 @@ public class ExternalUsersFragment extends Fragment {
         usersList = (ListView) root.findViewById(R.id.other_users_list);
         usersList.setAdapter(usersAdapter);
 
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            this.bundle = bundle;
-            qrCode = bundle.getParcelable("selectedQRCode");
-            docID = bundle.getString("documentID");
-        }
+
+        if (getArguments() == null) this.bundle = ViewCycleStack.pop();
+        else this.bundle = getArguments();
+        qrCode = bundle.getParcelable("selectedQRCode");
+        docID = bundle.getString("documentID");
 
         setHasOptionsMenu(true);
 
@@ -92,7 +85,8 @@ public class ExternalUsersFragment extends Fragment {
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()); {
+                        if (task.isSuccessful()) ;
+                        {
                             int count = task.getResult().getDocuments().size();
                             for (int i = 0; i < count; i++) {
                                 DocumentSnapshot document = task.getResult().getDocuments().get(i);
@@ -116,7 +110,7 @@ public class ExternalUsersFragment extends Fragment {
                                                 if (total_users[0] == updated_users[0]) {
                                                     users.sort(Comparator.comparing(ExternalUserProfile::getName));
                                                     Collections.reverse(users);
-                                                    usersList.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, users.size()*239 + 200));
+                                                    usersList.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, users.size() * 239 + 200));
                                                     usersAdapter.notifyDataSetChanged();
                                                 }
                                             }
@@ -153,9 +147,14 @@ public class ExternalUsersFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -169,4 +168,11 @@ public class ExternalUsersFragment extends Fragment {
     private void restoreActionBar() {
         NavHostFragment.findNavController(this).navigate(R.id.action_navigation_externalusersfragment_to_qrCodeInformationFragment, this.bundle);
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ViewCycleStack.push(bundle);
+    }
+
 }
