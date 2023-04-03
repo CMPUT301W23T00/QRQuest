@@ -126,6 +126,15 @@ public class SearchFragment extends Fragment {
                 return false;
             }
         });
+        usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Bundle bundle = new Bundle();
+
+                bundle.putParcelable("selectedUser", filteredUsers.get(i));
+                Navigation.findNavController(view).navigate(R.id.action_navigation_search_to_externaluser_profile, bundle);
+            }
+        });
         return root;
     }
 
