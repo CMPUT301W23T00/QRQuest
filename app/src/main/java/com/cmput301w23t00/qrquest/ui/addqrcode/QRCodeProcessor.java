@@ -13,6 +13,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class handles processing of QR code, i.e: score generation, image generation.
+ */
 public class QRCodeProcessor {
     // Instance variable to store the QR code data
     private String QRCodeData;

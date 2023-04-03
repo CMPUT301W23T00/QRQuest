@@ -2,9 +2,11 @@ package com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.comments;
 
 import android.graphics.drawable.Drawable;
 import android.media.Image;
-
 import java.util.Date;
 
+/**
+ * This class contains data that is shown on the comments feed for each comment.
+ */
 public class CommentData {
 
     private String mUser;

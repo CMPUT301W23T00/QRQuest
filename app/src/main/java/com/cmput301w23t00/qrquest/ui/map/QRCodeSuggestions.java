@@ -6,6 +6,9 @@ import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 
 import java.util.Date;
 
+/**
+ * This class implements an interface that helps users search for QR codes in the map.
+ */
 public class QRCodeSuggestions implements SearchSuggestion {
 
     private String name;

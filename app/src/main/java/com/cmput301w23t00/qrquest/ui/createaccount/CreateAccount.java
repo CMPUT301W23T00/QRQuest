@@ -34,6 +34,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+/**
+ *  This activity creates a user account and instantiates each user document in the Firestore database. The user
+ *  must input a name, email, and a phone number to proceed; a pop up dialog to let the user choose an avatar
+ *  as a display image is available too.
+ */
 public class CreateAccount extends AppCompatActivity implements EditAvatarDialogListener {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -154,6 +159,11 @@ public class CreateAccount extends AppCompatActivity implements EditAvatarDialog
         });
     }
 
+
+    /**
+     * Updates image displayed in Profile Picture to avatar referred by 'id'.
+     * @param id is the avatarId of the user.
+     */
     @Override
     public void updateProfilePicture(int id) {
         profilePictureID = id;

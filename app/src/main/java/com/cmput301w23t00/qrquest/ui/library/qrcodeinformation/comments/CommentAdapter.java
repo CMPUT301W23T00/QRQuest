@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * This class represents an ArrayAdapter for CommentData
+ */
 public class CommentAdapter extends ArrayAdapter<CommentData> {
     private List<CommentData> mData;
 

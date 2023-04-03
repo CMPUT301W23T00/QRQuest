@@ -19,6 +19,11 @@ import com.cmput301w23t00.qrquest.ui.updateavatar.EditAvatarFragment;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+/**
+ *  This activity lets the user edit their account and save their information in the Firestore database. The user
+ *  must input have a name, email, and a phone number to proceed, all of which can be edited, along with an optional About Me section.
+ *  Likewise to CreateAccount, a pop up dialog to let the user choose an avatar as a display image is available too.
+ */
 public class EditAccount extends AppCompatActivity implements EditAvatarDialogListener {
     EditText editNameField, editAboutMeField, editEmailField, editPhoneField;
     Button editCancelButton, editConfirmButton;
@@ -115,6 +120,10 @@ public class EditAccount extends AppCompatActivity implements EditAvatarDialogLi
         });
     }
 
+    /**
+     * Updates image displayed in Profile Picture to avatar referred by 'id'.
+     * @param id is the avatarId of the user.
+     */
     @Override
     public void updateProfilePicture(int id) {
         profilePictureID = id;

@@ -23,7 +23,9 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * LoadingScreen the activity the is displayed for the first 5 seconds of runtime
+ * This activity launches the app and handles user ID generation. Within a loading time 4 seconds, this activity shows the app logo while checking in the database
+ * if the device has a unique ID to identify itself; if an ID exists, the app moves to the main activity, otherwise a new ID is generated before the app moves on
+ * to let the user create a new account.
  */
 public class LoadingScreen extends AppCompatActivity {
     @Override

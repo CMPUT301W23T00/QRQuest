@@ -30,9 +30,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * The class  QR code information fragment extends fragment
- *
- * The QRCodeInformationFragment class extends the Fragment class and provides a fragment that displays information about a QR code.
+ * This class provides a fragment that displays Comments about a QR code.
  */
 public class CommentFragment extends Fragment {
 
@@ -40,12 +38,11 @@ public class CommentFragment extends Fragment {
     Drawable Profile;
     Bundle qrCodeInformationBundle;
 
-
     String User;
 
     /**
      * onCreateView is called when the view is first created.
-     * It inflates the view and sets up the QRCodeInformationViewModel to display the QR code information.
+     * It inflates the view and sets up the QRCodeInformationViewModel to display the comments.
      *
      * @param inflater the LayoutInflater object that can be used to inflate any views in the fragment
      * @param container the parent view that the fragment's UI should be attached to
