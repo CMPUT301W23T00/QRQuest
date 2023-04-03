@@ -31,14 +31,11 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.addqrcode.qrnameactivity.takephotoactivity.TakePhotoActivity;
-import com.cmput301w23t00.qrquest.ui.createaccount.CreateAccount;
 import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.cmput301w23t00.qrquest.ui.profile.UserSettings;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -48,26 +45,15 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
-import com.google.firebase.installations.FirebaseInstallations;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
-import java.time.LocalDate;
-import java.util.UUID;
-
-
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-
 
 /**
  * This is the main activity for adding a name, image and location to a QR code. The user can take a photo
@@ -99,7 +85,7 @@ public class QrNameActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         Intent qrCodeIntent = getIntent();
-        this.qrCodeData = QRCodeProcessor.sha256(Objects.requireNonNull(qrCodeIntent).getStringExtra("qrCodeData"));
+        this.qrCodeData = qrCodeIntent.getStringExtra("qrCodeData");
 
 
 
@@ -242,25 +228,30 @@ public class QrNameActivity extends AppCompatActivity {
                             }
                         });
 
-                FirebaseStorage storage = FirebaseStorage.getInstance();
-                StorageReference storageRef = storage.getReference().child("images/" + fid+"-"+qrCodeData);
-                File f = new File(getRealPathFromURI(picturesUri));
-                File compressedFile = ImageCompressor.compressImage(getApplicationContext(), f);
-                Uri compressedFileUri = Uri.fromFile(compressedFile);
+                try {
+                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                    StorageReference storageRef = storage.getReference().child("images/" + fid+"-"+qrCodeData);
+                    File f = new File(getRealPathFromURI(picturesUri));
+                    File compressedFile = ImageCompressor.compressImage(getApplicationContext(), f);
+                    Uri compressedFileUri = Uri.fromFile(compressedFile);
 
-                storageRef.putFile(compressedFileUri)
-                        .addOnFailureListener(new OnFailureListener() {
-                            /**
-                             * On failure of a Firebase upload
-                             *
-                             * @param e an Exception
-                             */
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // Handle the error
-                                Log.e("TAG", "Error uploading image to Firebase Storage", e);
-                            }
-                        });
+                    storageRef.putFile(compressedFileUri)
+                            .addOnFailureListener(new OnFailureListener() {
+                                /**
+                                 * On failure of a Firebase upload
+                                 *
+                                 * @param e an Exception
+                                 */
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Handle the error
+                                    Log.e("TAG", "Error uploading image to Firebase Storage", e);
+                                }
+                            });
+                } catch (Exception e) {
+                    Log.e("TAG","Error", e);
+                }
+
                 finish();
             }
         });

@@ -32,8 +32,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Objects;
-
 /**
  * The QRCodeInformationFragment class extends the Fragment class and provides a fragment that displays information about a QR code.
  */
@@ -92,7 +90,6 @@ public class QRCodeInformationFragment extends Fragment {
                 // Update the ViewModel with the information of the selected QR code
                 libraryQRCode = qrCode;
                 QRCodeProcessor qrCodeProcessor = new QRCodeProcessor(qrCode.getData());
-                qrCodeInformationViewModel.setQRCodeInfo(qrCodeProcessor.getName(), "test description");
                 Bitmap Image = qrCodeProcessor.getBitmap(getActivity());
                 ImageView TempImage = root.findViewById(R.id.qr_code_image);
                 TempImage.setImageBitmap(Image);
@@ -162,7 +159,13 @@ public class QRCodeInformationFragment extends Fragment {
             NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_commentFragment, this.bundle);
             return true;
         }
-//
+
+        if (id == R.id.qr_feed) {
+            // Start a new activity to see comments on this QR code
+            NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_pictureFragment, this.bundle);
+            return true;
+        }
+
         if (id == R.id.qr_same_code) {
             NavHostFragment.findNavController(this).navigate(R.id.action_qrCodeInformationFragment_to_externalusersfragment, this.bundle);
             return true;

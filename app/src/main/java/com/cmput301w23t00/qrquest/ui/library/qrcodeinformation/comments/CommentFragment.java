@@ -25,6 +25,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -34,11 +35,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CommentFragment extends Fragment {
 
     private FragmentCommentsBinding binding; // view binding object for the fragment
-    String userID; // a string to hold the current user's ID
-    String docID; // the qr code document id
-    Boolean isMap; // determines which page to return to
-    FirebaseFirestore db; // Firestore database instance
-    LibraryQRCode libraryQRCode;
     Drawable Profile;
     Bundle qrCodeInformationBundle;
 
@@ -60,8 +56,6 @@ public class CommentFragment extends Fragment {
         qrCodeInformationBundle = getArguments();
         LibraryQRCode qrCodeData = qrCodeInformationBundle.getParcelable("selectedQRCode");
 
-        // Inflate the fragment_qrcodeinformation.xml layout for this fragment.
-
         binding = FragmentCommentsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
@@ -81,25 +75,20 @@ public class CommentFragment extends Fragment {
                         db.collection("users").whereEqualTo("identifierId", ID).get().addOnCompleteListener(task2 -> {
                             User = "Anonymous User";
                             String Comment = doc1.getString("comment");
+                            Date dateScanned = doc1.getDate("dateScanned");
                             Integer Inp = -1;
 
                             if (task2.isSuccessful()) {
-                                for (QueryDocumentSnapshot doc2 : task2.getResult()) {
-                                    User = doc2.getString("name");
+                                    User = task2.getResult().getDocuments().get(0).getString("name");
                                     // PFP processing
 
-                                    String Avatar = (String) doc2.get("avatarId");
+                                    String Avatar = (String) task2.getResult().getDocuments().get(0).get("avatarId");
                                     if (Avatar != "" && Avatar != null) {
                                         AvatarUtility AvatarIDGetter = new AvatarUtility();
-                                        Integer InputId = Integer.parseInt(Avatar);
-                                        Integer PFPId = AvatarIDGetter.getAvatarImageResource(InputId);
-                                        Inp = PFPId;
+                                        int InputId = Integer.parseInt(Avatar);
+                                        Inp = AvatarIDGetter.getAvatarImageResource(InputId);
                                     }
-
-                                    break;
-                                }
                             }
-
 
                             if (Inp != -1) {
                                 Profile = getResources().getDrawable(Inp);
@@ -107,7 +96,7 @@ public class CommentFragment extends Fragment {
                                 Profile = getResources().getDrawable(R.drawable.default_avatar);
                             }
 
-                            CommentData NewComment = new CommentData(User,Comment,Profile);
+                            CommentData NewComment = new CommentData(User, dateScanned, Comment, Profile);
                             NewAdapter.add(NewComment);
                             NewAdapter.notifyDataSetChanged();
                         });

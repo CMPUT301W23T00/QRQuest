@@ -56,7 +56,8 @@ public class ExternalUserProfileFragment extends Fragment {
     private Bundle bundle;
     private Boolean isSearch;
     private Boolean isLeaderboard;
-    private Boolean isExternalProfile;
+    private Boolean isExternalUsers;
+    Boolean back = false;
 
     @Nullable
     @Override
@@ -79,7 +80,7 @@ public class ExternalUserProfileFragment extends Fragment {
         ExternalUserProfile userProfile = bundle.getParcelable("selectedUser");
         isSearch = bundle.getBoolean("isSearch");
         isLeaderboard = bundle.getBoolean("isLeaderboard");
-        isExternalProfile = bundle.getBoolean("isExternalProfile");
+        isExternalUsers = bundle.getBoolean("isExternalUsers");
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
@@ -155,12 +156,29 @@ public class ExternalUserProfileFragment extends Fragment {
                 //bundle.putString("documentID", docID);
                 bundle.putBoolean("isMap", false);
                 bundle.putBoolean("isLeaderboard", false);
-                bundle.putBoolean("isExternalProfile", true);
+                bundle.putBoolean("isExternalUserProfile", true);
                 // Use the Navigation component to navigate to the QR code information fragment,
                 // and pass the bundle as an argument to the destination fragment
                 Navigation.findNavController(view).navigate(R.id.externaluser_profile_to_qrcodeinformation_fragment, bundle);
             }
         });
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                back = true;
+                if (isLeaderboard) {
+                    NavHostFragment.findNavController(ExternalUserProfileFragment.this).navigate(R.id.action_navigation_externaluserprofilefragment_to_leaderboard);
+                } else if (isSearch) {
+                    NavHostFragment.findNavController(ExternalUserProfileFragment.this).navigate(R.id.action_externaluser_profile_to_navigation_search);
+                } else if (isExternalUsers) {
+                    NavHostFragment.findNavController(ExternalUserProfileFragment.this).navigate(R.id.action_navigation_externaluserprofile_to_externalusersfragment);
+                } else {
+                    NavHostFragment.findNavController(ExternalUserProfileFragment.this).navigate(R.id.action_navigation_externaluserprofile_to_externalusersfragment);
+                }
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);
 
         return root;
     }
@@ -187,12 +205,13 @@ public class ExternalUserProfileFragment extends Fragment {
 
         // Back arrow
         if (id == android.R.id.home) {
+            back = true;
             // Navigate back to the previous fragment
             if (isLeaderboard) {
                 NavHostFragment.findNavController(ExternalUserProfileFragment.this).navigate(R.id.action_navigation_externaluserprofilefragment_to_leaderboard);
             } else if (isSearch) {
                 NavHostFragment.findNavController(ExternalUserProfileFragment.this).navigate(R.id.action_externaluser_profile_to_navigation_search);
-            } else if (isExternalProfile) {
+            } else if (isExternalUsers) {
                 NavHostFragment.findNavController(ExternalUserProfileFragment.this).navigate(R.id.action_navigation_externaluserprofile_to_externalusersfragment);
             } else {
                 NavHostFragment.findNavController(ExternalUserProfileFragment.this).navigate(R.id.action_navigation_externaluserprofile_to_externalusersfragment);
@@ -207,5 +226,6 @@ public class ExternalUserProfileFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        if (!back) ViewCycleStack.push(bundle);
     }
 }

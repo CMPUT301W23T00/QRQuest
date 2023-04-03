@@ -9,7 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -179,24 +181,35 @@ public class LibraryFragment extends Fragment {
 
         return root;
     }
+
+    /**
+     * Calculates rank of highest scoring QR code relative to all QR codes
+     */
     public void parseAllQRCodes() {
         if (allQRList.size() > 0 && dataList.size() > 0) {
             // credit: https://www.benchresources.net/java-8-how-to-remove-duplicates-from-arraylist/
+            // removes duplicate QR codes
             Set<LibraryQRCode> uniqueDataList = allQRList.stream()
                     .collect(Collectors.toCollection(()->new TreeSet<>(Comparator.comparing(LibraryQRCode::getData))));
+            // sorts QR hashes based on QR score
             List<String> sortedList = uniqueDataList.stream()
                     .sorted(Comparator.comparing(LibraryQRCode::getScore))
                     .map(LibraryQRCode::getData)
                     .collect(Collectors.toList());
             highestUniqueRank = sortedList.size() - sortedList.indexOf(dataList.get(highestIndex).getData());
         }
-        else {
+        else { // if list is empty and none are scanned
             highestIndex = 0;
             lowestIndex = 0;
             lowestScore = 0;
         }
     }
 
+    /**
+     * Upadtes summary statistics based on current qr code being added
+     * @param score score of current qr code
+     * @param index index of current qr code in list
+     */
     public void updateSummaryStatistics(long score, int index) {
         // Check if current score is highest score
         if (score > highestScore) {
@@ -213,6 +226,18 @@ public class LibraryFragment extends Fragment {
         // Increment total QR codes scanned
         totalScanned += 1;
     }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+    }
+
     /**
      * onDestroyView is called when the view is destroyed.
      * It cleans up any references to the binding to prevent memory leaks.

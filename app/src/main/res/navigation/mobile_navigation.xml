@@ -119,6 +119,12 @@
             app:popUpToInclusive="true"/>
 
         <action
+            android:id="@+id/qrCodeInformationFragment_to_action_pictureFragment"
+            app:destination="@id/fragment_pictures"
+            app:popUpTo="@+id/mobile_navigation"
+            app:popUpToInclusive="true"/>
+
+        <action
             android:id="@+id/action_qrCodeInformationFragment_to_externalusersfragment"
             app:destination="@+id/navigation_externalusers"/>
 
@@ -175,6 +181,7 @@
         <action
             android:id="@+id/action_navigation_externaluserprofile_to_externalusersfragment"
             app:destination="@+id/navigation_externalusers"/>
+
         <action
             android:id="@+id/action_externaluser_profile_to_navigation_search"
             app:destination="@id/navigation_search" />
@@ -211,6 +218,18 @@
 
         <action
             android:id="@+id/commentFragment_to_action_qrCodeInformationFragment"
+            app:destination="@id/qrCodeInformationFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_pictures"
+        android:name="com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures.PictureFragment"
+        android:label="Picture Feed"
+        tools:layout="@layout/fragment_pictures">
+
+        <action
+            android:id="@+id/pictureFragment_to_action_qrCodeInformationFragment"
             app:destination="@id/qrCodeInformationFragment" />
 
     </fragment>
