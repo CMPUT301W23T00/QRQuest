@@ -1,7 +1,6 @@
 package com.cmput301w23t00.qrquest.ui.externaluserpage;
 
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,15 +19,17 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCodeAdapter;
 import com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.ViewCycleStack;
+import com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.QRCodeInformationFragment;
 import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
+import com.cmput301w23t00.qrquest.ui.updateavatar.AvatarUtility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -49,10 +49,13 @@ public class ExternalUserProfileFragment extends Fragment {
     private TextView highestScoreText;
     private TextView lowestScoreText;
     private ListView QRlist;
+    private ShapeableImageView profileImage;
     private ArrayAdapter<LibraryQRCode> QRAdapter;
     private ArrayList<LibraryQRCode> dataList;
     private Bundle bundle;
     Boolean back = false;
+    private Boolean isSearch;
+    private Boolean isLeaderboard;
 
     @Nullable
     @Override
@@ -68,10 +71,13 @@ public class ExternalUserProfileFragment extends Fragment {
         highestScoreText = (TextView) root.findViewById(R.id.profile_highest_score_count);
         lowestScoreText = (TextView) root.findViewById(R.id.profile_lowest_score_count);
         QRlist = (ListView) root.findViewById(R.id.recent_list);
+        profileImage = (ShapeableImageView) root.findViewById(R.id.imageView);
 
         if (getArguments() == null) this.bundle = ViewCycleStack.pop();
         else this.bundle = getArguments();
         ExternalUserProfile userProfile = bundle.getParcelable("selectedUser");
+        isSearch = bundle.getBoolean("isSearch");
+        isLeaderboard = bundle.getBoolean("isLeaderboard");
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
@@ -125,6 +131,12 @@ public class ExternalUserProfileFragment extends Fragment {
         phoneNumber.setText(String.format("Phone: %s", userProfile.getPhoneNumber()));
         email.setText(String.format("Email: %s", userProfile.getEmail()));
 
+        try {
+            profileImage.setImageResource(AvatarUtility.getAvatarImageResource(Integer.parseInt(userProfile.getAvatarId())));
+        } catch (Exception e) {
+            profileImage.setImageResource(AvatarUtility.getAvatarImageResource(0));
+        }
+
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
@@ -157,6 +169,43 @@ public class ExternalUserProfileFragment extends Fragment {
         });
 
         return root;
+    }
+    /**
+     * onCreate is called to do initial creation of the fragment.
+     * @param savedInstanceState the previously saved instance state
+     */
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        // Creates this fragment's menu.
+        setHasOptionsMenu(true);
+    }
+
+    /**
+     * onOptionsItemSelected is called when a menu item is selected.
+     *
+     * @param item The menu item that was selected
+     * @return True if the menu item was handled, false otherwise.
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        // Back arrow
+        if (id == android.R.id.home) {
+            // Navigate back to the previous fragment
+            if (isLeaderboard) {
+                NavHostFragment.findNavController(ExternalUserProfileFragment.this).navigate(R.id.action_navigation_externaluserprofilefragment_to_leaderboard);
+            } else if (isSearch) {
+                NavHostFragment.findNavController(ExternalUserProfileFragment.this).navigate(R.id.action_externaluser_profile_to_navigation_search);
+            } else {
+                NavHostFragment.findNavController(this).navigate(R.id.action_navigation_externaluserprofile_to_externalusersfragment);
+            }
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

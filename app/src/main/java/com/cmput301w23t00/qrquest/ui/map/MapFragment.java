@@ -127,35 +127,39 @@ public class MapFragment extends Fragment {
                                     Date dateScanned = timestamp.toDate();
                                     if (location != null) {
                                         GeoPoint locationOSM = new GeoPoint(location.getLatitude(), location.getLongitude());
-                                        Marker currentLocationMarker = new Marker(map);
-                                        Resources res = getResources();
-                                        Drawable drawable = ResourcesCompat.getDrawable(res, R.drawable.baseline_location_pin_24, null);
-                                        currentLocationMarker.setIcon(drawable);
-                                        currentLocationMarker.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
-                                            @Override
-                                            public boolean onMarkerClick(Marker marker, MapView mapView) {
-                                                if (!markerIsClicked) {
-                                                    markerIsClicked = true;
-                                                    // Create a bundle to store data that will be passed to the QR code information fragment
-                                                    Bundle bundle = new Bundle();
-                                                    // Add the selected QR code object and the user ID to the bundle
-                                                    bundle.putParcelable("selectedQRCode", new LibraryQRCode(qrCodeData, new QRCodeProcessor(qrCodeData).getScore(), dateScanned));
-                                                    bundle.putString("userID", identifierId);
-                                                    bundle.putString("documentID", document.getId());
-                                                    bundle.putBoolean("isMap", true);
-                                                    bundle.putBoolean("isLeaderboard", false);
+                                        try {
+                                            Marker currentLocationMarker = new Marker(map);
+                                            Resources res = getResources();
+                                            Drawable drawable = ResourcesCompat.getDrawable(res, R.drawable.baseline_location_pin_24, null);
+                                            currentLocationMarker.setIcon(drawable);
+                                            currentLocationMarker.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+                                                @Override
+                                                public boolean onMarkerClick(Marker marker, MapView mapView) {
+                                                    if (!markerIsClicked) {
+                                                        markerIsClicked = true;
+                                                        // Create a bundle to store data that will be passed to the QR code information fragment
+                                                        Bundle bundle = new Bundle();
+                                                        // Add the selected QR code object and the user ID to the bundle
+                                                        bundle.putParcelable("selectedQRCode", new LibraryQRCode(qrCodeData, new QRCodeProcessor(qrCodeData).getScore(), dateScanned));
+                                                        bundle.putString("userID", identifierId);
+                                                        bundle.putString("documentID", document.getId());
+                                                        bundle.putBoolean("isMap", true);
+                                                        bundle.putBoolean("isLeaderboard", false);
 
-                                                    // Use the Navigation component to navigate to the QR code information fragment,
-                                                    // and pass the bundle as an argument to the destination fragment
-                                                    NavHostFragment.findNavController(MapFragment.this).navigate(R.id.action_navigation_map_to_qrCodeInformationFragment, bundle);
+                                                        // Use the Navigation component to navigate to the QR code information fragment,
+                                                        // and pass the bundle as an argument to the destination fragment
+                                                        NavHostFragment.findNavController(MapFragment.this).navigate(R.id.action_navigation_map_to_qrCodeInformationFragment, bundle);
+                                                    }
+
+                                                    return false;
                                                 }
-
-                                                return false;
-                                            }
-                                        });
-                                        currentLocationMarker.setPosition(locationOSM);
-                                        currentLocationMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-                                        map.getOverlays().add(currentLocationMarker);
+                                            });
+                                            currentLocationMarker.setPosition(locationOSM);
+                                            currentLocationMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                                            map.getOverlays().add(currentLocationMarker);
+                                        } catch (Exception e) {
+                                            Log.d("map", "map null error");
+                                        }
                                     }
                                 }
                             }

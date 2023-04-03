@@ -104,6 +104,7 @@ public class LoadingScreen extends AppCompatActivity {
             @Override
             public void run() {
                 // if fid is not present, goes to CreateAccount.
+                // CHANGE TO !
                 if (!accountExists[0]){
                     Intent intentNoUID = new Intent(LoadingScreen.this, CreateAccount.class);
                     // sends fid to CreateAccount

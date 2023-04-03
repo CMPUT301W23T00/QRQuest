@@ -1,5 +1,6 @@
 package com.cmput301w23t00.qrquest.ui.createaccount;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +21,9 @@ import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.cmput301w23t00.qrquest.ui.profile.UserSettings;
+import com.cmput301w23t00.qrquest.ui.updateavatar.AvatarUtility;
+import com.cmput301w23t00.qrquest.ui.updateavatar.EditAvatarDialogListener;
+import com.cmput301w23t00.qrquest.ui.updateavatar.EditAvatarFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -28,15 +34,27 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-public class CreateAccount extends AppCompatActivity {
+public class CreateAccount extends AppCompatActivity implements EditAvatarDialogListener {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     EditText addNameField, addEmailField, addPhoneField;
     Button addCreateButton;
     ImageView addProfileImage;
+    int profilePictureID = 0;
 
     private static final String TAG = "CreateAccount";
+
+    private ActivityResultLauncher<Intent> updateAvatarLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    String selectedAvatarId = data.getStringExtra("selectedAvatarId");
+                    //AvatarSetter.setImageResource(selectedAvatarId,addProfileImage);
+                }
+            });
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,15 +73,13 @@ public class CreateAccount extends AppCompatActivity {
         addCreateButton = findViewById(R.id.addCreateButton);
         addProfileImage = findViewById(R.id.addProfileImage);
 
+
+
         // TODO
         addProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // pop up upload option
-                // store photo to send to db
-
-                // update profile image view
-                //addProfileImage.setImageResource();
+                new EditAvatarFragment(profilePictureID).show(getSupportFragmentManager(), "Change Profile");
             }
         });
 
@@ -108,14 +124,9 @@ public class CreateAccount extends AppCompatActivity {
                 userValue.put("email", email);
                 userValue.put("phoneNumber", phoneNum);
                 userValue.put("aboutMe", "");
+                userValue.put("avatarId", String.valueOf(profilePictureID));
                 userValue.put("recordGeoLocationByDefault", true);
                 userValue.put("identifierId", fid);
-
-                UserProfile userProfile = new UserProfile();
-                userProfile.setAboutMe("");
-                userProfile.setPhoneNumber(phoneNum);
-                userProfile.setEmail(email);
-                userProfile.setName(name);
 
                 db.collection("users")
                         .add(userValue)
@@ -141,5 +152,11 @@ public class CreateAccount extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    public void updateProfilePicture(int id) {
+        profilePictureID = id;
+        addProfileImage.setImageResource(AvatarUtility.getAvatarImageResource(id));
     }
 }

@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import id.zelory.compressor.Compressor;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -53,6 +54,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -98,6 +100,8 @@ public class QrNameActivity extends AppCompatActivity {
 
         Intent qrCodeIntent = getIntent();
         this.qrCodeData = QRCodeProcessor.sha256(Objects.requireNonNull(qrCodeIntent).getStringExtra("qrCodeData"));
+
+
 
         ImageView imgview = findViewById(R.id.main_backgroundImage);
         Button canButton = findViewById(R.id.take_photo_cancel_button);
@@ -240,8 +244,11 @@ public class QrNameActivity extends AppCompatActivity {
 
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 StorageReference storageRef = storage.getReference().child("images/" + fid+"-"+qrCodeData);
+                File f = new File(getRealPathFromURI(picturesUri));
+                File compressedFile = ImageCompressor.compressImage(getApplicationContext(), f);
+                Uri compressedFileUri = Uri.fromFile(compressedFile);
 
-                storageRef.putFile(picturesUri)
+                storageRef.putFile(compressedFileUri)
                         .addOnFailureListener(new OnFailureListener() {
                             /**
                              * On failure of a Firebase upload
@@ -276,3 +283,4 @@ public class QrNameActivity extends AppCompatActivity {
         }
     }
 }
+

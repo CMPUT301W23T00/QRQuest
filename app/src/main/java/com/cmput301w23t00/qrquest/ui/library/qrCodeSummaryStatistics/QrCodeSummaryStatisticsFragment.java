@@ -1,5 +1,6 @@
 package com.cmput301w23t00.qrquest.ui.library.qrCodeSummaryStatistics;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,11 +12,14 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentQrCodeSummaryStatisticsBinding;
+import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
+import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
 
 
 import java.util.Locale;
@@ -53,18 +57,38 @@ public class QrCodeSummaryStatisticsFragment extends Fragment {
         TextView lowestScoreText = binding.summaryLowestScore;
         TextView sumOfScoresText = binding.summarySumOfScores;
         TextView totalScannedText = binding.summaryTotalScanned;
+        TextView highestUniqueRankText = binding.summaryHighestScoreRank;
+
+        // Get image views for summary statistics
+        ImageView highestScoreImage = binding.summaryHighestScoreImage;
+        ImageView lowestScoreImage = binding.summaryLowestScoreImage;
 
         // Get summary statistics from bundle
-        long highestScore = getArguments().getLong("highestScore");
-        long lowestScore = getArguments().getLong("lowestScore");
+        LibraryQRCode highestQRCode = getArguments().getParcelable("highestQRCode");
+        LibraryQRCode lowestQRCode = getArguments().getParcelable("lowestQRCode");
         long sumOfScores = getArguments().getLong("sumOfScores");
         long totalScanned = getArguments().getLong("totalScanned");
+        int highestUniqueRank = getArguments().getInt("highestUniqueRank");
 
         // Set textview texts with summary statistics from library fragment bundle
-        highestScoreText.setText(String.format(Locale.CANADA,"%d", highestScore));
-        lowestScoreText.setText(String.format(Locale.CANADA,"%d", lowestScore));
+        if (highestQRCode != null) {
+            highestScoreText.setText(String.format(Locale.CANADA,"%d", highestQRCode.getScore()));
+            QRCodeProcessor highestQRProcessor = new QRCodeProcessor(highestQRCode.getData());
+            Bitmap highestImage = highestQRProcessor.getBitmap(getActivity());
+            highestScoreImage.setImageBitmap(highestImage);
+        }
+        else highestScoreText.setText("0");
+        if (lowestQRCode != null) {
+            lowestScoreText.setText(String.format(Locale.CANADA,"%d", lowestQRCode.getScore()));
+            QRCodeProcessor lowestQRProcessor = new QRCodeProcessor(lowestQRCode.getData());
+            Bitmap lowestImage = lowestQRProcessor.getBitmap(getActivity());
+            lowestScoreImage.setImageBitmap(lowestImage);
+        }
+        else lowestScoreText.setText("0");
         sumOfScoresText.setText(String.format(Locale.CANADA,"%d", sumOfScores));
         totalScannedText.setText(String.format(Locale.CANADA,"%d", totalScanned));
+        highestUniqueRankText.setText(String.format(Locale.CANADA,"%d", highestUniqueRank));
+
         return root;
     }
 

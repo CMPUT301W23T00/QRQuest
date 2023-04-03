@@ -59,6 +59,7 @@
             android:background="@drawable/rounded_qr_library_date"
             android:padding="5dp"
             android:text="@string/qr_code_name"
+            android:textColor="@color/white"
             android:theme="@style/Theme.QRQuest"
             android:layout_marginEnd="10dp">
 

@@ -52,7 +52,13 @@
         android:id="@+id/navigation_search"
         android:name="com.cmput301w23t00.qrquest.ui.search.SearchFragment"
         android:label="@string/title_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_navigation_search_to_externaluser_profile"
+            app:destination="@id/externaluser_profile"
+            app:popUpTo="@id/mobile_navigation"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
@@ -137,9 +143,8 @@
             app:destination="@id/navigation_map" />
 
         <action
-            android:id="@+id/leaderboard_to_action_qrcodeinfopage"
-            app:destination="@id/qrCodeInformationFragment" />
-
+            android:id="@+id/leaderboard_to_action_externaluserprofilefragment"
+            app:destination="@id/externaluser_profile" />
 
     </fragment>
 
@@ -170,6 +175,13 @@
         <action
             android:id="@+id/action_navigation_externaluserprofile_to_externalusersfragment"
             app:destination="@+id/navigation_externalusers"/>
+        <action
+            android:id="@+id/action_externaluser_profile_to_navigation_search"
+            app:destination="@id/navigation_search" />
+
+        <action
+            android:id="@+id/action_navigation_externaluserprofilefragment_to_leaderboard"
+            app:destination="@id/leaderboardFragment" />
 
         <action
             android:id="@+id/externaluser_profile_to_qrcodeinformation_fragment"
