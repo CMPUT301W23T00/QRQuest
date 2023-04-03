@@ -151,28 +151,6 @@ public class ExternalUserProfileFragment extends Fragment {
         // Creates this fragment's menu.
         setHasOptionsMenu(true);
     }
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            // Navigate back to the previous fragment
-            if (isSearch) {
-                NavHostFragment.findNavController(ExternalUserProfileFragment.this).navigate(R.id.action_externaluser_profile_to_navigation_search);
-            }
-
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * This method is called when the fragment is created. It sets up the fragment's menu by calling setHasOptionsMenu(true).
-     * @param savedInstanceState the saved instance state bundle
-     */
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // Creates this fragment's menu.
-        setHasOptionsMenu(true);
-    }
 
     /**
      * onOptionsItemSelected is called when a menu item is selected.
@@ -189,6 +167,8 @@ public class ExternalUserProfileFragment extends Fragment {
             // Navigate back to the previous fragment
             if (isLeaderboard) {
                 NavHostFragment.findNavController(ExternalUserProfileFragment.this).navigate(R.id.action_navigation_externaluserprofilefragment_to_leaderboard);
+            } else if (isSearch) {
+                NavHostFragment.findNavController(ExternalUserProfileFragment.this).navigate(R.id.action_externaluser_profile_to_navigation_search);
             } else {
                 NavHostFragment.findNavController(this).navigate(R.id.action_navigation_externaluserprofile_to_externalusersfragment);
             }
