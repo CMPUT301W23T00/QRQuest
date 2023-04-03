@@ -71,6 +71,9 @@ public class leaderboardFragment extends Fragment {
 
                         String userId = (String) document.getData().get("identifierId");
                         String userName = (String) document.getData().get("name");
+                        String userAboutMe = (String) document.getData().get("aboutMe");
+                        String userEmail = (String) document.getData().get("email");
+                        String userPhoneNumber = (String) document.getData().get("phoneNumber");
 
                         // Find all QR codes scanned by the current user
                         usersQRCodesCollectionReference.whereEqualTo("identifierId", userId)

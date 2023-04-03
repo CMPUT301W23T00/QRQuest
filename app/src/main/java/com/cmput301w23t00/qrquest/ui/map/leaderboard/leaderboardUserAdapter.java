@@ -57,7 +57,7 @@ public class leaderboardUserAdapter extends ArrayAdapter<leaderboardUser> {
         String CurrentUserID = UserProfile.getUserId();
         String CurrentUserName = UserProfile.getName();
 
-        if (Objects.equals(UserObject.getUserId(), CurrentUserID) && Objects.equals(UserObject.getUser(), CurrentUserName)) {
+        if (Objects.equals(UserObject.getUserId(), CurrentUserID) && Objects.equals(UserObject.getUserName(), CurrentUserName)) {
             view.setBackgroundResource(R.drawable.leaderboard_current_user);
         } else {
             view.setBackgroundColor (Color.TRANSPARENT); // default color
@@ -73,7 +73,7 @@ public class leaderboardUserAdapter extends ArrayAdapter<leaderboardUser> {
         SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
 
         // Set QR code information on textviews
-        userName.setText(UserObject.getUser());
+        userName.setText(UserObject.getUserName());
         UserPosition.setText(String.format(Locale.CANADA, "%d",UserObject.getPosition()));
         QRScore.setText(String.format(Locale.CANADA, "%d", UserObject.getScore()));
 

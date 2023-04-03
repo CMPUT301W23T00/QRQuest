@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 public class leaderboardUser implements Parcelable {
     private long score;
     private long position;
-    private String user;
+    private String userName;
     private String userId;
 
     /**
@@ -20,7 +20,7 @@ public class leaderboardUser implements Parcelable {
      */
     protected leaderboardUser(Parcel in) {
         this.score = in.readLong();
-        this.user = in.readString();
+        this.userName = in.readString();
         this.userId = in.readString();
     }
 
@@ -39,7 +39,7 @@ public class leaderboardUser implements Parcelable {
     public leaderboardUser(String userId, String userName, long score, int position) {
         this.score = score;
         this.position = position;
-        this.user = userName;
+        this.userName = userName;
         this.userId = userId;
     }
 
@@ -59,12 +59,12 @@ public class leaderboardUser implements Parcelable {
         this.position = position;
     }
 
-    public String getUser() {
-        return user;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUserName(String user) {
+        this.userName = user;
     }
 
     /**

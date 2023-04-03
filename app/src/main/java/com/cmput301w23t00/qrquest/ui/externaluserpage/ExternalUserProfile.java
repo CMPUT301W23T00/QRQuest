@@ -2,15 +2,12 @@ package com.cmput301w23t00.qrquest.ui.externaluserpage;
 
 import static android.content.ContentValues.TAG;
 
-import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.cmput301w23t00.qrquest.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
