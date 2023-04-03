@@ -1,9 +1,6 @@
 package com.cmput301w23t00.qrquest.ui.updateavatar;
 
 
-import android.widget.ImageView;
-
-
 import com.cmput301w23t00.qrquest.R;
 
 import java.util.ArrayList;
