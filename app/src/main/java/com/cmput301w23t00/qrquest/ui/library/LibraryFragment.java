@@ -32,6 +32,7 @@ import java.util.Comparator;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -103,7 +104,7 @@ public class LibraryFragment extends Fragment {
                                 long score = new QRCodeProcessor(qrCodeData).getScore();
                                 LibraryQRCode currentQRCode = new LibraryQRCode(qrCodeData, score, dateScanned);
                                 allQRList.add(currentQRCode);
-                                if (document.getData().get("identifierId")==userID) {
+                                if (Objects.equals(document.getData().get("identifierId"), userID)) {
                                     updateSummaryStatistics(score, index);
                                     // Add found QR code to dataList to display
                                     dataList.add(currentQRCode);
