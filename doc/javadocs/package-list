@@ -4,11 +4,17 @@ com.cmput301w23t00.qrquest.ui.addqrcode.qrnameactivity
 com.cmput301w23t00.qrquest.ui.addqrcode.qrnameactivity.takephotoactivity
 com.cmput301w23t00.qrquest.ui.createaccount
 com.cmput301w23t00.qrquest.ui.editaccount
+com.cmput301w23t00.qrquest.ui.externaluserpage
+com.cmput301w23t00.qrquest.ui.leaderboardTests
 com.cmput301w23t00.qrquest.ui.library
 com.cmput301w23t00.qrquest.ui.library.qrCodeInformationTests
 com.cmput301w23t00.qrquest.ui.library.qrCodeSummaryStatistics
 com.cmput301w23t00.qrquest.ui.library.qrcodeinformation
+com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.comments
+com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures
 com.cmput301w23t00.qrquest.ui.loadingscreen
 com.cmput301w23t00.qrquest.ui.map
+com.cmput301w23t00.qrquest.ui.map.leaderboard
 com.cmput301w23t00.qrquest.ui.profile
 com.cmput301w23t00.qrquest.ui.search
+com.cmput301w23t00.qrquest.ui.updateavatar
