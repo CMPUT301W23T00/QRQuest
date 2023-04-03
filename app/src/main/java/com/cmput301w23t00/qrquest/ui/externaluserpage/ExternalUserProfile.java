@@ -106,6 +106,7 @@ public class ExternalUserProfile implements Parcelable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
 
     public String getAvatarId() {
         return avatarId;

@@ -53,9 +53,9 @@ public class ExternalUserProfileFragment extends Fragment {
     private ArrayAdapter<LibraryQRCode> QRAdapter;
     private ArrayList<LibraryQRCode> dataList;
     private Bundle bundle;
-    Boolean back = false;
     private Boolean isSearch;
     private Boolean isLeaderboard;
+    private Boolean isExternalProfile;
 
     @Nullable
     @Override
@@ -78,6 +78,7 @@ public class ExternalUserProfileFragment extends Fragment {
         ExternalUserProfile userProfile = bundle.getParcelable("selectedUser");
         isSearch = bundle.getBoolean("isSearch");
         isLeaderboard = bundle.getBoolean("isLeaderboard");
+        isExternalProfile = bundle.getBoolean("isExternalProfile");
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final CollectionReference usersQRCodesCollectionReference = db.collection("usersQRCodes");
@@ -137,14 +138,6 @@ public class ExternalUserProfileFragment extends Fragment {
             profileImage.setImageResource(AvatarUtility.getAvatarImageResource(0));
         }
 
-        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
-            @Override
-            public void handleOnBackPressed() {
-                restoreActionBar();
-            }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);
-
         setHasOptionsMenu(true);
 
         QRlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -161,7 +154,7 @@ public class ExternalUserProfileFragment extends Fragment {
                 //bundle.putString("documentID", docID);
                 bundle.putBoolean("isMap", false);
                 bundle.putBoolean("isLeaderboard", false);
-                bundle.putBoolean("isExternalUserProfile", true);
+                bundle.putBoolean("isExternalProfile", true);
                 // Use the Navigation component to navigate to the QR code information fragment,
                 // and pass the bundle as an argument to the destination fragment
                 Navigation.findNavController(view).navigate(R.id.externaluser_profile_to_qrcodeinformation_fragment, bundle);
@@ -198,8 +191,10 @@ public class ExternalUserProfileFragment extends Fragment {
                 NavHostFragment.findNavController(ExternalUserProfileFragment.this).navigate(R.id.action_navigation_externaluserprofilefragment_to_leaderboard);
             } else if (isSearch) {
                 NavHostFragment.findNavController(ExternalUserProfileFragment.this).navigate(R.id.action_externaluser_profile_to_navigation_search);
+            } else if (isExternalProfile) {
+                NavHostFragment.findNavController(ExternalUserProfileFragment.this).navigate(R.id.action_navigation_externaluserprofile_to_externalusersfragment);
             } else {
-                NavHostFragment.findNavController(this).navigate(R.id.action_navigation_externaluserprofile_to_externalusersfragment);
+                NavHostFragment.findNavController(ExternalUserProfileFragment.this).navigate(R.id.action_navigation_externaluserprofile_to_externalusersfragment);
             }
 
             return true;
@@ -209,21 +204,7 @@ public class ExternalUserProfileFragment extends Fragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            restoreActionBar();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void restoreActionBar() {
-        NavHostFragment.findNavController(this).navigate(R.id.action_navigation_externaluserprofile_to_externalusersfragment);
-        this.back = true;
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
-        if (!back) ViewCycleStack.push(bundle);
     }
 }

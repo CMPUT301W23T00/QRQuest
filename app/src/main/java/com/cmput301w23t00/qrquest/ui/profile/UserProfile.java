@@ -62,9 +62,6 @@ public class UserProfile {
                         email = task.getResult().getDocuments().get(0).getString("email");
                         name = task.getResult().getDocuments().get(0).getString("name");
                         avatarId = task.getResult().getDocuments().get(0).getString("avatarId");
-                        if (Objects.equals(avatarId, "")) {
-                            avatarId = "0";
-                        }
                         firstInstantiation = false;
                         created = true;
                     }
@@ -132,6 +129,9 @@ public class UserProfile {
      * @return  returns avatarId integer
      */
     public static String getAvatarId() {
+        if (Objects.equals(avatarId, "")) {
+            return "0";
+        }
         return avatarId;
     }
 
