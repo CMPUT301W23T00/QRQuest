@@ -80,6 +80,8 @@ public class ExternalUserProfileFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        TextView recent;
+        recent = (TextView) root.findViewById(R.id.profile_recent_box);
         name = (TextView) root.findViewById(R.id.profile_username);
         aboutMe = (TextView) root.findViewById(R.id.profile_bio);
         phoneNumber = (TextView) root.findViewById(R.id.profile_phone_number);
@@ -144,6 +146,8 @@ public class ExternalUserProfileFragment extends Fragment {
                     }
                 });
 
+        String change = "QR Codes";
+        recent.setText(change);
         name.setText(userProfile.getName());
         aboutMe.setText(userProfile.getAboutMe());
         phoneNumber.setText(String.format("Phone: %s", userProfile.getPhoneNumber()));
