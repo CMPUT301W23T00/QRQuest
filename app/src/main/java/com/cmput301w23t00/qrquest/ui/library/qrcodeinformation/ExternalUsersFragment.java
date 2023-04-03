@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -27,9 +28,11 @@ import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.externaluserpage.ExternalUserProfile;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -58,7 +61,7 @@ public class ExternalUsersFragment extends Fragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             this.bundle = bundle;
-            LibraryQRCode qrCode = bundle.getParcelable("selectedQRCode");
+            qrCode = bundle.getParcelable("selectedQRCode");
             docID = bundle.getString("documentID");
         }
 
@@ -73,8 +76,8 @@ public class ExternalUsersFragment extends Fragment {
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);
 
-        for (int i = 0; i < 15; i++) users.add(new ExternalUserProfile());
-        users.add(new ExternalUserProfile());
+        /*for (int i = 0; i < 15; i++) */users.add(new ExternalUserProfile("c54c41c7-1ce0-498d-8b2d-9105c52381dc"));
+        getUsers();
         usersList.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, users.size()*239 + 200));
         usersAdapter.notifyDataSetChanged();
 
@@ -106,20 +109,31 @@ public class ExternalUsersFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    /*
+
     private void getUsers() {
-        CollectionReference databaseUsers = db.collection("users");
         CollectionReference databaseCodes = db.collection("usersQRcodes");
         databaseCodes.whereEqualTo("qrCodeData", qrCode.getData())
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful());
+                        if (task.isSuccessful()); {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if (document != null) {
+                                    String identifierId = document.getString("identifierId");
+                                    if (!identifierId.equals("")) users.add(new ExternalUserProfile(identifierId));
+                                }
+                            }
+                        }
                     }
-                })
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext(), "Unable to connect to network", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
     }
-    */
+
 
     private void restoreActionBar() {
         NavHostFragment.findNavController(this).navigate(R.id.action_navigation_externalusersfragment_to_qrCodeInformationFragment, this.bundle);

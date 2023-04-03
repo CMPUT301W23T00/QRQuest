@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Timer;
+
 public class ExternalUserProfile implements Parcelable {
     private String name;
     private String aboutMe;
@@ -41,12 +43,13 @@ public class ExternalUserProfile implements Parcelable {
                     aboutMe = task.getResult().getDocuments().get(0).getString("aboutMe");
                     phoneNumber = task.getResult().getDocuments().get(0).getString("phoneNumber");
                     email = task.getResult().getDocuments().get(0).getString("email");
+                    Log.d(TAG, "onComplete: Finished Loading");
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.e(TAG, "onFailure: ", e);
+                Log.d(TAG, "onFailure: failed to query");
             }
         });
     }
