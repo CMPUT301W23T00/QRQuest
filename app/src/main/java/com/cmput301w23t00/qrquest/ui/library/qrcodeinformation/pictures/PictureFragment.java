@@ -36,6 +36,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * The class  QR code information fragment extends fragment
@@ -46,7 +47,6 @@ public class PictureFragment extends Fragment {
 
     private @NonNull FragmentPicturesBinding binding; // view binding object for the fragment
     Bundle qrCodeInformationBundle;
-    String User;
     private static final String TAG = "PictureFragment";
 
 
@@ -91,6 +91,7 @@ public class PictureFragment extends Fragment {
                             int Profile = 0;
                             if (task2.isSuccessful()){
                                 String iconId = (task2.getResult().getDocuments().get(0).getString("avatarId") == null) ? "0" :  task2.getResult().getDocuments().get(0).getString("avatarId");
+                                iconId = (Objects.equals(iconId, "")) ? "0" : iconId;
                                 Profile = Integer.parseInt(iconId);
 
                                 int finalProfile = Profile;
@@ -133,7 +134,6 @@ public class PictureFragment extends Fragment {
 
         
     }
-
 
     /**
      * onOptionsItemSelected is called when a menu item is selected.

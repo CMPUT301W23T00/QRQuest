@@ -38,7 +38,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 /**
  * This class models the fragment used to display the user profile
@@ -137,8 +136,8 @@ public class ProfileFragment extends Fragment {
 
         ImageView imageView = root.findViewById(R.id.profile_icon);
         String iconId = (UserProfile.getAvatarId() == null) ? "0" :  UserProfile.getAvatarId();
+        iconId = (iconId.equals("")) ? "0" : iconId;
         imageView.setImageResource(AvatarUtility.getAvatarImageResource(Integer.parseInt(iconId)));
-
 
         setHasOptionsMenu(true);
 

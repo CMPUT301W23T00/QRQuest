@@ -22,14 +22,10 @@ import java.util.List;
 import java.util.Locale;
 
 public class CommentAdapter extends ArrayAdapter<CommentData> {
-
-    private Context mContext;
     private List<CommentData> mData;
-    private LinearLayout mlayout;
 
     public CommentAdapter(@NonNull Context context, ArrayList<CommentData> Data) {
         super(context, 0, Data);
-        this.mContext = context;
         this.mData = Data;
     }
 

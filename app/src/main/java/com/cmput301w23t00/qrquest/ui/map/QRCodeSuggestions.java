@@ -2,8 +2,6 @@ package com.cmput301w23t00.qrquest.ui.map;
 
 import android.os.Parcel;
 
-import androidx.annotation.NonNull;
-
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 
 import java.util.Date;

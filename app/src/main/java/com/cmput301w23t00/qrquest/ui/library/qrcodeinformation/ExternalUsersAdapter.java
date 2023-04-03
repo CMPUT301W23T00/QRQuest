@@ -10,15 +10,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.externaluserpage.ExternalUserProfile;
-import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.cmput301w23t00.qrquest.ui.updateavatar.AvatarUtility;
-import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ExternalUsersAdapter extends ArrayAdapter<ExternalUserProfile> {
     public ExternalUsersAdapter(Context context, ArrayList<ExternalUserProfile> users) {
@@ -44,6 +42,7 @@ public class ExternalUsersAdapter extends ArrayAdapter<ExternalUserProfile> {
         userName.setText(externalUser.getName());
         userAboutMe.setText(externalUser.getAboutMe());
         String iconId = (externalUser.getAvatarId() == null) ? "0" :  externalUser.getAvatarId();
+        iconId = (Objects.equals(iconId, "")) ? "0" : iconId;
         userAvatar.setImageResource(AvatarUtility.getAvatarImageResource(Integer.parseInt(iconId)));
         return view;
     }
