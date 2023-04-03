@@ -47,8 +47,6 @@ public class PictureFragment extends Fragment {
     private @NonNull FragmentPicturesBinding binding; // view binding object for the fragment
     Bundle qrCodeInformationBundle;
     String User;
-    int Profile;
-    Uri Picture;
     private static final String TAG = "PictureFragment";
 
 
@@ -67,6 +65,7 @@ public class PictureFragment extends Fragment {
 
         qrCodeInformationBundle = getArguments();
         LibraryQRCode qrCodeData = qrCodeInformationBundle.getParcelable("selectedQRCode");
+        String userID = qrCodeInformationBundle.getString("userID");
         System.out.println("Ran Picture Fragment");
 
         // Inflate the fragment_qrcodeinformation.xml layout for this fragment.
@@ -81,29 +80,31 @@ public class PictureFragment extends Fragment {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference imageRef = storage.getReference().child("images");
 
-        String suffix = qrCodeData.getData();
-
-
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("usersQRCodes").whereEqualTo("qrCodeData", suffix).get().addOnCompleteListener(new OnCompleteListener<>() {
+        db.collection("usersQRCodes").whereEqualTo("qrCodeData", qrCodeData.getData()).get().addOnCompleteListener(new OnCompleteListener<>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot doc1 : task.getResult()) {
-                        System.out.println("Ran Task 1");
                         String ID = doc1.getString("identifierId");
-
                         db.collection("users").whereEqualTo("identifierId", ID).get().addOnCompleteListener(task2 -> {
+                            int Profile = 0;
+                            Uri Picture;
                             if (task2.isSuccessful()){
                                 User = doc1.getString("name");
-                                Profile = Integer.parseInt(doc1.getString("avatarId"));
+                                String iconId = (doc1.getString("avatarId") == null) ? "0" :  doc1.getString("avatarId");
+                                Profile = Integer.parseInt(iconId);
                             };
 
-                            imageRef.child(ID + '-' + suffix).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            imageRef.child(ID + '-' + qrCodeData.getData()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
-                                    Picture = uri;
+                                    Uri Picture = uri;
+                                    Date DateCreated = qrCodeData.getDate();
 
+                                    PictureData NewPicture = new com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures.PictureData(User, DateCreated, Profile, Picture);
+                                    NewAdapter.add(NewPicture);
+                                    NewAdapter.notifyDataSetChanged();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -111,12 +112,6 @@ public class PictureFragment extends Fragment {
                                     Log.e(TAG, "onFailure: Feed image failed to load", exception);
                                 }
                             });
-
-                            Date DateCreated = qrCodeData.getDate();
-
-                            com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures.PictureData NewPicture = new com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures.PictureData(User,DateCreated,Profile,Picture);
-                            NewAdapter.add(NewPicture);
-                            NewAdapter.notifyDataSetChanged();
                         });
                     }
                 };

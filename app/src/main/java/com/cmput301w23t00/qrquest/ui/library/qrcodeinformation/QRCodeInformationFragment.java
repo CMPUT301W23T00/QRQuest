@@ -166,17 +166,8 @@ public class QRCodeInformationFragment extends Fragment {
         }
 
         if (id == R.id.qr_feed) {
-            // Create a bundle to store data that will be passed to the QR code information fragment
-            Bundle bundle = new Bundle();
-            // Add the selected QR code object and the user ID to the bundle
-            bundle.putParcelable("selectedQRCode", libraryQRCode);
-            bundle.putString("userID", userID);
-            bundle.putString("documentID", docID);
-            bundle.putBoolean("isMap", isMap);
-            bundle.putBoolean("isLeaderboard", isLeaderboard);
-
             // Start a new activity to see comments on this QR code
-            NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_pictureFragment, bundle);
+            NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_pictureFragment, this.bundle);
             return true;
         }
 

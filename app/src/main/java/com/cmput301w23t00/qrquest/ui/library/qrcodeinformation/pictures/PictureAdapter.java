@@ -17,8 +17,10 @@ import androidx.appcompat.widget.AppCompatImageView;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.updateavatar.AvatarUtility;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class PictureAdapter extends ArrayAdapter<com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures.PictureData> {
 
@@ -44,19 +46,21 @@ public class PictureAdapter extends ArrayAdapter<com.cmput301w23t00.qrquest.ui.l
 
         // Set the text of the TextView in the layout to the current string in the list
         TextView textView1 = listItemView.findViewById(R.id.picture_date);
-        String currentString = String.valueOf(mData.get(position).getDate());
-        textView1.setText(currentString);
+        String currentDate = String.valueOf(mData.get(position).getDate());
+        // Format date
+        SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
+        textView1.setText(formatter.format(currentDate));
 
         TextView textView2 = listItemView.findViewById(R.id.picture_username);
-        currentString = mData.get(position).getUser();
+        String currentString = mData.get(position).getUser();
         textView2.setText(currentString);
 
-        AppCompatImageView imageView1 = listItemView.findViewById(R.id.pictures_user_picture);
+        AppCompatImageView imageView1 = listItemView.findViewById(R.id.location_user_picture);
         int profileImg = mData.get(position).getProfile();
         //imageView1.setBackgroundDrawable(profileImg);
         imageView1.setImageResource(AvatarUtility.getAvatarImageResource(profileImg));
 
-        AppCompatImageView imageView2 = listItemView.findViewById(R.id.pictures_location_img);
+        AppCompatImageView imageView2 = listItemView.findViewById(R.id.pictures_user_picture);
         Uri FeedImg = mData.get(position).getPicture();
         imageView2.setImageURI(FeedImg);
 
