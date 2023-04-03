@@ -140,6 +140,9 @@ public class ExternalUsersFragment extends Fragment {
                 Bundle bundle = new Bundle();
 
                 bundle.putParcelable("selectedUser", users.get(i));
+                bundle.putBoolean("isSearch", false);
+                bundle.putBoolean("isLeaderboard", false);
+                bundle.putBoolean("isExternalUsers", true);
                 Navigation.findNavController(view).navigate(R.id.action_navigation_externalusersfragment_to_externaluserprofile, bundle);
             }
         });
@@ -167,8 +170,8 @@ public class ExternalUsersFragment extends Fragment {
     }
 
     private void restoreActionBar() {
-        NavHostFragment.findNavController(this).navigate(R.id.action_navigation_externalusersfragment_to_qrCodeInformationFragment);
         this.back = true;
+        NavHostFragment.findNavController(this).navigate(R.id.action_navigation_externalusersfragment_to_qrCodeInformationFragment);
     }
 
     @Override
