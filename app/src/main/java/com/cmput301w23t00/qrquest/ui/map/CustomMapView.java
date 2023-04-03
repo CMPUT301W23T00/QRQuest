@@ -8,6 +8,9 @@ import org.osmdroid.tileprovider.MapTileProviderBase;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
+/**
+ * This subclass allows the expected center of the map to be set at a particular geo-point.
+ */
 public class CustomMapView extends MapView {
     public CustomMapView(Context context, MapTileProviderBase tileProvider, Handler tileRequestCompleteHandler, AttributeSet attrs) {
         super(context, tileProvider, tileRequestCompleteHandler, attrs);

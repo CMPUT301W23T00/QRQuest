@@ -8,6 +8,9 @@ import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 
 import java.util.Date;
 
+/**
+ *
+ */
 public class QRCodeSuggestions implements SearchSuggestion {
 
     private String name;
