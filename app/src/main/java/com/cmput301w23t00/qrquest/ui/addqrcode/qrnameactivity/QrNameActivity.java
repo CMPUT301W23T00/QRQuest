@@ -209,7 +209,7 @@ public class QrNameActivity extends AppCompatActivity {
                 Map<String, Object> usersQRCodesValue = new HashMap<>();
                 usersQRCodesValue.put("comment", comment);
                 usersQRCodesValue.put("dateScanned",date);
-                usersQRCodesValue.put("location", point);
+                usersQRCodesValue.put("lcoation", point);
                 usersQRCodesValue.put("qrCodeData", qrCodeData);
                 usersQRCodesValue.put("identifierId", fid);
 
