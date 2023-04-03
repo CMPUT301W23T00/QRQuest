@@ -4,8 +4,4 @@
         <item name="android:background">?attr/colorPrimaryVariant</item>
         <item name="android:textColor">?attr/colorPrimary</item>
     </style>
-    
-    <style name="Circular">
-        <item name="cornerSize">50%</item>
-    </style>
 </resources>
