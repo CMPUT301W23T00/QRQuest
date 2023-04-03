@@ -82,6 +82,10 @@ public class leaderboardFragment extends Fragment {
                             userAvatarNumber = "0"; // use string "0" instead of String.valueOf(0)
                         }
 
+                        if (userAvatarNumber == "") {
+                            userAvatarNumber = "0";
+                        }
+
                         // Find all QR codes scanned by the current user
                         String finalUserAvatarNumber = userAvatarNumber;
                         usersQRCodesCollectionReference.whereEqualTo("identifierId", userId)

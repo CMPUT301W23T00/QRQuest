@@ -89,7 +89,12 @@ public class leaderboardUserAdapter extends ArrayAdapter<leaderboardUser> {
         }
 
         // set the UserProfileImage to the correct image after implemented
-        UserProfileImage.setImageResource(AvatarUtility.getAvatarImageResource(Integer.parseInt(UserProfile.getAvatarId())));
+        try {
+            UserProfileImage.setImageResource(AvatarUtility.getAvatarImageResource(Integer.parseInt(UserObject.getUserAvatarId())));
+        } catch (Exception e) {
+            UserProfileImage.setImageResource(AvatarUtility.getAvatarImageResource(0));
+        }
+
         return view;
     }
 }
