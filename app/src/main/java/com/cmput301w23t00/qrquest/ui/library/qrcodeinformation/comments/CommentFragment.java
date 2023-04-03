@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * The QRCodeInformationFragment class extends the Fragment class and provides a fragment that displays information about a QR code.
+ * This class provides a fragment that displays Comments about a QR code.
  */
 public class CommentFragment extends Fragment {
 
@@ -41,7 +41,6 @@ public class CommentFragment extends Fragment {
     LibraryQRCode libraryQRCode;
     Drawable Profile;
     Bundle qrCodeInformationBundle;
-
 
     String User;
 

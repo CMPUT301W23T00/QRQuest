@@ -35,8 +35,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Objects;
 
 /**
- * The class  QR code information fragment extends fragment
- *
  * The QRCodeInformationFragment class extends the Fragment class and provides a fragment that displays information about a QR code.
  */
 public class QRCodeInformationFragment extends Fragment {
