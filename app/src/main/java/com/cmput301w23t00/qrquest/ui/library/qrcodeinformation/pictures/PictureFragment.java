@@ -45,11 +45,7 @@ import java.util.Date;
 public class PictureFragment extends Fragment {
 
     private @NonNull FragmentPicturesBinding binding; // view binding object for the fragment
-    String userID; // a string to hold the current user's ID
-    String docID; // the qr code document id
-    LibraryQRCode libraryQRCode;
     Bundle qrCodeInformationBundle;
-
     String User;
     int Profile;
     Uri Picture;
