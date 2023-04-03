@@ -179,24 +179,35 @@ public class LibraryFragment extends Fragment {
 
         return root;
     }
+
+    /**
+     * Calculates rank of highest scoring QR code relative to all QR codes
+     */
     public void parseAllQRCodes() {
         if (allQRList.size() > 0 && dataList.size() > 0) {
             // credit: https://www.benchresources.net/java-8-how-to-remove-duplicates-from-arraylist/
+            // removes duplicate QR codes
             Set<LibraryQRCode> uniqueDataList = allQRList.stream()
                     .collect(Collectors.toCollection(()->new TreeSet<>(Comparator.comparing(LibraryQRCode::getData))));
+            // sorts QR hashes based on QR score
             List<String> sortedList = uniqueDataList.stream()
                     .sorted(Comparator.comparing(LibraryQRCode::getScore))
                     .map(LibraryQRCode::getData)
                     .collect(Collectors.toList());
             highestUniqueRank = sortedList.size() - sortedList.indexOf(dataList.get(highestIndex).getData());
         }
-        else {
+        else { // if list is empty and none are scanned
             highestIndex = 0;
             lowestIndex = 0;
             lowestScore = 0;
         }
     }
 
+    /**
+     * Upadtes summary statistics based on current qr code being added
+     * @param score score of current qr code
+     * @param index index of current qr code in list
+     */
     public void updateSummaryStatistics(long score, int index) {
         // Check if current score is highest score
         if (score > highestScore) {
