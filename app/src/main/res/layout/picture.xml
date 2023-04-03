@@ -16,7 +16,7 @@
         android:paddingStart="5dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        tools:ignore="RtlSymmetry">
+        tools:ignore="RtlSymmetry,UselessParent">
 
         <LinearLayout
             android:layout_width="match_parent"
