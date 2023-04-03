@@ -7,22 +7,53 @@
     android:paddingStart="8dp"
     android:orientation="horizontal"
     android:padding="2dp"
-    tools:ignore="RtlSymmetry">
+    tools:ignore="RtlSymmetry"
+    android:baselineAligned="false">
 
-    <ImageView
+    <FrameLayout
         android:id="@+id/leaderboard_user_profile_image"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.3"
-        android:src="@drawable/baseline_qr_code_2_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="H,1:1"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        android:contentDescription="@string/view_qr_code_stats" />
+        android:layout_width="60dp"
+        android:layout_height="60dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            app:cardCornerRadius="250dp"
+            android:layout_gravity="center"
+            app:cardBackgroundColor="@color/white">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                app:cardCornerRadius="250dp"
+                android:layout_gravity="center">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/leaderboard_user_picture"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center"
+                    android:alpha="1"
+                    android:scaleType="centerCrop"
+                    android:layout_margin="4dp"
+                    android:elevation="0dp"
+                    android:src="@drawable/default_avatar" />
+            </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/leaderboard_ring"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:alpha="1"
+            android:scaleType="centerCrop"
+            android:layout_margin="0dp"
+            android:elevation="0dp"
+            android:src="@drawable/ring" />
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="0dp"

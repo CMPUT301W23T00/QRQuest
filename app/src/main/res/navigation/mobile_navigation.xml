@@ -133,9 +133,8 @@
             app:destination="@id/navigation_map" />
 
         <action
-            android:id="@+id/leaderboard_to_action_qrcodeinfopage"
-            app:destination="@id/qrCodeInformationFragment" />
-
+            android:id="@+id/leaderboard_to_action_externaluserprofilefragment"
+            app:destination="@id/externaluser_profile" />
 
     </fragment>
 
@@ -165,6 +164,10 @@
         <action
             android:id="@+id/action_navigation_externaluserprofile_to_externalusersfragment"
             app:destination="@+id/navigation_externalusers"/>
+
+        <action
+            android:id="@+id/action_navigation_externaluserprofilefragment_to_leaderboard"
+            app:destination="@id/leaderboardFragment" />
 
     </fragment>
 

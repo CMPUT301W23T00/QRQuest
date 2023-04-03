@@ -11,11 +11,13 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentLeaderboardBinding;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
+import com.cmput301w23t00.qrquest.ui.externaluserpage.ExternalUserProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -24,7 +26,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 public class leaderboardFragment extends Fragment {
@@ -56,10 +57,10 @@ public class leaderboardFragment extends Fragment {
         final CollectionReference usersCollectionReference = db.collection("users");
 
         // Set adapter for User listview to update based on firebase data.
-        ListView QRList = binding.leaderboardUsersList;
+        ListView UserList = binding.leaderboardUsersList;
         dataList = new ArrayList<>();
         UserAdapter = new leaderboardUserAdapter(getActivity(), dataList);
-        QRList.setAdapter(UserAdapter);
+        UserList.setAdapter(UserAdapter);
         documentIDList = new ArrayList<>();
 
         // Loop through all users fill the listviews with the correct values
@@ -71,8 +72,22 @@ public class leaderboardFragment extends Fragment {
 
                         String userId = (String) document.getData().get("identifierId");
                         String userName = (String) document.getData().get("name");
+                        String userAboutMe = (String) document.getData().get("aboutMe");
+                        String userEmail = (String) document.getData().get("email");
+                        String userPhoneNumber = (String) document.getData().get("phoneNumber");
+                        String userAvatarNumber;
+                        try {
+                            userAvatarNumber = (String) document.getData().get("avatarId");
+                        } catch (Exception e) { // catch NullPointerException explicitly
+                            userAvatarNumber = "0"; // use string "0" instead of String.valueOf(0)
+                        }
+
+                        if (userAvatarNumber == "") {
+                            userAvatarNumber = "0";
+                        }
 
                         // Find all QR codes scanned by the current user
+                        String finalUserAvatarNumber = userAvatarNumber;
                         usersQRCodesCollectionReference.whereEqualTo("identifierId", userId)
                                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override
@@ -89,14 +104,13 @@ public class leaderboardFragment extends Fragment {
 
                                             try {
                                                 // Add the QR code with the highest score to the leaderboard list
-                                                dataList.add(new leaderboardUser(userId, userName, totalScore, 1));
+                                                dataList.add(new leaderboardUser(userId, userName, userAboutMe, userEmail, userPhoneNumber, finalUserAvatarNumber, totalScore, 1));
 
                                                 // Sort the leaderboard list based on score in descending order
-                                                Collections.sort(dataList, new Comparator<leaderboardUser>() {
+                                                dataList.sort(new Comparator<leaderboardUser>() {
                                                     @Override
                                                     public int compare(leaderboardUser o1, leaderboardUser o2) {
-                                                        int scoreComparison = Long.compare(o2.getScore(), o1.getScore());
-                                                        return scoreComparison;
+                                                        return Long.compare(o2.getScore(), o1.getScore());
                                                     }
                                                 });
 
@@ -125,19 +139,31 @@ public class leaderboardFragment extends Fragment {
                     }
                 }
             }
-
         });
 
-        QRList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // when you click on a users profile in the leaderboard
+        UserList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
                 leaderboardUser user = dataList.get(index);
 
+                String userId = user.getUserId();
+                String userName = user.getUserName();
+                String userAboutMe = user.getUserAboutMe();
+                String userEmail = user.getUserEmail();
+                String userPhoneNumber = user.getUserPhoneNumber();
+                String userAvatarId = user.getUserAvatarId();
+
+                ExternalUserProfile userProfile = new ExternalUserProfile(userId, userName, userAboutMe, userEmail, userPhoneNumber, userAvatarId);
+
                 // Create a bundle to store data that will be passed to the other user profile fragment
                 Bundle bundle = new Bundle();
 
-                // we are going to change this when profile is implemented
-                //Navigation.findNavController(view).navigate(R.id.leaderboard_to_action_qrcodeinfopage, bundle);
+                bundle.putParcelable("selectedUser", userProfile);
+                bundle.putBoolean("isLeaderboard", true);
+
+                // navigate to users profile
+                Navigation.findNavController(view).navigate(R.id.leaderboard_to_action_externaluserprofilefragment, bundle);
             }
         });
 

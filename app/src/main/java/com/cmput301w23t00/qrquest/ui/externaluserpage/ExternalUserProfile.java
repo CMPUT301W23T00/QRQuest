@@ -2,15 +2,12 @@ package com.cmput301w23t00.qrquest.ui.externaluserpage;
 
 import static android.content.ContentValues.TAG;
 
-import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.cmput301w23t00.qrquest.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -23,6 +20,7 @@ public class ExternalUserProfile implements Parcelable {
     private String userId;
     private String phoneNumber;
     private String email;
+    private String avatarId;
 
     public ExternalUserProfile() {
         name = "Bob";
@@ -41,6 +39,7 @@ public class ExternalUserProfile implements Parcelable {
                     aboutMe = task.getResult().getDocuments().get(0).getString("aboutMe");
                     phoneNumber = task.getResult().getDocuments().get(0).getString("phoneNumber");
                     email = task.getResult().getDocuments().get(0).getString("email");
+                    avatarId = task.getResult().getDocuments().get(0).getString("avatarId");
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -71,6 +70,15 @@ public class ExternalUserProfile implements Parcelable {
         }
     };
 
+    public ExternalUserProfile(String userId, String userName, String userAboutMe, String userEmail, String userPhoneNumber, String userAvatarId) {
+        this.userId = userId;
+        name = userName;
+        aboutMe = userAboutMe;
+        phoneNumber = userPhoneNumber;
+        email = userEmail;
+        avatarId = userAvatarId;
+    }
+
     public String getName() {
         return name;
     }
@@ -89,6 +97,10 @@ public class ExternalUserProfile implements Parcelable {
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getAvatarId() {
+        return avatarId;
     }
 
     @Override
