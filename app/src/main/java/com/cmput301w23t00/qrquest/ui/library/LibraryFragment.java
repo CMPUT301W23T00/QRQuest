@@ -79,6 +79,7 @@ public class LibraryFragment extends Fragment {
 
         // Set adapter for QR code listview to update based on firebase data
         ListView QRList = binding.libraryQrCodesList;
+        documentIDList = new ArrayList<>();
         allQRList = new ArrayList<>();
         dataList = new ArrayList<>();
         documentIDList = new ArrayList<>();
