@@ -10,12 +10,14 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.databinding.FragmentCommentsBinding;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
+import com.cmput301w23t00.qrquest.ui.updateavatar.AvatarUtility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -39,6 +41,7 @@ public class CommentFragment extends Fragment {
     Boolean isMap; // determines which page to return to
     FirebaseFirestore db; // Firestore database instance
     LibraryQRCode libraryQRCode;
+    Drawable Profile;
     Bundle qrCodeInformationBundle;
 
 
@@ -72,6 +75,7 @@ public class CommentFragment extends Fragment {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("usersQRCodes").whereEqualTo("qrCodeData", qrCodeData.getData()).whereNotEqualTo("comment","").get().addOnCompleteListener(new OnCompleteListener<>() {
+            @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -83,20 +87,40 @@ public class CommentFragment extends Fragment {
                         db.collection("users").whereEqualTo("identifierId", ID).get().addOnCompleteListener(task2 -> {
                             User = "Anonymous User";
                             String Comment = doc1.getString("comment");
-                            @SuppressLint("UseCompatLoadingForDrawables") Drawable Profile = getResources().getDrawable(R.drawable.default_avatar);
+                            Integer Inp = -1;
 
                             if (task2.isSuccessful()) {
                                 for (QueryDocumentSnapshot doc2 : task2.getResult()) {
                                     User = doc2.getString("name");
                                     System.out.println(User);
                                     System.out.println("Ran Task 2: " + User);
-                                    // Waiting for someone to actually store PFP's for this part...
+                                    // PFP processing
+
+                                    String Avatar = (String) doc2.get("avatarId");
+                                    System.out.println("Avatar: " + Avatar);
+                                    if (Avatar != "" && Avatar != null) {
+                                        AvatarUtility AvatarIDGetter = new AvatarUtility();
+                                        Integer InputId = Integer.parseInt(Avatar);
+                                        System.out.println(InputId);
+                                        Integer PFPId = AvatarIDGetter.getAvatarImageResource(InputId);
+                                        Inp = PFPId;
+                                    }
+
                                     break;
                                 }
                             }
 
                             System.out.println("Final User: " + User);
                             System.out.println("Final Comment: " + Comment);
+                            System.out.println("Final Test: " + Inp);
+
+                            if (Inp != -1) {
+                                Profile = getResources().getDrawable(Inp);
+                                System.out.println("Ran something else!");
+                            } else {
+                                Profile = getResources().getDrawable(R.drawable.default_avatar);
+                            }
+
                             CommentData NewComment = new CommentData(User,Comment,Profile);
                             NewAdapter.add(NewComment);
                             NewAdapter.notifyDataSetChanged();
