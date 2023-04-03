@@ -21,6 +21,8 @@ import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCodeAdapter;
+import com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.QRCodeInformationFragment;
+import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.cmput301w23t00.qrquest.ui.updateavatar.AvatarUtility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -47,6 +49,7 @@ public class ExternalUserProfileFragment extends Fragment {
     private ShapeableImageView profileImage;
     private ArrayAdapter<LibraryQRCode> QRAdapter;
     private ArrayList<LibraryQRCode> dataList;
+    private Boolean isSearch;
     private Boolean isLeaderboard;
 
     @Nullable
@@ -67,6 +70,7 @@ public class ExternalUserProfileFragment extends Fragment {
 
         Bundle bundle = getArguments();
         ExternalUserProfile userProfile = bundle.getParcelable("selectedUser");
+        isSearch = bundle.getBoolean("isSearch");
         isLeaderboard = bundle.getBoolean("isLeaderboard");
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -137,12 +141,12 @@ public class ExternalUserProfileFragment extends Fragment {
 
         return root;
     }
-
     /**
-     * This method is called when the fragment is created. It sets up the fragment's menu by calling setHasOptionsMenu(true).
-     * @param savedInstanceState the saved instance state bundle
+     * onCreate is called to do initial creation of the fragment.
+     * @param savedInstanceState the previously saved instance state
      */
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         // Creates this fragment's menu.
         setHasOptionsMenu(true);
@@ -163,6 +167,8 @@ public class ExternalUserProfileFragment extends Fragment {
             // Navigate back to the previous fragment
             if (isLeaderboard) {
                 NavHostFragment.findNavController(ExternalUserProfileFragment.this).navigate(R.id.action_navigation_externaluserprofilefragment_to_leaderboard);
+            } else if (isSearch) {
+                NavHostFragment.findNavController(ExternalUserProfileFragment.this).navigate(R.id.action_externaluser_profile_to_navigation_search);
             } else {
                 NavHostFragment.findNavController(this).navigate(R.id.action_navigation_externaluserprofile_to_externalusersfragment);
             }
