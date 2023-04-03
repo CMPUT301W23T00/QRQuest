@@ -6,14 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
+import com.cmput301w23t00.qrquest.ui.updateavatar.AvatarUtility;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ public class leaderboardUserAdapter extends ArrayAdapter<leaderboardUser> {
         String CurrentUserID = UserProfile.getUserId();
         String CurrentUserName = UserProfile.getName();
 
-        if (Objects.equals(UserObject.getUserId(), CurrentUserID) && Objects.equals(UserObject.getUser(), CurrentUserName)) {
+        if (Objects.equals(UserObject.getUserId(), CurrentUserID) && Objects.equals(UserObject.getUserName(), CurrentUserName)) {
             view.setBackgroundResource(R.drawable.leaderboard_current_user);
         } else {
             view.setBackgroundColor (Color.TRANSPARENT); // default color
@@ -67,28 +68,33 @@ public class leaderboardUserAdapter extends ArrayAdapter<leaderboardUser> {
         TextView userName = view.findViewById(R.id.leaderboard_user_name);
         TextView UserPosition = view.findViewById(R.id.leaderboard_qr_code_position);
         TextView QRScore = view.findViewById(R.id.leaderboard_total_score);
-        ImageView UserProfileImage = view.findViewById(R.id.leaderboard_user_profile_image);
+        AppCompatImageView UserProfileImage = view.findViewById(R.id.leaderboard_user_picture);
 
         // Format date
         SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
 
         // Set QR code information on textviews
-        userName.setText(UserObject.getUser());
+        userName.setText(UserObject.getUserName());
         UserPosition.setText(String.format(Locale.CANADA, "%d",UserObject.getPosition()));
         QRScore.setText(String.format(Locale.CANADA, "%d", UserObject.getScore()));
 
-        if(Objects.equals(UserObject.getPosition(), (long) 1)) {
+        if (Objects.equals(UserObject.getPosition(), (long) 1)) {
             UserPosition.setBackgroundColor(Color.parseColor("#FFD700"));
-        } else if(Objects.equals(UserObject.getPosition(), (long) 2)) {
+        } else if (Objects.equals(UserObject.getPosition(), (long) 2)) {
             UserPosition.setBackgroundColor(Color.parseColor("#C0C0C0"));
-        } else if(Objects.equals(UserObject.getPosition(), (long) 3)) {
+        } else if (Objects.equals(UserObject.getPosition(), (long) 3)) {
             UserPosition.setBackgroundColor(Color.parseColor("#CD7F32"));
         } else {
             UserPosition.setBackgroundColor(Color.parseColor("#CC333333")); // default color
         }
 
         // set the UserProfileImage to the correct image after implemented
-        //UserProfileImage.setImageBitmap();
+        try {
+            UserProfileImage.setImageResource(AvatarUtility.getAvatarImageResource(Integer.parseInt(UserObject.getUserAvatarId())));
+        } catch (Exception e) {
+            UserProfileImage.setImageResource(AvatarUtility.getAvatarImageResource(0));
+        }
+
         return view;
     }
 }
