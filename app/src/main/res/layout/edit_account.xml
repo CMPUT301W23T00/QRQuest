@@ -11,8 +11,8 @@
     tools:layout_editor_absoluteY="76dp"
     android:id="@+id/edit_account_parent">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/editProfileImage"
+    <FrameLayout
+        android:id="@+id/editProfileImage2"
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:layout_marginTop="50dp"
@@ -25,9 +25,45 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/Circular"
-        app:strokeWidth="1dp"
-        app:strokeColor="?attr/colorOnPrimary"/>
+        >
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            app:cardCornerRadius="250dp"
+            android:layout_gravity="center"
+            app:cardBackgroundColor="@color/white">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                app:cardCornerRadius="250dp"
+                android:layout_gravity="center">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/editProfileImage"
+                    android:layout_width="125dp"
+                    android:layout_height="125dp"
+                    android:layout_gravity="center"
+                    android:alpha="1"
+                    android:scaleType="centerCrop"
+                    android:layout_margin="4dp"
+                    android:elevation="0dp"
+                    android:src="@drawable/grug" />
+            </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_gravity="center"
+            android:alpha="1"
+            android:scaleType="centerCrop"
+            android:layout_margin="0dp"
+            android:elevation="0dp"
+            android:src="@drawable/ring" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/editNameText"
