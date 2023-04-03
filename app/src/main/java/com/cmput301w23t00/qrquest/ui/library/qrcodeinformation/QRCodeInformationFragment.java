@@ -176,7 +176,7 @@ public class QRCodeInformationFragment extends Fragment {
             bundle.putBoolean("isLeaderboard", isLeaderboard);
 
             // Start a new activity to see comments on this QR code
-            NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_commentFragment, bundle);
+            NavHostFragment.findNavController(QRCodeInformationFragment.this).navigate(R.id.qrCodeInformationFragment_to_action_pictureFragment, bundle);
             return true;
         }
 

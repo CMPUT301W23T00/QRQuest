@@ -40,11 +40,11 @@ public class PictureAdapter extends ArrayAdapter<com.cmput301w23t00.qrquest.ui.l
         }
 
         // Set the text of the TextView in the layout to the current string in the list
-        TextView textView1 = listItemView.findViewById(R.id.comment_text);
+        TextView textView1 = listItemView.findViewById(R.id.picture_date);
         String currentString = mData.get(position).getText();
         textView1.setText(currentString);
 
-        TextView textView2 = listItemView.findViewById(R.id.comment_username);
+        TextView textView2 = listItemView.findViewById(R.id.picture_username);
         currentString = mData.get(position).getUser();
         textView2.setText(currentString);
 
