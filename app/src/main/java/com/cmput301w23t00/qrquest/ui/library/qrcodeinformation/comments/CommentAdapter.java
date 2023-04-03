@@ -19,6 +19,9 @@ import com.google.api.Distribution;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represents an ArrayAdapter for CommentData
+ */
 public class CommentAdapter extends ArrayAdapter<CommentData> {
 
     private Context mContext;
