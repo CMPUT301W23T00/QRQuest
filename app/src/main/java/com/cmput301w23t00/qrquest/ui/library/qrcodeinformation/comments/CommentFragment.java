@@ -62,7 +62,6 @@ public class CommentFragment extends Fragment {
 
         qrCodeInformationBundle = getArguments();
         LibraryQRCode qrCodeData = qrCodeInformationBundle.getParcelable("selectedQRCode");
-        System.out.println("Ran Comment Fragment");
 
         // Inflate the fragment_qrcodeinformation.xml layout for this fragment.
 
@@ -79,9 +78,7 @@ public class CommentFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    System.out.println("Task1");
                     for (QueryDocumentSnapshot doc1 : task.getResult()) {
-                        System.out.println("Ran Task 1");
                         String ID = doc1.getString("identifierId");
 
                         db.collection("users").whereEqualTo("identifierId", ID).get().addOnCompleteListener(task2 -> {
@@ -92,16 +89,12 @@ public class CommentFragment extends Fragment {
                             if (task2.isSuccessful()) {
                                 for (QueryDocumentSnapshot doc2 : task2.getResult()) {
                                     User = doc2.getString("name");
-                                    System.out.println(User);
-                                    System.out.println("Ran Task 2: " + User);
                                     // PFP processing
 
                                     String Avatar = (String) doc2.get("avatarId");
-                                    System.out.println("Avatar: " + Avatar);
                                     if (Avatar != "" && Avatar != null) {
                                         AvatarUtility AvatarIDGetter = new AvatarUtility();
                                         Integer InputId = Integer.parseInt(Avatar);
-                                        System.out.println(InputId);
                                         Integer PFPId = AvatarIDGetter.getAvatarImageResource(InputId);
                                         Inp = PFPId;
                                     }
@@ -110,13 +103,9 @@ public class CommentFragment extends Fragment {
                                 }
                             }
 
-                            System.out.println("Final User: " + User);
-                            System.out.println("Final Comment: " + Comment);
-                            System.out.println("Final Test: " + Inp);
 
                             if (Inp != -1) {
                                 Profile = getResources().getDrawable(Inp);
-                                System.out.println("Ran something else!");
                             } else {
                                 Profile = getResources().getDrawable(R.drawable.default_avatar);
                             }
