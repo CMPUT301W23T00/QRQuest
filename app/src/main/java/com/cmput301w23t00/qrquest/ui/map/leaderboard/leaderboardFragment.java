@@ -137,6 +137,7 @@ public class leaderboardFragment extends Fragment {
             }
         });
 
+        // when you click on a users profile in the leaderboard
         UserList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
@@ -151,16 +152,13 @@ public class leaderboardFragment extends Fragment {
 
                 ExternalUserProfile userProfile = new ExternalUserProfile(userId, userName, userAboutMe, userEmail, userPhoneNumber, userAvatarId);
 
-                System.out.println(userProfile.getEmail());
-                System.out.println(userProfile.getPhoneNumber());
-                System.out.println(userProfile.getName());
-
                 // Create a bundle to store data that will be passed to the other user profile fragment
                 Bundle bundle = new Bundle();
 
                 bundle.putParcelable("selectedUser", userProfile);
                 bundle.putBoolean("isLeaderboard", true);
 
+                // navigate to users profile
                 Navigation.findNavController(view).navigate(R.id.leaderboard_to_action_externaluserprofilefragment, bundle);
             }
         });
