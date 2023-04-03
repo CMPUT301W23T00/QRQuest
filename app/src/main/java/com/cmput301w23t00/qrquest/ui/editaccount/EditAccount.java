@@ -12,14 +12,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
+import com.cmput301w23t00.qrquest.ui.updateavatar.AvatarUtility;
+import com.cmput301w23t00.qrquest.ui.updateavatar.EditAvatarDialogListener;
+import com.cmput301w23t00.qrquest.ui.updateavatar.EditAvatarFragment;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-public class EditAccount extends AppCompatActivity {
+public class EditAccount extends AppCompatActivity implements EditAvatarDialogListener {
     EditText editNameField, editAboutMeField, editEmailField, editPhoneField;
     Button editCancelButton, editConfirmButton;
     ImageView editProfileImage;
+    int profilePictureID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,21 +45,19 @@ public class EditAccount extends AppCompatActivity {
         String aboutMe = UserProfile.getAboutMe();
         String phoneNum = UserProfile.getPhoneNumber();
         String email = UserProfile.getEmail();
+        String avatarId = UserProfile.getAvatarId();
 
         // Sets user value in input field.
         editNameField.setText(name);
         editAboutMeField.setText(aboutMe);
         editEmailField.setText(email);
         editPhoneField.setText(phoneNum);
+        editProfileImage.setImageResource(AvatarUtility.getAvatarImageResource(Integer.parseInt(avatarId)));
 
         editProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // pop up upload option
-                // store photo to send to db
-
-                // update profile image view
-                //editProfileImage.setImageResource();
+                new EditAvatarFragment(profilePictureID).show(getSupportFragmentManager(), "Change Profile");
             }
         });
 
@@ -106,9 +108,16 @@ public class EditAccount extends AppCompatActivity {
                 UserProfile.setAboutMe(aboutMeInput);
                 UserProfile.setPhoneNumber(phoneNumInput);
                 UserProfile.setEmail(emailInput);
+                UserProfile.setAvatarId(String.valueOf(profilePictureID));
 
                 finish();
             }
         });
+    }
+
+    @Override
+    public void updateProfilePicture(int id) {
+        profilePictureID = id;
+        editProfileImage.setImageResource(AvatarUtility.getAvatarImageResource(id));
     }
 }

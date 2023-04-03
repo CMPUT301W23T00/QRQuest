@@ -16,6 +16,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Objects;
+
 /**
  * UserProfile class is used to temporarily store user information for the
  * duration of the app to reduce server accesses and act as an
@@ -59,7 +61,7 @@ public class UserProfile {
                         phoneNumber = task.getResult().getDocuments().get(0).getString("phoneNumber");
                         email = task.getResult().getDocuments().get(0).getString("email");
                         name = task.getResult().getDocuments().get(0).getString("name");
-                        avatarId = task.getResult().getDocuments().get(0).getString("avatarID");
+                        avatarId = task.getResult().getDocuments().get(0).getString("avatarId");
                         firstInstantiation = false;
                         created = true;
                     }
@@ -124,7 +126,7 @@ public class UserProfile {
 
     /**
      * avatarId getter
-     * @return  returns avatarId string
+     * @return  returns avatarId integer
      */
     public static String getAvatarId() {
         return avatarId;
@@ -236,7 +238,7 @@ public class UserProfile {
         UserProfile.avatarId = avatarId;
 
         if (userId != null) {
-            FirebaseFirestore.getInstance().collection("users").whereEqualTo("identifierId", avatarId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            FirebaseFirestore.getInstance().collection("users").whereEqualTo("identifierId", userId).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                     DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);

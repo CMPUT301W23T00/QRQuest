@@ -1,11 +1,7 @@
 package com.cmput301w23t00.qrquest.ui.createaccount;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -15,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -26,8 +21,9 @@ import com.cmput301w23t00.qrquest.MainActivity;
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.cmput301w23t00.qrquest.ui.profile.UserSettings;
-import com.cmput301w23t00.qrquest.ui.updateavatar.AvatarSetter;
-import com.cmput301w23t00.qrquest.ui.updateavatar.UpdateAvatar;
+import com.cmput301w23t00.qrquest.ui.updateavatar.AvatarUtility;
+import com.cmput301w23t00.qrquest.ui.updateavatar.EditAvatarDialogListener;
+import com.cmput301w23t00.qrquest.ui.updateavatar.EditAvatarFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -38,13 +34,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-public class CreateAccount extends AppCompatActivity {
+public class CreateAccount extends AppCompatActivity implements EditAvatarDialogListener {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     EditText addNameField, addEmailField, addPhoneField;
     Button addCreateButton;
     ImageView addProfileImage;
+    int profilePictureID = 0;
 
     private static final String TAG = "CreateAccount";
 
@@ -82,22 +79,7 @@ public class CreateAccount extends AppCompatActivity {
         addProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // pop up upload option
-                // store photo to send to db
-                /* AlertDialog.Builder builder = new AlertDialog.Builder(CreateAccount.this);
-                builder.setPositiveButton("Choose Avatar", (dialogInterface, i) -> {
-                    Intent intentForUpdateAvatar = new Intent(CreateAccount.this, UpdateAvatar.class);
-                    startActivity(intentForUpdateAvatar);
-                });
-
-                builder.setNegativeButton("Remove Avatar", (dialogInterface, i) -> addProfileImage.setImageResource(R.drawable.avatar2));
-
-                AlertDialog dialog = builder.create();
-                dialog.show(); */
-
-                Intent intentForUpdateAvatar = new Intent(CreateAccount.this, UpdateAvatar.class);
-                updateAvatarLauncher.launch(intentForUpdateAvatar);
-
+                new EditAvatarFragment(profilePictureID).show(getSupportFragmentManager(), "Change Profile");
             }
         });
 
@@ -142,14 +124,9 @@ public class CreateAccount extends AppCompatActivity {
                 userValue.put("email", email);
                 userValue.put("phoneNumber", phoneNum);
                 userValue.put("aboutMe", "");
+                userValue.put("avatarId", String.valueOf(profilePictureID));
                 userValue.put("recordGeoLocationByDefault", true);
                 userValue.put("identifierId", fid);
-
-                UserProfile userProfile = new UserProfile();
-                userProfile.setAboutMe("");
-                userProfile.setPhoneNumber(phoneNum);
-                userProfile.setEmail(email);
-                userProfile.setName(name);
 
                 db.collection("users")
                         .add(userValue)
@@ -175,5 +152,11 @@ public class CreateAccount extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    public void updateProfilePicture(int id) {
+        profilePictureID = id;
+        addProfileImage.setImageResource(AvatarUtility.getAvatarImageResource(id));
     }
 }

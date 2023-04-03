@@ -36,7 +36,6 @@
         </activity>
         <activity android:name=".ui.createaccount.CreateAccount" />
         <activity android:name=".ui.editaccount.EditAccount"/>
-        <activity android:name=".ui.updateavatar.UpdateAvatar"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
             userProfile.setPhoneNumber(profile.getString("phoneNumber", ""));
             userProfile.setEmail(profile.getString("email", ""));
             userProfile.setName(profile.getString("name", ""));
+            userProfile.setAvatarId(profile.getString("avatarId", ""));
         }
         UserProfile.setCreated(true);
         UserSettings.setCreated(true);
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         editorProfile.putString("name", /*"Grug"*/UserProfile.getName());
         editorProfile.putBoolean("existingAccount", UserProfile.getCreated());
         editorProfile.putString("userId", UserProfile.getUserId());
+        editorProfile.putString("avatarId", UserProfile.getAvatarId());
         editorProfile.commit();
     }
 }
