@@ -18,8 +18,6 @@ public class ImageCompressor {
      */
     public static File compressImage(Context context, File originalFile) {
         try {
-            System.out.println(context);
-            System.out.println(originalFile);
             return new Compressor(context).compressToFile(originalFile);
         } catch (IOException e) {
             Log.e("ImageCompressor", "Error compressing image", e);
