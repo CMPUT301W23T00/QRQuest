@@ -190,7 +190,6 @@ public class QrNameActivity extends AppCompatActivity {
                         String bestProvider = locationManager.getBestProvider(criteria, true);
                         if (bestProvider == null) {
                             Toast.makeText(QrNameActivity.this, "Location is disabled can't record location", Toast.LENGTH_SHORT).show();
-                            point = new GeoPoint(0.0, 0.0);
                         } else {
                             Location location = locationManager.getLastKnownLocation(bestProvider);
                             point = new GeoPoint(location.getLatitude(), location.getLongitude());
