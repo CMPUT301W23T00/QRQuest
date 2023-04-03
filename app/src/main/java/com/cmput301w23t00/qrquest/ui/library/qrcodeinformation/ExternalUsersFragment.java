@@ -1,8 +1,11 @@
 package com.cmput301w23t00.qrquest.ui.library.qrcodeinformation;
 
+import static android.content.ContentValues.TAG;
+
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,13 +30,16 @@ import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.externaluserpage.ExternalUserProfile;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
+import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.model.Document;
 
 import java.util.ArrayList;
 
@@ -76,10 +82,58 @@ public class ExternalUsersFragment extends Fragment {
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);
 
-        /*for (int i = 0; i < 15; i++) */users.add(new ExternalUserProfile("c54c41c7-1ce0-498d-8b2d-9105c52381dc"));
-        getUsers();
-        usersList.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, users.size()*239 + 200));
-        usersAdapter.notifyDataSetChanged();
+        final int[] total_users = {0};
+        final int[] updated_users = {0};
+
+        CollectionReference databaseCodes = db.collection("usersQRCodes");
+        databaseCodes.whereEqualTo("qrCodeData", qrCode.getData())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()); {
+                            int count = task.getResult().getDocuments().size();
+                            for (int i = 0; i < count; i++) {
+                                DocumentSnapshot document = task.getResult().getDocuments().get(i);
+                                if (document != null) {
+                                    String identifierId = document.getString("identifierId");
+                                    if (!identifierId.equals("") && !identifierId.equals(UserProfile.getUserId())) {
+                                        total_users[0]++;
+                                        FirebaseFirestore.getInstance().collection("users").whereEqualTo("identifierId", identifierId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                updated_users[0]++;
+                                                if (task.isSuccessful() && task.getResult().getDocuments().size() != 0) {
+                                                    ExternalUserProfile user = new ExternalUserProfile(identifierId);
+                                                    user.setName(task.getResult().getDocuments().get(0).getString("name"));
+                                                    user.setAboutMe(task.getResult().getDocuments().get(0).getString("aboutMe"));
+                                                    user.setPhoneNumber(task.getResult().getDocuments().get(0).getString("phoneNumber"));
+                                                    user.setEmail(task.getResult().getDocuments().get(0).getString("email"));
+                                                    Log.d(TAG, "onComplete: Finished Loading");
+                                                    users.add(user);
+                                                }
+                                                if (total_users[0] == updated_users[0]) {
+                                                    usersList.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, users.size()*239 + 200));
+                                                    usersAdapter.notifyDataSetChanged();
+                                                }
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d(TAG, "onFailure: failed to query");
+                                                updated_users[0]++;
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext(), "Unable to connect to network", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
         usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
