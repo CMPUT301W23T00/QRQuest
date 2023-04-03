@@ -127,7 +127,7 @@ public class MapFragment extends Fragment {
                                     com.google.firebase.Timestamp timestamp = (com.google.firebase.Timestamp) document.getData().get("dateScanned");
                                     // Convert Firebase Timestamp to Date
                                     Date dateScanned = timestamp.toDate();
-                                    if (location != null) {
+                                    if (location != null && (location.getLatitude() != 0.0 && (location.getLongitude() != 0.0))) {
                                         GeoPoint locationOSM = new GeoPoint(location.getLatitude(), location.getLongitude());
                                         try {
                                             Marker currentLocationMarker = new Marker(map);
