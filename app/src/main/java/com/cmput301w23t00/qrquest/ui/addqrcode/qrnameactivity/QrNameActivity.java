@@ -12,6 +12,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -99,7 +100,7 @@ public class QrNameActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         Intent qrCodeIntent = getIntent();
-        this.qrCodeData = QRCodeProcessor.sha256(Objects.requireNonNull(qrCodeIntent).getStringExtra("qrCodeData"));
+        this.qrCodeData = qrCodeIntent.getStringExtra("qrCodeData");
 
 
 
@@ -242,25 +243,30 @@ public class QrNameActivity extends AppCompatActivity {
                             }
                         });
 
-                FirebaseStorage storage = FirebaseStorage.getInstance();
-                StorageReference storageRef = storage.getReference().child("images/" + fid+"-"+qrCodeData);
-                File f = new File(getRealPathFromURI(picturesUri));
-                File compressedFile = ImageCompressor.compressImage(getApplicationContext(), f);
-                Uri compressedFileUri = Uri.fromFile(compressedFile);
+                try {
+                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                    StorageReference storageRef = storage.getReference().child("images/" + fid+"-"+qrCodeData);
+                    File f = new File(getRealPathFromURI(picturesUri));
+                    File compressedFile = ImageCompressor.compressImage(getApplicationContext(), f);
+                    Uri compressedFileUri = Uri.fromFile(compressedFile);
 
-                storageRef.putFile(compressedFileUri)
-                        .addOnFailureListener(new OnFailureListener() {
-                            /**
-                             * On failure of a Firebase upload
-                             *
-                             * @param e an Exception
-                             */
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // Handle the error
-                                Log.e("TAG", "Error uploading image to Firebase Storage", e);
-                            }
-                        });
+                    storageRef.putFile(compressedFileUri)
+                            .addOnFailureListener(new OnFailureListener() {
+                                /**
+                                 * On failure of a Firebase upload
+                                 *
+                                 * @param e an Exception
+                                 */
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Handle the error
+                                    Log.e("TAG", "Error uploading image to Firebase Storage", e);
+                                }
+                            });
+                } catch (Exception e) {
+                    Log.e("TAG","Error", e);
+                }
+
                 finish();
             }
         });
