@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
+import com.cmput301w23t00.qrquest.ui.updateavatar.AvatarUtility;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -77,18 +78,18 @@ public class leaderboardUserAdapter extends ArrayAdapter<leaderboardUser> {
         UserPosition.setText(String.format(Locale.CANADA, "%d",UserObject.getPosition()));
         QRScore.setText(String.format(Locale.CANADA, "%d", UserObject.getScore()));
 
-        if(Objects.equals(UserObject.getPosition(), (long) 1)) {
+        if (Objects.equals(UserObject.getPosition(), (long) 1)) {
             UserPosition.setBackgroundColor(Color.parseColor("#FFD700"));
-        } else if(Objects.equals(UserObject.getPosition(), (long) 2)) {
+        } else if (Objects.equals(UserObject.getPosition(), (long) 2)) {
             UserPosition.setBackgroundColor(Color.parseColor("#C0C0C0"));
-        } else if(Objects.equals(UserObject.getPosition(), (long) 3)) {
+        } else if (Objects.equals(UserObject.getPosition(), (long) 3)) {
             UserPosition.setBackgroundColor(Color.parseColor("#CD7F32"));
         } else {
             UserPosition.setBackgroundColor(Color.parseColor("#CC333333")); // default color
         }
 
         // set the UserProfileImage to the correct image after implemented
-        //UserProfileImage.setImageBitmap();
+        UserProfileImage.setImageResource(AvatarUtility.getAvatarImageResource(Integer.parseInt(UserProfile.getAvatarId())));
         return view;
     }
 }
