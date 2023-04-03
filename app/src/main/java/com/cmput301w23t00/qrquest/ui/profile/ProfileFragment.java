@@ -22,6 +22,7 @@ import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCodeAdapter;
+import com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.ViewCycleStack;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -62,6 +63,7 @@ public class ProfileFragment extends Fragment {
     @SuppressLint("DefaultLocale")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        ViewCycleStack.reset();
 
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
 

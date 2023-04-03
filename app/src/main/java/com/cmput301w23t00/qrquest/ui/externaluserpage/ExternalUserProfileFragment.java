@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,6 +18,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.cmput301w23t00.qrquest.MainActivity;
@@ -24,6 +26,7 @@ import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCodeAdapter;
+import com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.ViewCycleStack;
 import com.cmput301w23t00.qrquest.ui.profile.UserProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -48,6 +51,8 @@ public class ExternalUserProfileFragment extends Fragment {
     private ListView QRlist;
     private ArrayAdapter<LibraryQRCode> QRAdapter;
     private ArrayList<LibraryQRCode> dataList;
+    private Bundle bundle;
+    Boolean back = false;
 
     @Nullable
     @Override
@@ -64,7 +69,8 @@ public class ExternalUserProfileFragment extends Fragment {
         lowestScoreText = (TextView) root.findViewById(R.id.profile_lowest_score_count);
         QRlist = (ListView) root.findViewById(R.id.recent_list);
 
-        Bundle bundle = getArguments();
+        if (getArguments() == null) this.bundle = ViewCycleStack.pop();
+        else this.bundle = getArguments();
         ExternalUserProfile userProfile = bundle.getParcelable("selectedUser");
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -129,6 +135,27 @@ public class ExternalUserProfileFragment extends Fragment {
 
         setHasOptionsMenu(true);
 
+        QRlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
+                LibraryQRCode qrCode = dataList.get(index);
+                //String docID = documentIDList.get(index);
+
+                // Create a bundle to store data that will be passed to the QR code information fragment
+                Bundle bundle = new Bundle();
+                // Add the selected QR code object and the user ID to the bundle
+                bundle.putParcelable("selectedQRCode", qrCode);
+                bundle.putString("userID", userID);
+                //bundle.putString("documentID", docID);
+                bundle.putBoolean("isMap", false);
+                bundle.putBoolean("isLeaderboard", false);
+                bundle.putBoolean("isExternalUserProfile", true);
+                // Use the Navigation component to navigate to the QR code information fragment,
+                // and pass the bundle as an argument to the destination fragment
+                Navigation.findNavController(view).navigate(R.id.externaluser_profile_to_qrcodeinformation_fragment, bundle);
+            }
+        });
+
         return root;
     }
 
@@ -142,5 +169,12 @@ public class ExternalUserProfileFragment extends Fragment {
 
     private void restoreActionBar() {
         NavHostFragment.findNavController(this).navigate(R.id.action_navigation_externaluserprofile_to_externalusersfragment);
+        this.back = true;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (!back) ViewCycleStack.push(bundle);
     }
 }

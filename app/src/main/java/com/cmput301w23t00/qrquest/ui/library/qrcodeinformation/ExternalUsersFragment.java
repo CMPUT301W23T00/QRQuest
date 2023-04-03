@@ -49,6 +49,7 @@ public class ExternalUsersFragment extends Fragment {
     String docID;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     LibraryQRCode qrCode;
+    Boolean back = false;
 
 
     @Nullable
@@ -166,13 +167,14 @@ public class ExternalUsersFragment extends Fragment {
     }
 
     private void restoreActionBar() {
-        NavHostFragment.findNavController(this).navigate(R.id.action_navigation_externalusersfragment_to_qrCodeInformationFragment, this.bundle);
+        NavHostFragment.findNavController(this).navigate(R.id.action_navigation_externalusersfragment_to_qrCodeInformationFragment);
+        this.back = true;
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        ViewCycleStack.push(bundle);
+        if (!back) ViewCycleStack.push(bundle);
     }
 
 }

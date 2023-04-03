@@ -120,6 +120,10 @@
             android:id="@+id/qrCodeInformationFragment_to_action_leaderboard"
             app:destination="@id/leaderboardFragment" />
 
+        <action
+            android:id="@+id/qrCodeInformationFragment_to_externaluserprofile"
+            app:destination="@+id/externaluser_profile"/>
+
     </fragment>
 
     <fragment
@@ -166,6 +170,10 @@
         <action
             android:id="@+id/action_navigation_externaluserprofile_to_externalusersfragment"
             app:destination="@+id/navigation_externalusers"/>
+
+        <action
+            android:id="@+id/externaluser_profile_to_qrcodeinformation_fragment"
+            app:destination="@+id/qrCodeInformationFragment"/>
 
     </fragment>
 

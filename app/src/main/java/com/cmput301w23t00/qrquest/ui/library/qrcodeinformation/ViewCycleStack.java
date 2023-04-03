@@ -17,4 +17,8 @@ public class ViewCycleStack {
     public static void push(Bundle bundle) {
         stack.add(bundle);
     }
+
+    public static void reset() {
+        stack = new ArrayList<>();
+    }
 }
