@@ -135,6 +135,7 @@ public class leaderboardFragment extends Fragment {
                 // Create a bundle to store data that will be passed to the other user profile fragment
                 Bundle bundle = new Bundle();
 
+
                 // we are going to change this when profile is implemented
                 //Navigation.findNavController(view).navigate(R.id.leaderboard_to_action_qrcodeinfopage, bundle);
             }
