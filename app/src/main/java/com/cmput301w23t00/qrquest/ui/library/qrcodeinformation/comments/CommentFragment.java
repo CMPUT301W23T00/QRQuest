@@ -46,7 +46,7 @@ public class CommentFragment extends Fragment {
 
     /**
      * onCreateView is called when the view is first created.
-     * It inflates the view and sets up the QRCodeInformationViewModel to display the QR code information.
+     * It inflates the view and sets up the QRCodeInformationViewModel to display the comments.
      *
      * @param inflater the LayoutInflater object that can be used to inflate any views in the fragment
      * @param container the parent view that the fragment's UI should be attached to
