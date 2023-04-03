@@ -34,13 +34,10 @@ import java.util.Locale;
 
 public class PictureAdapter extends ArrayAdapter<com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures.PictureData> {
 
-    private Context mContext;
     private List<com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures.PictureData> mData;
-    private LinearLayout mlayout;
 
     public PictureAdapter(@NonNull Context context, ArrayList<com.cmput301w23t00.qrquest.ui.library.qrcodeinformation.pictures.PictureData> Data) {
         super(context, 0, Data);
-        this.mContext = context;
         this.mData = Data;
     }
 
@@ -74,22 +71,5 @@ public class PictureAdapter extends ArrayAdapter<com.cmput301w23t00.qrquest.ui.l
         Picasso.with(getContext()).load(FeedImg).into(imageView2);
 
         return listItemView;
-    }
-
-    private Bitmap getImageBitmap(String url) {
-        Bitmap bm = null;
-        try {
-            URL aURL = new URL(url);
-            URLConnection conn = aURL.openConnection();
-            conn.connect();
-            InputStream is = conn.getInputStream();
-            BufferedInputStream bis = new BufferedInputStream(is);
-            bm = BitmapFactory.decodeStream(bis);
-            bis.close();
-            is.close();
-        } catch (IOException e) {
-            Log.e(TAG, "Error getting bitmap", e);
-        }
-        return bm;
     }
 }

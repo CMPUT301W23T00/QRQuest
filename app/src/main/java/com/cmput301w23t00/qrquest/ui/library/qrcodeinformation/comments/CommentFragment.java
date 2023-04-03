@@ -37,11 +37,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CommentFragment extends Fragment {
 
     private FragmentCommentsBinding binding; // view binding object for the fragment
-    String userID; // a string to hold the current user's ID
-    String docID; // the qr code document id
-    Boolean isMap; // determines which page to return to
-    FirebaseFirestore db; // Firestore database instance
-    LibraryQRCode libraryQRCode;
     Drawable Profile;
     Bundle qrCodeInformationBundle;
 
@@ -63,8 +58,6 @@ public class CommentFragment extends Fragment {
 
         qrCodeInformationBundle = getArguments();
         LibraryQRCode qrCodeData = qrCodeInformationBundle.getParcelable("selectedQRCode");
-
-        // Inflate the fragment_qrcodeinformation.xml layout for this fragment.
 
         binding = FragmentCommentsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -98,9 +91,7 @@ public class CommentFragment extends Fragment {
                                         int InputId = Integer.parseInt(Avatar);
                                         Inp = AvatarIDGetter.getAvatarImageResource(InputId);
                                     }
-
                             }
-
 
                             if (Inp != -1) {
                                 Profile = getResources().getDrawable(Inp);
