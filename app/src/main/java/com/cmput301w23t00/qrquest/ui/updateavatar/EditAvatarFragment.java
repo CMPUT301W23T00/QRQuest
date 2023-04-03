@@ -52,7 +52,7 @@ public class EditAvatarFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_edit_avatar, null);
+        View view = getLayoutInflater().inflate(R.layout.fragment_edit_avatar, null);
 
         AlertDialog dialog = new AlertDialog.Builder(getContext())
                 .setView(view)
