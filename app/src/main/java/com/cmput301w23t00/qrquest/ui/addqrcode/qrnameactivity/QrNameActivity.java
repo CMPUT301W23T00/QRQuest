@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -178,16 +179,19 @@ public class QrNameActivity extends AppCompatActivity {
 
                 GeoPoint point = new GeoPoint(0, 0);
                 if (leaveLocation) {
-                    Criteria criteria = new Criteria();
-                    LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                    String bestProvider = locationManager.getBestProvider(criteria, true);
-                    if (ActivityCompat.checkSelfPermission(QrNameActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(QrNameActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        if (ContextCompat.checkSelfPermission(QrNameActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            requestPermissions(new String[] {ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION }, 100);
-                        }
+                    if (ContextCompat.checkSelfPermission(QrNameActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION }, 100);
                     }
-                    Location location = locationManager.getLastKnownLocation(bestProvider);
-                    point = new GeoPoint(location.getLatitude(), location.getLongitude());
+
+                    if (ContextCompat.checkSelfPermission(QrNameActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        Criteria criteria = new Criteria();
+                        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                        String bestProvider = locationManager.getBestProvider(criteria, true);
+                        Location location = locationManager.getLastKnownLocation(bestProvider);
+                        point = new GeoPoint(location.getLatitude(), location.getLongitude());
+                    } else {
+                        Toast.makeText(QrNameActivity.this, "Location is off or don't have permissions can't record location", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
 
