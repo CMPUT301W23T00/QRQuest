@@ -42,6 +42,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.model.Document;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class ExternalUsersFragment extends Fragment {
 
@@ -112,6 +114,8 @@ public class ExternalUsersFragment extends Fragment {
                                                     users.add(user);
                                                 }
                                                 if (total_users[0] == updated_users[0]) {
+                                                    users.sort(Comparator.comparing(ExternalUserProfile::getName));
+                                                    Collections.reverse(users);
                                                     usersList.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, users.size()*239 + 200));
                                                     usersAdapter.notifyDataSetChanged();
                                                 }
