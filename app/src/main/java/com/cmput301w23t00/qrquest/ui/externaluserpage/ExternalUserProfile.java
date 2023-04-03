@@ -99,6 +99,10 @@ public class ExternalUserProfile implements Parcelable {
         return userId;
     }
 
+    public String getAvatarId() {
+        return avatarId;
+    }
+
     @Override
     public int describeContents() {
         return 0;

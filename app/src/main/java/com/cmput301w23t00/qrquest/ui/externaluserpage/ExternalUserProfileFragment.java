@@ -21,8 +21,10 @@ import com.cmput301w23t00.qrquest.R;
 import com.cmput301w23t00.qrquest.ui.addqrcode.QRCodeProcessor;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCode;
 import com.cmput301w23t00.qrquest.ui.library.LibraryQRCodeAdapter;
+import com.cmput301w23t00.qrquest.ui.updateavatar.AvatarUtility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -42,6 +44,7 @@ public class ExternalUserProfileFragment extends Fragment {
     private TextView highestScoreText;
     private TextView lowestScoreText;
     private ListView QRlist;
+    private ShapeableImageView profileImage;
     private ArrayAdapter<LibraryQRCode> QRAdapter;
     private ArrayList<LibraryQRCode> dataList;
     private Boolean isLeaderboard;
@@ -60,6 +63,7 @@ public class ExternalUserProfileFragment extends Fragment {
         highestScoreText = (TextView) root.findViewById(R.id.profile_highest_score_count);
         lowestScoreText = (TextView) root.findViewById(R.id.profile_lowest_score_count);
         QRlist = (ListView) root.findViewById(R.id.recent_list);
+        profileImage = (ShapeableImageView) root.findViewById(R.id.imageView);
 
         Bundle bundle = getArguments();
         ExternalUserProfile userProfile = bundle.getParcelable("selectedUser");
@@ -116,6 +120,12 @@ public class ExternalUserProfileFragment extends Fragment {
         aboutMe.setText(userProfile.getAboutMe());
         phoneNumber.setText(String.format("Phone: %s", userProfile.getPhoneNumber()));
         email.setText(String.format("Email: %s", userProfile.getEmail()));
+
+        try {
+            profileImage.setImageResource(AvatarUtility.getAvatarImageResource(Integer.parseInt(userProfile.getAvatarId())));
+        } catch (Exception e) {
+            profileImage.setImageResource(AvatarUtility.getAvatarImageResource(0));
+        }
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
