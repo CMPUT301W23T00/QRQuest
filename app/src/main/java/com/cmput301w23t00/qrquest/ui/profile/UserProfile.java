@@ -129,7 +129,7 @@ public class UserProfile {
      * @return  returns avatarId integer
      */
     public static String getAvatarId() {
-        if (Objects.equals(avatarId, "")) {
+        if (Objects.equals(avatarId, "") || avatarId == null) {
             return "0";
         }
         return avatarId;

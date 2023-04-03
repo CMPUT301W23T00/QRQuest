@@ -93,6 +93,7 @@ public class CreateAccountTest {
     @Before
     public void turnOffDeviceAnimations() throws IOException {
         UiDevice device = UiDevice.getInstance(getInstrumentation());
+        UserProfile userProfile = new UserProfile(false);
         device.executeShellCommand("settings put global window_animation_scale 0");
         device.executeShellCommand("settings put global transition_animation_scale 0");
         device.executeShellCommand("settings put global animator_duration_scale 0");
@@ -127,7 +128,7 @@ public class CreateAccountTest {
         // Set up test data
 
         ActivityScenario<CreateAccount> activityScenario = ActivityScenario.launch(CreateAccount.class);
-        String name = "testCreateAccountFailureEmptyPhone";
+        String name = "FailureEmptyPhone";
         String phone = "";
         String email = "test@gmail.com";
 
@@ -175,7 +176,7 @@ public class CreateAccountTest {
         // Set up test data
 
         ActivityScenario<CreateAccount> activityScenario = ActivityScenario.launch(CreateAccount.class);
-        String name = "testCreateAccountFailureEmptyEmail";
+        String name = "FailureEmptyEmail";
         String phone = "123-456-7890";
         String email = "";
 
@@ -199,7 +200,7 @@ public class CreateAccountTest {
         // Set up test data
 
         ActivityScenario<CreateAccount> activityScenario = ActivityScenario.launch(CreateAccount.class);
-        String name = "testCreateAccountFailureInvalidPhone";
+        String name = "FailureInvalidPhone";
         String phone = "123324213";
         String email = "test@gmail.com";
 
@@ -223,7 +224,7 @@ public class CreateAccountTest {
         // Set up test data
 
         ActivityScenario<CreateAccount> activityScenario = ActivityScenario.launch(CreateAccount.class);
-        String name = "testCreateAccountFailureInvalidEmail";
+        String name = "FailureInvalidEmail";
         String phone = "123-456-7890";
         String email = "testgmail.com";
 
